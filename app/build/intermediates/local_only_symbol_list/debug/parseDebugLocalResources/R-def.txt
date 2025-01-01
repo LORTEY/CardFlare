@@ -1,0 +1,23 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable bar_chart_2
+drawable home
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable menu
+drawable plus_circle
+drawable settings
+mipmap ic_launcher
+mipmap ic_launcher_round
+raw colorstouse
+string app_name
+style Theme.CardFlare
+xml backup_rules
+xml data_extraction_rules
