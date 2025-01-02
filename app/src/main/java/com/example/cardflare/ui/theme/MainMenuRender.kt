@@ -3,6 +3,15 @@ package com.example.cardflare.ui.theme
 import android.R.attr.padding
 import android.R.attr.start
 import android.util.Log
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,9 +74,8 @@ import androidx.compose.ui.text.TextStyle
 @Composable
 fun MainMenuRender() {
     var searchQuery by remember { mutableStateOf("") }
-
+    var appear by remember { mutableStateOf(false) }
     val screenHeight = LocalConfiguration.current.screenHeightDp
-
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(ColorPalette.sa10))) {
@@ -92,7 +100,8 @@ fun MainMenuRender() {
                                 color = Color(ColorPalette.pa0),
                                 modifier = Modifier
                                     .background(
-                                        Color(ColorPalette.sa20),                                        shape = RoundedCornerShape(10.dp)                                     )
+                                        Color(ColorPalette.sa20),
+                                        shape = RoundedCornerShape(10.dp))
                                     .fillMaxWidth(0.1f)
                                     .height(100.dp)
                                     .weight(1f)
@@ -104,7 +113,8 @@ fun MainMenuRender() {
                                 color =  Color(ColorPalette.pa0),
                                 modifier = Modifier
                                     .background(
-                                        Color(ColorPalette.sa20),                                          shape = RoundedCornerShape(10.dp)                                     )
+                                        Color(ColorPalette.sa20),
+                                        shape = RoundedCornerShape(10.dp))
                                     .fillMaxWidth(0.1f)
                                     .weight(1f)
                                     .height(100.dp)
@@ -172,7 +182,7 @@ fun MainMenuRender() {
         }
 
 
-        //fade effect and title
+        //fade effect and upper menu
         Column(modifier = Modifier.height((screenHeight * 0.15f).dp)) {
             /*Text(
                 text = "Your sets",
@@ -198,7 +208,7 @@ fun MainMenuRender() {
                     tint = Color(ColorPalette.pa40),
                     modifier = Modifier
                         .fillMaxHeight()
-                        .clickable {  }
+                        .clickable { appear = !appear }
                         .weight(0.1f)
                 )
                 BasicTextField(
@@ -231,10 +241,47 @@ fun MainMenuRender() {
                 )
             }
         }
+        AnimatedVisibility(
+            visible = appear,
+            enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
+                animationSpec = tween(200)
+            ) { fullWidth -> -fullWidth / 2 },
+            exit = fadeOut(animationSpec = tween(200)) + slideOutHorizontally(
+                animationSpec = tween(200)
+            ) { fullWidth -> -fullWidth / 2 }
+        ) {
+            Column(modifier = Modifier
+                .background(Color(ColorPalette.sa10))
+                .fillMaxHeight()
+                .fillMaxWidth(0.4f)){
+                SlideMenuContent()
+            }
+        }
 
     }
 }
 
+@Composable
+fun SlideMenuContent(){
+    Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable {  }){
+        Icon(
+            painter = painterResource(id = R.drawable.bar_chart_2),
+            contentDescription = "chart",
+            tint = Color(ColorPalette.pa10),
+        )
+        Text(text = "Menuoption1", color = Color(ColorPalette.pa20))
+
+    }
+    Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable {  }){
+        Icon(
+            painter = painterResource(id = R.drawable.home),
+            contentDescription = "chart",
+            tint = Color(ColorPalette.pa10),
+        )
+        Text(text = "Menuoption2", color = Color(ColorPalette.pa20))
+
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
