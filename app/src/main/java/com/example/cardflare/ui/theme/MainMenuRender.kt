@@ -2,6 +2,7 @@ package com.example.cardflare.ui.theme
 
 import android.R.attr.padding
 import android.R.attr.start
+import android.content.res.AssetManager
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -65,202 +66,182 @@ import com.example.cardflare.R
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.text.TextStyle
 
 
+private var currentMenu = 1;
 @Composable
-fun MainMenuRender() {
-    var searchQuery by remember { mutableStateOf("") }
-    var appear by remember { mutableStateOf(false) }
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(ColorPalette.sa10))) {
+fun MainMenuRender(context: Context) {
+    if (currentMenu == 1){
+        var searchQuery by remember { mutableStateOf("") }
+        var appear by remember { mutableStateOf(false) }
+        val screenHeight = LocalConfiguration.current.screenHeightDp
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color(ColorPalette.sa10))) {
 
-        Column(modifier = Modifier.fillMaxSize()){
-            Spacer(modifier = Modifier.height((screenHeight * 0.12f).dp))
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .weight(1.0f)){
-                LazyColumn(modifier = Modifier
-                    .fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp))
-                {
-                    items(20){
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(100.dp)){
-                            Text(
-                                text = "flashcardset",
-                                color = Color(ColorPalette.pa0),
+            Column(modifier = Modifier.fillMaxSize()){
+                Spacer(modifier = Modifier.height((screenHeight * 0.12f).dp))
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1.0f)) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    )
+                    {
+                        items(20) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 modifier = Modifier
-                                    .background(
-                                        Color(ColorPalette.sa20),
-                                        shape = RoundedCornerShape(10.dp))
-                                    .fillMaxWidth(0.1f)
+                                    .fillMaxWidth()
                                     .height(100.dp)
-                                    .weight(1f)
-                                    .padding(10.dp)
-                                    .clickable {  }
-                            )
-                            Text(
-                                text = "flashcardset",
-                                color =  Color(ColorPalette.pa0),
-                                modifier = Modifier
-                                    .background(
-                                        Color(ColorPalette.sa20),
-                                        shape = RoundedCornerShape(10.dp))
-                                    .fillMaxWidth(0.1f)
-                                    .weight(1f)
-                                    .height(100.dp)
-                                    .padding(10.dp)
-                                    .clickable {  }
-                            )
+                            ) {
+                                Text(
+                                    text = "flashcardset",
+                                    color = Color(ColorPalette.pa0),
+                                    modifier = Modifier
+                                        .background(
+                                            Color(ColorPalette.sa20),
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .fillMaxWidth(0.1f)
+                                        .height(100.dp)
+                                        .weight(1f)
+                                        .padding(10.dp)
+                                        .clickable { }
+                                )
+                                Text(
+                                    text = "flashcardset",
+                                    color = Color(ColorPalette.pa0),
+                                    modifier = Modifier
+                                        .background(
+                                            Color(ColorPalette.sa20),
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .fillMaxWidth(0.1f)
+                                        .weight(1f)
+                                        .height(100.dp)
+                                        .padding(10.dp)
+                                        .clickable { }
+                                )
+                            }
                         }
                     }
+                    // Add icon menu
+                    Icon(
+                        painter = painterResource(id = R.drawable.plus_circle),
+                        contentDescription = "chart",
+                        tint = Color(ColorPalette.pa40),
+                        modifier = Modifier
+                            .size(128.dp)
+                            .padding(15.dp)
+                            .clickable { }
+                            .background(Color(ColorPalette.sa10), shape = CircleShape)
+                            .align(Alignment.BottomEnd)
+                    )
                 }
-                // Add icon menu
-                Icon(
-                    painter = painterResource(id = R.drawable.plus_circle),
-                    contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
-                    modifier = Modifier
-                        .size(128.dp)
-                        .padding(15.dp)
-                        .clickable {  }
-                        .background(Color(ColorPalette.sa10),shape = CircleShape)
-                        .align(Alignment.BottomEnd)
-                )
             }
 
 
+            //fade effect and upper menu
+            Column(modifier = Modifier.height((screenHeight * 0.15f).dp)) {
 
-            /*//Menu bar at the bottom
-            Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                .fillMaxSize()
-                .weight(0.1f)
-                .background(Color(ColorPalette.sa20),shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))){
-                Icon(
-                    painter = painterResource(id = R.drawable.home),
-                    contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clickable {  }
-                        .background(Color(ColorPalette.sa0),shape = CircleShape)
-                        .padding(vertical = 10.dp)
-                        .align(Alignment.CenterVertically)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.bar_chart_2),
-                    contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clickable {  }
-                        .padding(vertical = 10.dp)
-                        .align(Alignment.CenterVertically)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.settings),
-                    contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clickable {  }
-                        .padding(vertical = 10.dp)
-                        .align(Alignment.CenterVertically)
-                )
-            }*/
-
-        }
-
-
-        //fade effect and upper menu
-        Column(modifier = Modifier.height((screenHeight * 0.15f).dp)) {
-            /*Text(
-                text = "Your sets",
-                color = Color(ColorPalette.pa50),
-                fontSize = 24.sp,
-                modifier = Modifier.background(Color(ColorPalette.sa10)).weight(1.0f).padding(vertical = 30.dp, horizontal = 15.dp)
-            )*/
-
-            Spacer(modifier = Modifier.fillMaxSize().weight(0.6f))
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .weight(0.6f)
-                .weight(20f)
-                .fillMaxHeight()
-                .background(Color(ColorPalette.sa20), shape = RoundedCornerShape(10.dp))
-                .padding(horizontal = 10.dp, vertical = 10.dp)){
-                Icon(
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .clickable { appear = !appear }
-                        .weight(0.1f)
-                )
-                BasicTextField(
-                    value = searchQuery,
-                    onValueChange = {searchQuery = it},
-                    textStyle = TextStyle(color = Color(ColorPalette.pa0), fontSize = 16.sp),
+                Spacer(modifier = Modifier.fillMaxSize().weight(0.6f))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp)
-                        .weight(1.0f)
+                        .weight(0.6f)
+                        .weight(20f)
+                        .fillMaxHeight()
                         .background(Color(ColorPalette.sa20), shape = RoundedCornerShape(10.dp))
-                        .align(Alignment.CenterVertically)
-
-                )
-            }
-
-
-            Canvas(modifier = Modifier
-                .fillMaxWidth().weight(0.5f))
-                {
-                drawRect(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color(ColorPalette.sa10),
-                            Color(android.graphics.Color.parseColor("#00000000"))
-                        ),
-                        start = Offset(0f, 0f), // Top
-                        end = Offset(0f, size.height)
+                        .padding(horizontal = 10.dp, vertical = 10.dp)){
+                    Icon(
+                        painter = painterResource(id = R.drawable.menu),
+                        contentDescription = "chart",
+                        tint = Color(ColorPalette.pa40),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clickable { appear = !appear }
+                            .weight(0.1f)
                     )
-                )
-            }
-        }
-        AnimatedVisibility(
-            visible = appear,
-            enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
-                animationSpec = tween(200)
-            ) { fullWidth -> -fullWidth / 2 },
-            exit = fadeOut(animationSpec = tween(200)) + slideOutHorizontally(
-                animationSpec = tween(200)
-            ) { fullWidth -> -fullWidth / 2 }
-        ) {
-            Column(modifier = Modifier
-                .background(Color(ColorPalette.sa10))
-                .fillMaxHeight()
-                .fillMaxWidth(0.4f)){
-                SlideMenuContent()
-            }
-        }
+                    BasicTextField(
+                        value = searchQuery,
+                        onValueChange = {searchQuery = it},
+                        textStyle = TextStyle(color = Color(ColorPalette.pa0), fontSize = 16.sp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp)
+                            .weight(1.0f)
+                            .background(Color(ColorPalette.sa20), shape = RoundedCornerShape(10.dp))
+                            .align(Alignment.CenterVertically)
 
+                    )
+                }
+
+
+                Canvas(modifier = Modifier
+                    .fillMaxWidth().weight(0.5f))
+                {
+                    drawRect(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(ColorPalette.sa10),
+                                Color(android.graphics.Color.parseColor("#00000000"))
+                            ),
+                            start = Offset(0f, 0f), // Top
+                            end = Offset(0f, size.height)
+                        )
+                    )
+                }
+            }
+            AnimatedVisibility(
+                visible = appear,
+                enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
+                    animationSpec = tween(200)
+                ) { fullWidth -> -fullWidth / 2 },
+                exit = fadeOut(animationSpec = tween(200)) + slideOutHorizontally(
+                    animationSpec = tween(200)
+                ) { fullWidth -> -fullWidth / 2 }
+            ) {
+                Column(modifier = Modifier
+                    .background(Color(ColorPalette.sa10))
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.4f)){
+                    SlideMenuContent()
+                }
+            }
+        }
     }
 }
-
+fun listFilesInAssets(context: Context) {
+    try {
+        val assetManager = context.assets
+        val fileNames = assetManager.list("FlashcardDirectory")
+        if (fileNames != null) {
+            // Log the names of all files
+            for (fileName in fileNames) {
+                Log.d("AssetsFiles", "File: $fileName")
+            }
+        } else {
+            Log.d("AssetsFiles", "No files found in the assets folder.")
+        }
+    } catch (e: Exception) {
+        Log.e("AssetsFiles", "Error reading assets folder: ${e.message}")
+    }
+}
 @Composable
 fun SlideMenuContent(){
     Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable {  }){
@@ -283,10 +264,3 @@ fun SlideMenuContent(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CardFlareTheme {
-        MainMenuRender()
-    }
-}

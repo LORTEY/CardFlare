@@ -12,6 +12,13 @@ import com.example.cardflare.ui.theme.CardFlareTheme
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.google.gson.Gson
 import com.example.cardflare.ui.theme.ColorPalette
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
+
 
 data class ColorPaletteData(
     val pa0: String,
@@ -27,20 +34,26 @@ data class ColorPaletteData(
     val sa40: String,
     val sa50: String
 )
+private const val STORAGE_PERMISSION_CODE = 101
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         loadColorPalette()
+        checkAndRequestPermissions()
         setContent {
             CardFlareTheme {
-                    MainMenuRender()
+                MainMenuRender(this)
             }
         }
     }
-    private fun loadColorPalette(){
-        val jsonString = getResources().openRawResource(R.raw.colorstouse).bufferedReader().use { it.readText() }
+
+    private fun loadColorPalette() {
+        val jsonString =
+            getResources().openRawResource(R.raw.colorstouse).bufferedReader().use { it.readText() }
         val colorPaletteData = Gson().fromJson(jsonString, ColorPaletteData::class.java)
         try {
             ColorPalette.pa0 = Color.parseColor(colorPaletteData.pa0)
@@ -61,13 +74,31 @@ class MainActivity : ComponentActivity() {
             Log.e("MainActivity", "Error loading color palette: ${e.message}")
         }
     }
+
     @Preview(showBackground = true)
     @Composable
     fun GreetingPreview() {
         CardFlareTheme {
             loadColorPalette()
-            MainMenuRender()
+            MainMenuRender(this)
         }
     }
-}
 
+
+    private fun checkAndRequestPermissions() {
+        // List of permissions to check
+        val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Log.d("ReadWrite:", "Feature enabled: " + (ContextCompat.checkSelfPermission(this, storagePermission)!= PackageManager.PERMISSION_GRANTED).toString())
+        if (ContextCompat.checkSelfPermission(this, storagePermission) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            requestStoragePermission()
+        }
+    }
+    private fun requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            STORAGE_PERMISSION_CODE
+        )
+    }
+}
