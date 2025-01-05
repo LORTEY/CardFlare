@@ -1,4 +1,4 @@
-Goals:
+#Goals:
 
 make the app easy and free to ise
 
