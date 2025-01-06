@@ -1,90 +1,90 @@
 [
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_menu.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/menu.xml"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_bar_chart_2.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/bar_chart_2.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/ic_launcher_background.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_plus_circle.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/plus_circle.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_plus_circle.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/plus_circle.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "com.example.cardflare.app-debug-66:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_settings.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/settings.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_menu.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/menu.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_bar_chart_2.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/bar_chart_2.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_home.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/home.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_home.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/home.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.cardflare.app-debug-66:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/raw_colorstouse.json.flat",
-        "source": "com.example.cardflare.app-main-61:/raw/colorstouse.json"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.example.cardflare.app-debug-66:/xml_backup_rules.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/xml_backup_rules.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/xml/backup_rules.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/drawable_settings.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/drawable/settings.xml"
+        "merged": "com.example.cardflare.app-debug-66:/raw_colorstouse.json.flat",
+        "source": "com.example.cardflare.app-main-68:/raw/colorstouse.json"
     },
     {
-        "merged": "com.example.cardflare.app-debug-59:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.cardflare.app-main-61:/xml/data_extraction_rules.xml"
+        "merged": "com.example.cardflare.app-debug-66:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/mipmap-anydpi-v26/ic_launcher_round.xml"
     }
 ]

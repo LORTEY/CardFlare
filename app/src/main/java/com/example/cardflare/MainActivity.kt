@@ -9,15 +9,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cardflare.ui.theme.CardFlareTheme
-import com.example.cardflare.ui.theme.MainMenuRender
 import com.google.gson.Gson
 import com.example.cardflare.ui.theme.ColorPalette
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.cardflare.ui.theme.MainMenuRender
+import com.example.cardflare.ui.theme.addMenu
 
 
 data class ColorPaletteData(
@@ -46,10 +51,23 @@ class MainActivity : ComponentActivity() {
         checkAndRequestPermissions()
         setContent {
             CardFlareTheme {
-                MainMenuRender(this)
+                // Initialize the NavController
+                val navController = rememberNavController()
+
+                // Set up the navigation graph
+                NavHost(
+                    navController = navController,
+                    startDestination = "main_menu"
+                ) {
+                    // Main Menu Screen
+                    composable("main_menu") { MainMenuRender(LocalContext.current, navController) }
+
+                    // Add additional destinations (e.g., Screen2)
+                    composable("screen2") { addMenu(LocalContext.current, navController) }}
+                }
             }
         }
-    }
+
 
     private fun loadColorPalette() {
         val jsonString =
@@ -75,14 +93,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Preview(showBackground = true)
+/*
+@Preview(showBackground = true)
     @Composable
     fun GreetingPreview() {
         CardFlareTheme {
             loadColorPalette()
             MainMenuRender(this)
         }
-    }
+    }*/
 
 
     private fun checkAndRequestPermissions() {
