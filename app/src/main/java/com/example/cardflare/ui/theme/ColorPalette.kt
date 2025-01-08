@@ -16,6 +16,6 @@ object ColorPalette {
     var sa20: Int = Color.parseColor("#383a39")
     var sa30: Int = Color.parseColor("#595B5A")
     var sa40: Int = Color.parseColor("#727473")
-    var sa50: Int = Color.parseColor("#8D8E8D")
+    var sa50: Int = Color.parseColor("#232424")
     //Tonal
 }

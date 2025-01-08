@@ -22,8 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.MainMenuRender
-import com.example.cardflare.ui.theme.addMenu
-
+import com.example.cardflare.ui.theme.AddMenu
 
 data class ColorPaletteData(
     val pa0: String,
@@ -63,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     composable("main_menu") { MainMenuRender(LocalContext.current, navController) }
 
                     // Add additional destinations (e.g., Screen2)
-                    composable("screen2") { addMenu(LocalContext.current, navController) }}
+                    composable("screen2") { AddMenu(LocalContext.current, navController) }}
                 }
             }
         }
