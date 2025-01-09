@@ -113,6 +113,7 @@ id consume_window_insets_tag
 id dialog_button
 id edit_text_id
 id forever
+id hide_graphics_layer_in_inspector_tag
 id hide_ime_id
 id hide_in_inspector_tag
 id icon
@@ -180,11 +181,12 @@ string in_progress
 string indeterminate
 string navigation_menu
 string not_selected
-string off
-string on
 string range_end
 string range_start
 string selected
+string state_empty
+string state_off
+string state_on
 string status_bar_notification_info_overflow
 string switch_role
 string tab

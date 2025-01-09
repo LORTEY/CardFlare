@@ -129,8 +129,13 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                             }
                     )
                 }
-                Column(modifier = Modifier.align(Alignment.BottomEnd).width(128.dp)){
-                    PopAddMenu()
+
+                Column(modifier = Modifier.align(Alignment.BottomEnd)) {
+                    Column(modifier = Modifier.width(128.dp).align(Alignment.End)) {
+                        PopAddMenu()
+                    }
+                    Spacer(modifier = Modifier.fillMaxWidth().height(50.dp).background(Color(ColorPalette.sa50)))
+
                 }
             }
         }
@@ -138,7 +143,8 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
         //fade effect and upper menu
         Column(modifier = Modifier.height((screenHeight * 0.15f).dp)) {
 
-            Spacer(modifier = Modifier.fillMaxSize().weight(0.6f))
+            Spacer(modifier = Modifier.fillMaxWidth().height(25.dp).background(Color(ColorPalette.sa50)))
+            Spacer(modifier = Modifier.fillMaxWidth().height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -197,6 +203,8 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                 )
             }
         }
+
+        // left slide menu
         AnimatedVisibility(
             visible = appear,
             enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
@@ -211,10 +219,14 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                 .fillMaxHeight()
                 .fillMaxWidth(0.4f)){
 
+
                 Column(modifier = Modifier
                     .background(Color(ColorPalette.sa50))
                     .fillMaxHeight()
                     .weight(0.1f)){
+
+                    Spacer(modifier = Modifier.fillMaxWidth().height(35.dp))
+
                     SlideMenuContent()
                 }
                 //Divider(color = Color(ColorPalette.sa30), modifier = Modifier.fillMaxHeight().width(2.dp))
