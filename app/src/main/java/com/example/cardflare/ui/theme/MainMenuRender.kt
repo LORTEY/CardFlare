@@ -116,6 +116,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
 
                 // Add menu
                 if ( appearAddMenu || appear) {
+                    // Will make all menus hide if box and not them is clicked
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -140,7 +141,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
             }
         }
 
-        //fade effect and upper menu
+        // Fade effect and upper menu
         Column(modifier = Modifier.height((screenHeight * 0.15f).dp)) {
 
             Spacer(modifier = Modifier.fillMaxWidth().height(25.dp).background(Color(ColorPalette.sa50)))
@@ -155,6 +156,8 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                     .fillMaxHeight()
                     .background(Color(ColorPalette.sa20), shape = RoundedCornerShape(10.dp))
                     .padding(horizontal = 10.dp, vertical = 10.dp)){
+
+                // More Menu button
                 Icon(
                     painter = painterResource(id = R.drawable.menu),
                     contentDescription = "chart",
@@ -165,13 +168,14 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                         .weight(0.1f)
                 )
 
-                //I have no idea how to use the colors in TextField so to make a place holder so I used this box
+                // I have no idea how to use the colors in TextField so to make a place holder I used this box
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
                     .weight(1.0f)
                     .background(Color(ColorPalette.sa20), shape = RoundedCornerShape(10.dp))
                     .align(Alignment.CenterVertically)){
+                    // Text field for searching card decks
                     BasicTextField(
                         value = searchQuery,
                         onValueChange = {searchQuery = it},
@@ -191,6 +195,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
             Canvas(modifier = Modifier
                 .fillMaxWidth().weight(0.5f))
             {
+                // Fade effect gradient
                 drawRect(
                     brush = Brush.linearGradient(
                         colors = listOf(
@@ -214,6 +219,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                 animationSpec = tween(200)
             ) { fullWidth -> -fullWidth / 2 }
         ) {
+            // I forgot to delete this row my bad
             Row(modifier = Modifier
                 .background(Color(ColorPalette.sa50))
                 .fillMaxHeight()
@@ -235,6 +241,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
         }
     }
 }
+// lists all files in FlashcardDirectory
 fun  listFilesInAssets(context: Context) : Array<String>{
     try {
         val assetManager = context.assets
@@ -249,6 +256,8 @@ fun  listFilesInAssets(context: Context) : Array<String>{
     }
     return arrayOf()
 }
+
+// definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
 fun SlideMenuContent(){
     Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable {  }){
@@ -271,6 +280,7 @@ fun SlideMenuContent(){
     }
 }
 
+// The menu that appears when you click the add button in right bottom of screen
 @Composable
 fun PopAddMenu(){
 
