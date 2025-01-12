@@ -13,8 +13,8 @@ object ColorPalette {
     //Secondary colors
     var sa0: Int = Color.parseColor("#151716")
     var sa10: Int = Color.parseColor("#2A2C2B")
-    var sa20: Int = Color.parseColor("#383a39")
-    var sa30: Int = Color.parseColor("#595B5A")
+    var sa20: Int = Color.parseColor("#313332")
+    var sa30: Int = Color.parseColor("#505251")
     var sa40: Int = Color.parseColor("#727473")
     var sa50: Int = Color.parseColor("#232424")
     //Tonal
