@@ -48,15 +48,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.TabRowDefaults.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
@@ -69,16 +60,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
+import com.example.cardflare.Deck
+import com.example.cardflare.loadData
 
 
 var appearAddMenu by mutableStateOf(false)
 @Composable
-fun MainMenuRender(context: Context, navController: NavHostController) {
+fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
 
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    var files = listFilesInAssets(context).toList()
     Box(
         modifier = Modifier.background(Color(ColorPalette.sa10))
             .padding(WindowInsets.systemBars.asPaddingValues())
@@ -106,11 +98,11 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                     )
                     {
                         //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu");
-                        items(files) { item ->
+                            items(decks.size) { index ->
 
-                            if (searchQuery in item.toString() || searchQuery == "") {
+
                                 Text(
-                                    text = item.toString(),
+                                    text = decks[index].name,
                                     color = Color(ColorPalette.pa0),
                                     modifier = Modifier
                                         .shadow(
@@ -130,12 +122,12 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
                                         .fillMaxWidth(0.5f)
                                         .height(100.dp)
                                         .padding(10.dp)
-                                        .clickable { Log.d("dd", "sad") }
+                                        .clickable { decks[index].name }
                                 )
 
+
                             }
-                        }
-                    }
+                    }   
 
                     // Add menu
                     if (appearAddMenu || appear) {
@@ -283,21 +275,7 @@ fun MainMenuRender(context: Context, navController: NavHostController) {
     }
 }
 
-// lists all files in FlashcardDirectory
-fun  listFilesInAssets(context: Context) : Array<String>{
-    try {
-        val assetManager = context.assets
-        val fileNames = assetManager.list("FlashcardDirectory")
-        if (fileNames != null) {
-            return fileNames
-        } else {
-            Log.d("AssetsFiles", "No files found in the assets folder.")
-        }
-    } catch (e: Exception) {
-        Log.e("AssetsFiles", "Error reading assets folder: ${e.message}")
-    }
-    return arrayOf()
-}
+
 
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
@@ -395,7 +373,7 @@ fun AddMenu(context: Context, navController: NavHostController) {
             startDestination = "main_menu"
         ) {
             // Main Menu Screen
-            composable("main_menu") { MainMenuRender(LocalContext.current, navController) }
+            composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
             // Add additional destinations (e.g., Screen2)
             composable("screen2") { AddMenu(LocalContext.current, navController) }}

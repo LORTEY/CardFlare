@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = "main_menu"
                 ) {
                     // Main Menu Screen
-                    composable("main_menu") { MainMenuRender(LocalContext.current, navController) }
+                    composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
                     // Add additional destinations (e.g., Screen2)
                     composable("screen2") { AddMenu(LocalContext.current, navController) }}

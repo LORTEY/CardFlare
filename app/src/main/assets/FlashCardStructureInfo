@@ -1,2 +1,2 @@
-data used by app first line ( date of creation, id)
-All other lines (SideA,SideB,)
+data used by app first line ( val name: String, val date_made: Int, val last_eddited: Int, val tags: List<String>,)
+All other lines (SideA,SideB)
