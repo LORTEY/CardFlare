@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.AddMenu
+import com.example.cardflare.ui.theme.deckScreen
 
 data class ColorPaletteData(
     val pa0: String,
@@ -58,11 +59,9 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = "main_menu"
                 ) {
-                    // Main Menu Screen
                     composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
-                    // Add additional destinations (e.g., Screen2)
-                    composable("screen2") { AddMenu(LocalContext.current, navController) }}
+                    composable("deck_menu") { deckScreen(context = LocalContext.current) }}
                 }
             }
         }

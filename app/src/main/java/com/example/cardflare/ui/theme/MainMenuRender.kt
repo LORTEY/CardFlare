@@ -60,16 +60,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import com.example.cardflare.Deck
+import com.example.cardflare.SortType
 import com.example.cardflare.loadData
+import com.example.cardflare.sortDecks
 
-
+var currentOpenedDeck : Deck? by mutableStateOf(null);
 var appearAddMenu by mutableStateOf(false)
 @Composable
 fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
-
+    var appearSortMenu by remember { mutableStateOf(false) }
+    var sortType by remember{ mutableStateOf(SortType.ByName) }
+    var qualifiedDecks by remember {mutableStateOf(sortDecks(searchQuery, decks, sortType = sortType,true))}
     val screenHeight = LocalConfiguration.current.screenHeightDp
     Box(
         modifier = Modifier.background(Color(ColorPalette.sa10))
@@ -98,11 +104,9 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                     )
                     {
                         //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu");
-                            items(decks.size) { index ->
-
-
+                            items(qualifiedDecks.size) { index ->
                                 Text(
-                                    text = decks[index].name,
+                                    text = qualifiedDecks[index].name,
                                     color = Color(ColorPalette.pa0),
                                     modifier = Modifier
                                         .shadow(
@@ -122,7 +126,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                                         .fillMaxWidth(0.5f)
                                         .height(100.dp)
                                         .padding(10.dp)
-                                        .clickable { decks[index].name }
+                                        .clickable { currentOpenedDeck = qualifiedDecks[index]; navController.navigate("deck_menu") }
                                 )
 
 
@@ -178,7 +182,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                         .padding(horizontal = 10.dp, vertical = 10.dp),
                 ) {
 
-                    // More Menu button
+                    // "More" Menu button
                     Icon(
                         painter = painterResource(id = R.drawable.menu),
                         contentDescription = "chart",
@@ -186,7 +190,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                         modifier = Modifier
                             .fillMaxHeight()
                             .clickable { appear = !appear }
-                            .weight(0.1f)
+                            .width(40.dp)
                     )
 
                     // I have no idea how to use the colors in TextField so to make a place holder I used this box
@@ -204,7 +208,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                         // Text field for searching card decks
                         BasicTextField(
                             value = searchQuery,
-                            onValueChange = { searchQuery = it },
+                            onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, true)},
                             textStyle = TextStyle(
                                 color = Color(ColorPalette.pa50),
                                 fontSize = 16.sp
@@ -218,6 +222,34 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                             )
                         }
                     }
+
+                    // "Sort" Menu button
+                   Column(){
+                       Icon(
+                           painter = painterResource(id = R.drawable.sort_ascending),
+                           contentDescription = "chart",
+                           tint = Color(ColorPalette.pa40),
+                           modifier = Modifier
+                               .fillMaxHeight()
+                               .clickable {appearSortMenu = !appearSortMenu; }
+                               .width(40.dp)
+                       )
+                       DropdownMenu(
+                           expanded = appearSortMenu,
+                           onDismissRequest = { appearSortMenu = false }, // Close menu on dismiss
+                           modifier = Modifier
+                               .width(200.dp)
+                               .background(Color(ColorPalette.sa20))
+                               .padding(start = 16.dp)
+                       ) {
+                           Text("Sort By", fontSize = 20.sp, color = Color(ColorPalette.pa30))
+
+                           Text("Name (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByName; appearSortMenu = false }.fillMaxWidth())
+                           Text("Last modified (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByLastEdited; appearSortMenu = false }.fillMaxWidth())
+                           Text("Date of creation (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByCreationDate; appearSortMenu = false }.fillMaxWidth())
+                       }
+                   }
+
 
                 }
 
@@ -250,32 +282,24 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                     animationSpec = tween(200)
                 ) { fullWidth -> -fullWidth / 2 }
             ) {
-                // I forgot to delete this row my bad
-                Row(
+                Column(
                     modifier = Modifier
                         .background(Color(ColorPalette.sa50))
                         .fillMaxHeight()
                         .fillMaxWidth(0.4f)
                 ) {
-
-
-                    Column(
-                        modifier = Modifier
-                            .background(Color(ColorPalette.sa50))
-                            .fillMaxHeight()
-                            .weight(0.1f)
-                    ) {
-                        SlideMenuContent()
-                    }
-                    //Divider(color = Color(ColorPalette.sa30), modifier = Modifier.fillMaxHeight().width(2.dp))
+                    SlideMenuContent()
                 }
-
             }
         }
     }
 }
 
-
+// loads the screen when you click certain deck
+@Composable
+fun deckScreen(context: Context){
+    currentOpenedDeck?.let { Log.d("deckopened", it.name) }
+}
 
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
@@ -348,7 +372,7 @@ fun PopAddMenu(){
             }
 
     Icon(
-        painter = painterResource(id = R.drawable.plus_circle),
+        painter = painterResource(id = R.drawable.plus_circle_solid),
         contentDescription = "chart",
         tint = Color(ColorPalette.pa40),
         modifier = Modifier
@@ -357,6 +381,17 @@ fun PopAddMenu(){
             .background(Color(ColorPalette.sa10), shape = CircleShape)
             .clickable { appearAddMenu = !appearAddMenu; Log.d("bools",appearAddMenu.toString())}
     )
+}
+
+@Composable
+fun DropDownMenu(){
+    DropdownMenu(
+        expanded = appearAddMenu,
+        onDismissRequest = { appearAddMenu = false }, // Close menu on dismiss
+        modifier = Modifier.padding(start = 16.dp)
+    ) {
+        // Menu options
+    }
 }
 
 @Composable
@@ -375,8 +410,7 @@ fun AddMenu(context: Context, navController: NavHostController) {
             // Main Menu Screen
             composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
-            // Add additional destinations (e.g., Screen2)
-            composable("screen2") { AddMenu(LocalContext.current, navController) }}
+            composable("deck_menu") { deckScreen(context = LocalContext.current) }}
     }
 
 

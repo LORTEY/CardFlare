@@ -49,7 +49,7 @@ import java.io.InputStreamReader
             }
             return decks.toTypedArray()
     }
-    private fun readFileFromAssets(fileName: String, context: Context): String {
+    public fun readFileFromAssets(fileName: String, context: Context): String {
         return try {
             val inputStream = context.assets.open("FlashcardDirectory/$fileName")
             val bufferedReader = BufferedReader(InputStreamReader(inputStream))
@@ -60,5 +60,56 @@ import java.io.InputStreamReader
         }
     }
 
+    public fun sortDecks(searchQuery: String, decks: Array<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
+        // Enumerating tags
+        var tagsRequired = mutableListOf<String>()
+        if ('#' in searchQuery){
+            searchQuery.split(' ').forEach(){ word ->
+                if (word.length > 0){
+                    if(word[0] == '#'){
+                        tagsRequired.add(word)
+                    }
+                }
+            }
+        }
+        var searchTerm: String
+        try {
+            searchTerm = searchQuery.split(" & ")[0]
+        }catch(e:Exception){
+            searchTerm = searchQuery
+        }
 
-public data class Deck(val name: String, val date_made: Int, val last_edited: Int, val tags: List<String>, val cards: List<String>)
+        var decksQualified = mutableListOf<Deck>()
+
+        decks.forEach() { currentDeck->
+            if ((tagsRequired.any { it in currentDeck.tags } || tagsRequired.size == 0) and (searchTerm in currentDeck.name || searchTerm.length == 0)){
+                decksQualified.add(currentDeck)
+            }
+        }
+
+        when (sortType){
+            SortType.ByName -> decksQualified = decksQualified.sortedWith(compareBy<Deck> { it.name }.thenBy{ it.date_made}).toMutableList()
+            SortType.ByCreationDate -> decksQualified = decksQualified.sortedWith(compareBy<Deck> { it.date_made }.thenBy{ it.name}).toMutableList()
+            SortType.ByLastEdited -> decksQualified = decksQualified.sortedWith(compareBy<Deck> { it.last_edited }.thenBy{ it.name}).toMutableList()
+        }
+
+        if (isAscending){
+            return decksQualified.reversed()
+        }
+
+        return decksQualified
+    }
+
+public enum class SortType{
+    ByName,
+    ByCreationDate,
+    ByLastEdited
+}
+
+
+public data class Deck(
+    val name: String,
+    val date_made: Int,
+    val last_edited: Int,
+    val tags: List<String>,
+    val cards: List<String>)
