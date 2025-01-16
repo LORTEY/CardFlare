@@ -93,7 +93,7 @@ import java.io.InputStreamReader
             SortType.ByLastEdited -> decksQualified = decksQualified.sortedWith(compareBy<Deck> { it.last_edited }.thenBy{ it.name}).toMutableList()
         }
 
-        if (isAscending){
+        if (!isAscending){
             return decksQualified.reversed()
         }
 

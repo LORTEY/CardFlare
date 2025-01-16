@@ -69,13 +69,18 @@ import com.example.cardflare.sortDecks
 
 var currentOpenedDeck : Deck? by mutableStateOf(null);
 var appearAddMenu by mutableStateOf(false)
+var isAscending by  mutableStateOf(true)
+var appearSortMenu by mutableStateOf(false)
+var sortType by mutableStateOf(SortType.ByName)
+var qualifiedDecks = listOf<Deck>()
+
 @Composable
 fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
-    var appearSortMenu by remember { mutableStateOf(false) }
-    var sortType by remember{ mutableStateOf(SortType.ByName) }
-    var qualifiedDecks by remember {mutableStateOf(sortDecks(searchQuery, decks, sortType = sortType,true))}
+    qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
+
+
     val screenHeight = LocalConfiguration.current.screenHeightDp
     Box(
         modifier = Modifier.background(Color(ColorPalette.sa10))
@@ -213,6 +218,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                                 color = Color(ColorPalette.pa50),
                                 fontSize = 16.sp
                             ),
+                            modifier = Modifier.fillMaxWidth()
                         )
                         if (searchQuery.isEmpty()) {
                             Text(
@@ -242,11 +248,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
                                .background(Color(ColorPalette.sa20))
                                .padding(start = 16.dp)
                        ) {
-                           Text("Sort By", fontSize = 20.sp, color = Color(ColorPalette.pa30))
-
-                           Text("Name (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByName; appearSortMenu = false }.fillMaxWidth())
-                           Text("Last modified (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByLastEdited; appearSortMenu = false }.fillMaxWidth())
-                           Text("Date of creation (Descending)", fontSize = 16.sp ,color = Color(ColorPalette.pa50),modifier = Modifier.clickable { sortType = SortType.ByCreationDate; appearSortMenu = false }.fillMaxWidth())
+                           SortMenuContent(decks = decks, searchQuery = searchQuery)
                        }
                    }
 
@@ -394,6 +396,119 @@ fun DropDownMenu(){
     }
 }
 
+@Composable
+fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
+    Text("Sort By", fontSize = 20.sp, color = Color(ColorPalette.pa30))
+
+    Text("Name (Ascending)",
+        fontSize = 16.sp,
+        color = Color(ColorPalette.pa50),
+        modifier = Modifier
+            .clickable {
+                sortType = SortType.ByName;
+                appearSortMenu = false;
+                isAscending = true;
+                qualifiedDecks = sortDecks(
+                    searchQuery,
+                    decks,
+                    sortType = sortType,
+                    isAscending
+                )
+            }
+            .fillMaxWidth()
+            .padding(vertical = 5.dp))
+
+    Text("Name (Descending)",
+        fontSize = 16.sp,
+        color = Color(ColorPalette.pa50),
+        modifier = Modifier
+            .clickable {
+                sortType = SortType.ByName;
+                appearSortMenu = false;
+                isAscending = false;
+                qualifiedDecks = sortDecks(
+                    searchQuery,
+                    decks,
+                    sortType = sortType,
+                    isAscending
+                )
+            }
+            .fillMaxWidth()
+            .padding(vertical = 5.dp))
+
+    Text("Last Modified (Ascending)",
+        fontSize = 16.sp,
+        color = Color(ColorPalette.pa50),
+        modifier = Modifier
+            .clickable {
+                sortType = SortType.ByLastEdited;
+                appearSortMenu = false;
+                isAscending = true;
+                qualifiedDecks = sortDecks(
+                    searchQuery,
+                    decks,
+                    sortType = sortType,
+                    isAscending
+                )
+            }
+            .fillMaxWidth()
+            .padding(vertical = 5.dp))
+
+    Text("Date Modified (Descending)",
+        fontSize = 16.sp,
+        color = Color(ColorPalette.pa50),
+        modifier = Modifier
+            .clickable {
+                sortType = SortType.ByLastEdited;
+                appearSortMenu = false;
+                isAscending = false;
+                qualifiedDecks = sortDecks(
+                    searchQuery,
+                    decks,
+                    sortType = sortType,
+                    isAscending
+                )
+            }
+            .fillMaxWidth()
+            .padding(vertical = 5.dp))
+
+    Text("Date Created (Ascending)",
+        fontSize = 16.sp,
+        color = Color(ColorPalette.pa50),
+        modifier = Modifier
+            .clickable {
+                sortType = SortType.ByLastEdited;
+                appearSortMenu = false;
+                isAscending = true;
+                qualifiedDecks = sortDecks(
+                    searchQuery,
+                    decks,
+                    sortType = sortType,
+                    isAscending
+                )
+            }
+            .fillMaxWidth()
+            .padding(vertical = 5.dp))
+
+    Text("Date Created (Descending)",
+    fontSize = 16.sp,
+    color = Color(ColorPalette.pa50),
+    modifier = Modifier
+    .clickable {
+        sortType = SortType.ByLastEdited;
+        appearSortMenu = false;
+        isAscending = false;
+        qualifiedDecks = sortDecks(
+            searchQuery,
+            decks,
+            sortType = sortType,
+            isAscending
+        )
+}
+.fillMaxWidth()
+.padding(vertical = 5.dp))
+
+}
 @Composable
 fun AddMenu(context: Context, navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize().background(Color(ColorPalette.sa50)))
