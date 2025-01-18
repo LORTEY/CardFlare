@@ -62,6 +62,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.TextField
+import androidx.compose.ui.text.style.TextAlign
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
@@ -300,7 +302,65 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context){
-    currentOpenedDeck?.let { Log.d("deckopened", it.name) }
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
+    Box(
+        modifier = Modifier.background(Color(ColorPalette.sa10))
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(ColorPalette.sa10))
+                .padding(10.dp)
+        ) {
+            LazyColumn() {
+                items(openedTarget.cards.size){ index ->
+                    Row(modifier = Modifier
+                        .padding(2.dp)
+                        .fillMaxWidth()
+                        .height(80.dp),
+                        verticalAlignment = Alignment.CenterVertically){
+
+                        Text(text = openedTarget.cards[index][0].toString(),
+                            textAlign = TextAlign.Center,
+                            color = Color(ColorPalette.pa0),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp)
+                                .weight(1.0f)
+                                .padding(5.dp)
+                                //.wrapContentHeight(Alignment.CenterVertically)
+                                .clickable {  }
+                                .background(brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(ColorPalette.sa30), // Start color
+                                        Color(ColorPalette.sa20) // End color
+                                    )
+                                ),
+                                    shape = RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp)))
+                        Text(text = openedTarget.cards[index][1].toString(),
+                            textAlign = TextAlign.Center,
+                            color = Color(ColorPalette.sa0),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp)
+                                .weight(1.0f)
+                                .padding(5.dp)
+                                //.wrapContentHeight(Alignment.CenterVertically)
+                                .clickable {  }
+                                .background(brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(ColorPalette.pa30), // Start color
+                                        Color(ColorPalette.pa20) // End color
+                                    )
+                                ),
+                                    shape = RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp)))
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 // definition used for rendering components of left slide menu used by MainMenuRender function
