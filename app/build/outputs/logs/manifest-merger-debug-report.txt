@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-28:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-28:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-28:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-28:12
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-29:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-29:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-29:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-29:12
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.9/transforms/ac019c4caf2004e271baf05c78b1fced/transformed/coil-svg-2.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil-compose:2.7.0] /home/lortey/.gradle/caches/8.9/transforms/9d399ac14c5f76b6cb50ccd554e171c3/transformed/coil-compose-2.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil-compose-base:2.7.0] /home/lortey/.gradle/caches/8.9/transforms/0fc5718d075b479797c0c52e2d897130/transformed/coil-compose-base-2.7.0/AndroidManifest.xml:2:1-7:12
@@ -162,6 +162,10 @@ uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:5-81
 	android:name
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:22-78
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:5-77
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:22-75
 uses-sdk
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml

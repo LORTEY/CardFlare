@@ -386,6 +386,22 @@ fun SlideMenuContent(){
     }
 }
 
+@Composable
+fun MyOverlayComposable() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.5f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Hello, Overlay!",
+            color = Color.White,
+            fontSize = 24.sp
+        )
+    }
+}
+
 // The menu that appears when you click the add button in right bottom of screen
 @Composable
 fun PopAddMenu(){

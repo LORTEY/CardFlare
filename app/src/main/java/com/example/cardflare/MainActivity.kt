@@ -12,7 +12,12 @@ import com.example.cardflare.ui.theme.CardFlareTheme
 import com.google.gson.Gson
 import com.example.cardflare.ui.theme.ColorPalette
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.audiofx.BassBoost
+import android.media.audiofx.EnvironmentalReverb
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.AddMenu
+import com.example.cardflare.ui.theme.AppMonitorService
 import com.example.cardflare.ui.theme.deckScreen
 
 data class ColorPaletteData(
@@ -49,6 +55,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         loadColorPalette()
         checkAndRequestPermissions()
+        val intent = Intent(applicationContext, AppMonitorService::class.java)
+        ContextCompat.startForegroundService(applicationContext, intent)
         setContent {
             CardFlareTheme {
                 // Initialize the NavController
@@ -110,6 +118,12 @@ class MainActivity : ComponentActivity() {
             // Permission is not granted
             requestStoragePermission()
         }
+        if (!Settings.canDrawOverlays(getApplicationContext())) {
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"))
+            startActivity(intent)
+        }
+
+
     }
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
