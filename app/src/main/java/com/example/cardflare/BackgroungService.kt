@@ -1,6 +1,5 @@
-package com.example.cardflare.ui.theme
+package com.example.cardflare
 
-import android.app.Activity
 import android.app.Notification
 import android.app.Service
 import android.app.usage.UsageStatsManager
@@ -9,17 +8,10 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import android.provider.Settings
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.cardflare.OverlayService
-import com.example.cardflare.R
-import com.example.cardflare.loadData
 
 class AppMonitorService : Service() {
 
@@ -28,15 +20,17 @@ class AppMonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d("BackgroundService", "started")
         // Start the foreground service with a notification
-        startForeground(1, createNotification())
+        //startForeground(1, createNotification())
         startMonitoring()
     }
 
-    private fun startMonitoring() {
+    fun startMonitoring() {
         handler.post(object : Runnable {
             override fun run() {
-                val currentApp = getForegroundApp(applicationContext)  // Use applicationContext here
+                val currentApp = getForegroundApp(this@AppMonitorService)  // Use applicationContext here
+                Log.d("BackgroundService", currentApp?:"null")
                 if (currentApp == "com.instagram.android") {
                     startOverlay()
                 }
@@ -55,6 +49,10 @@ class AppMonitorService : Service() {
             endTime
         )
 
+        if (usageStats == null || usageStats.isEmpty()) {
+            Log.d("getForegroundApp", "No usage stats data available")
+            return null
+        }
         usageStats?.let {
             val sortedStats = it.sortedByDescending { stats -> stats.lastTimeUsed }
             return sortedStats.firstOrNull()?.packageName
@@ -63,8 +61,8 @@ class AppMonitorService : Service() {
     }
     private fun startOverlay() {
         // Start the OverlayService with the application context
-        val intent = Intent(applicationContext, OverlayService::class.java)
-        ContextCompat.startForegroundService(applicationContext, intent)
+        val intent = Intent(this, OverlayService::class.java)
+        ContextCompat.startForegroundService(this, intent)
     }
 
     private fun createNotification(): Notification {

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
 
     <permission
         android:name="com.example.cardflare.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -31,6 +32,11 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.CardFlare" >
+        <service
+            android:name="com.example.cardflare.AppMonitorService"
+            android:exported="true"
+            android:foregroundServiceType="location|connectedDevice" />
+
         <activity
             android:name="com.example.cardflare.MainActivity"
             android:exported="true"
