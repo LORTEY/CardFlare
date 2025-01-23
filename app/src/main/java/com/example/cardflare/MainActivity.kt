@@ -10,9 +10,12 @@ import com.example.cardflare.ui.theme.CardFlareTheme
 import com.google.gson.Gson
 import com.example.cardflare.ui.theme.ColorPalette
 import android.Manifest
+import android.app.AppOpsManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -118,8 +121,10 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"))
             startActivity(intent)
         }
-        val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-        this.startActivity(intent)
+        if (!isUsageAccessGranted(getApplicationContext())) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            getApplicationContext().startActivity(intent)
+        }
 
 
 
@@ -130,5 +135,17 @@ class MainActivity : ComponentActivity() {
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
             STORAGE_PERMISSION_CODE
         )
+    }
+    fun isUsageAccessGranted(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            val mode = appOpsManager.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(),
+                context.packageName
+            )
+            return mode == AppOpsManager.MODE_ALLOWED
+        }
+        return false
     }
 }

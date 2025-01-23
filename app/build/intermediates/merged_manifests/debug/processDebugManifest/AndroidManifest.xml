@@ -36,6 +36,9 @@
             android:name="com.example.cardflare.AppMonitorService"
             android:exported="true"
             android:foregroundServiceType="location|connectedDevice" />
+        <service
+            android:name="com.example.cardflare.OverlayService"
+            android:exported="false" />
 
         <activity
             android:name="com.example.cardflare.MainActivity"

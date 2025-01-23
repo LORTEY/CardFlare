@@ -15,6 +15,9 @@
             android:name=".AppMonitorService"
             android:exported="true"
             android:foregroundServiceType="location|connectedDevice" />
+        <service
+            android:name=".OverlayService"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -388,6 +388,7 @@ fun SlideMenuContent(){
 
 @Composable
 fun MyOverlayComposable() {
+    Log.d("BackgroundService","Overlay")
     Box(
         modifier = Modifier
             .fillMaxSize()
