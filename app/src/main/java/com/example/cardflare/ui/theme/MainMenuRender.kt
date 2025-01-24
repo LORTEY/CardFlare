@@ -392,7 +392,7 @@ fun MyOverlayComposable() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f)),
+            .background(Color(android.graphics.Color.parseColor("#709DBFF2"))),
         contentAlignment = Alignment.Center
     ) {
         Text(

@@ -31,7 +31,7 @@ class AppMonitorService : Service() {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)  // Use applicationContext here
                 Log.d("BackgroundService", currentApp?:"null")
-                if (currentApp == "com.instagram.android" || true) {
+                if (currentApp == "com.instagram.android") {
 
                     startOverlay()
                 }
@@ -64,8 +64,9 @@ class AppMonitorService : Service() {
 
         if (Settings.canDrawOverlays(this)) {
             Log.d("BackgroundService","insta");
-            val intent = Intent(this, OverlayService::class.java)
-            ContextCompat.startForegroundService(this, intent)
+            val intent = Intent(this, OverlayActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(intent)
         } else {
             Log.e("BackgroundService", "Overlay permission not granted")
         }

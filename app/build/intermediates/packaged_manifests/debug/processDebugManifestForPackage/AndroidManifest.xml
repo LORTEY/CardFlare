@@ -36,9 +36,6 @@
             android:name="com.example.cardflare.AppMonitorService"
             android:exported="true"
             android:foregroundServiceType="location|connectedDevice" />
-        <service
-            android:name="com.example.cardflare.OverlayService"
-            android:exported="false" />
 
         <activity
             android:name="com.example.cardflare.MainActivity"
@@ -50,6 +47,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.cardflare.OverlayActivity"
+            android:excludeFromRecents="true"
+            android:label="Overlay Activity"
+            android:launchMode="singleTask"
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="androidx.compose.ui.tooling.PreviewActivity"

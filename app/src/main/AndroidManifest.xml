@@ -15,9 +15,6 @@
             android:name=".AppMonitorService"
             android:exported="true"
             android:foregroundServiceType="location|connectedDevice" />
-        <service
-            android:name=".OverlayService"
-            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -25,9 +22,16 @@
             android:theme="@style/Theme.CardFlare">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".OverlayActivity"
+            android:label="Overlay Activity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:permission="android.permission.SYSTEM_ALERT_WINDOW">
         </activity>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
