@@ -75,224 +75,226 @@ var isAscending by  mutableStateOf(true)
 var appearSortMenu by mutableStateOf(false)
 var sortType by mutableStateOf(SortType.ByName)
 var qualifiedDecks = listOf<Deck>()
+public var renderMainMenu by mutableStateOf(true)
 
 @Composable
 fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
     qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
-
-
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    Box(
-        modifier = Modifier.background(Color(ColorPalette.sa10))
-            .padding(WindowInsets.systemBars.asPaddingValues())
-    ) {
+
+    if(renderMainMenu){
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(ColorPalette.sa10))
+            modifier = Modifier.background(Color(ColorPalette.sa10))
+                .padding(WindowInsets.systemBars.asPaddingValues())
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(ColorPalette.sa10))
+            ) {
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.height(70.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1.0f)
-                ) {
-                    LazyVerticalGrid(
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Spacer(modifier = Modifier.height(70.dp))
+                    Box(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        columns = GridCells.Fixed(2),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    )
-                    {
-                        //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu");
-                            items(qualifiedDecks.size) { index ->
-                                Text(
-                                    text = qualifiedDecks[index].name,
-                                    color = Color(ColorPalette.pa0),
-                                    modifier = Modifier
-                                        .shadow(
-                                            elevation = 10.dp,
-                                            shape = RoundedCornerShape(10.dp),
-                                            clip = false
-                                        )
-                                        .background(
+                            .fillMaxSize()
+                            .weight(1.0f)
+                    ) {
+                        LazyVerticalGrid(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            columns = GridCells.Fixed(2),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        )
+                        {
+                            //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu");
+                                items(qualifiedDecks.size) { index ->
+                                    Text(
+                                        text = qualifiedDecks[index].name,
+                                        color = Color(ColorPalette.pa0),
+                                        modifier = Modifier
+                                            .shadow(
+                                                elevation = 10.dp,
+                                                shape = RoundedCornerShape(10.dp),
+                                                clip = false
+                                            )
+                                            .background(
 
-                                            brush = Brush.verticalGradient(
-                                                colors = listOf(
-                                                    Color(ColorPalette.sa30), // Start color
-                                                    Color(ColorPalette.sa20) // End color
+                                                brush = Brush.verticalGradient(
+                                                    colors = listOf(
+                                                        Color(ColorPalette.sa30), // Start color
+                                                        Color(ColorPalette.sa20) // End color
+                                                    )
                                                 )
                                             )
-                                        )
-                                        .fillMaxWidth(0.5f)
-                                        .height(100.dp)
-                                        .padding(10.dp)
-                                        .clickable { currentOpenedDeck = qualifiedDecks[index]; navController.navigate("deck_menu") }
-                                )
-
-
-                            }
-                    }   
-
-                    // Add menu
-                    if (appearAddMenu || appear) {
-                        // Will make all menus hide if box and not them is clicked
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .pointerInput(Unit) {
-                                    detectTapGestures(
-                                        onTap = {
-                                            appearAddMenu = false
-                                            appear = false
-                                        }
+                                            .fillMaxWidth(0.5f)
+                                            .height(100.dp)
+                                            .padding(10.dp)
+                                            .clickable { currentOpenedDeck = qualifiedDecks[index]; navController.navigate("deck_menu") }
                                     )
-                                }
-                        )
-                    }
 
-                    Column(modifier = Modifier.align(Alignment.BottomEnd)) {
-                        Column(modifier = Modifier.width(128.dp).align(Alignment.End)) {
-                            PopAddMenu()
+
+                                }
+                        }
+
+                        // Add menu
+                        if (appearAddMenu || appear) {
+                            // Will make all menus hide if box and not them is clicked
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .pointerInput(Unit) {
+                                        detectTapGestures(
+                                            onTap = {
+                                                appearAddMenu = false
+                                                appear = false
+                                            }
+                                        )
+                                    }
+                            )
+                        }
+
+                        Column(modifier = Modifier.align(Alignment.BottomEnd)) {
+                            Column(modifier = Modifier.width(128.dp).align(Alignment.End)) {
+                                PopAddMenu()
+                            }
                         }
                     }
                 }
-            }
 
-            // Fade effect and upper menu
-            Column(modifier = Modifier.height(90.dp)) {
+                // Fade effect and upper menu
+                Column(modifier = Modifier.height(90.dp)) {
 
-                Spacer(modifier = Modifier.fillMaxWidth().height(10.dp))
+                    Spacer(modifier = Modifier.fillMaxWidth().height(10.dp))
 
-                //Row holding the menu icon and search field
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .height(50.dp)
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(ColorPalette.sa30), // Start color
-                                    Color(ColorPalette.sa20) // End color
-                                )
-                            ), shape = RoundedCornerShape(10.dp)
-                        )
-                        .padding(horizontal = 10.dp, vertical = 10.dp),
-                ) {
-
-                    // "More" Menu button
-                    Icon(
-                        painter = painterResource(id = R.drawable.menu),
-                        contentDescription = "chart",
-                        tint = Color(ColorPalette.pa40),
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .clickable { appear = !appear }
-                            .width(40.dp)
-                    )
-
-                    // I have no idea how to use the colors in TextField so to make a place holder I used this box
-                    Box(
+                    //Row holding the menu icon and search field
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 10.dp)
-                            .weight(1.0f)
+                            .height(50.dp)
                             .background(
-                                Color(android.graphics.Color.parseColor("#00000000")),
-                                shape = RoundedCornerShape(10.dp)
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(ColorPalette.sa30), // Start color
+                                        Color(ColorPalette.sa20) // End color
+                                    )
+                                ), shape = RoundedCornerShape(10.dp)
                             )
-                            .align(Alignment.CenterVertically)
+                            .padding(horizontal = 10.dp, vertical = 10.dp),
                     ) {
-                        // Text field for searching card decks
-                        BasicTextField(
-                            value = searchQuery,
-                            onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, true)},
-                            textStyle = TextStyle(
-                                color = Color(ColorPalette.pa50),
-                                fontSize = 16.sp
-                            ),
-                            modifier = Modifier.fillMaxWidth()
+
+                        // "More" Menu button
+                        Icon(
+                            painter = painterResource(id = R.drawable.menu),
+                            contentDescription = "chart",
+                            tint = Color(ColorPalette.pa40),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .clickable { appear = !appear }
+                                .width(40.dp)
                         )
-                        if (searchQuery.isEmpty()) {
-                            Text(
-                                text = "Search Sets...",
-                                color = Color(ColorPalette.sa40), // Placeholder text color
-                                modifier = Modifier.align(Alignment.CenterStart)
+
+                        // I have no idea how to use the colors in TextField so to make a place holder I used this box
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
+                                .weight(1.0f)
+                                .background(
+                                    Color(android.graphics.Color.parseColor("#00000000")),
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .align(Alignment.CenterVertically)
+                        ) {
+                            // Text field for searching card decks
+                            BasicTextField(
+                                value = searchQuery,
+                                onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, true)},
+                                textStyle = TextStyle(
+                                    color = Color(ColorPalette.pa50),
+                                    fontSize = 16.sp
+                                ),
+                                modifier = Modifier.fillMaxWidth()
                             )
+                            if (searchQuery.isEmpty()) {
+                                Text(
+                                    text = "Search Sets...",
+                                    color = Color(ColorPalette.sa40), // Placeholder text color
+                                    modifier = Modifier.align(Alignment.CenterStart)
+                                )
+                            }
                         }
+
+                        // "Sort" Menu button
+                       Column(){
+                           Icon(
+                               painter = painterResource(id = R.drawable.sort_ascending),
+                               contentDescription = "chart",
+                               tint = Color(ColorPalette.pa40),
+                               modifier = Modifier
+                                   .fillMaxHeight()
+                                   .clickable {appearSortMenu = !appearSortMenu; }
+                                   .width(40.dp)
+                           )
+                           DropdownMenu(
+                               expanded = appearSortMenu,
+                               onDismissRequest = { appearSortMenu = false }, // Close menu on dismiss
+                               modifier = Modifier
+                                   .width(200.dp)
+                                   .background(Color(ColorPalette.sa20))
+                                   .padding(start = 16.dp)
+                           ) {
+                               SortMenuContent(decks = decks, searchQuery = searchQuery)
+                           }
+                       }
+
+
                     }
 
-                    // "Sort" Menu button
-                   Column(){
-                       Icon(
-                           painter = painterResource(id = R.drawable.sort_ascending),
-                           contentDescription = "chart",
-                           tint = Color(ColorPalette.pa40),
-                           modifier = Modifier
-                               .fillMaxHeight()
-                               .clickable {appearSortMenu = !appearSortMenu; }
-                               .width(40.dp)
-                       )
-                       DropdownMenu(
-                           expanded = appearSortMenu,
-                           onDismissRequest = { appearSortMenu = false }, // Close menu on dismiss
-                           modifier = Modifier
-                               .width(200.dp)
-                               .background(Color(ColorPalette.sa20))
-                               .padding(start = 16.dp)
-                       ) {
-                           SortMenuContent(decks = decks, searchQuery = searchQuery)
-                       }
-                   }
-
-
-                }
-
-                Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth().height(90.dp)
-                )
-                {
-                    // Fade effect gradient
-                    drawRect(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color(ColorPalette.sa10),
-                                Color(android.graphics.Color.parseColor("#00000000"))
-                            ),
-                            start = Offset(0f, 0f), // Top
-                            end = Offset(0f, size.height)
-                        )
+                    Canvas(
+                        modifier = Modifier
+                            .fillMaxWidth().height(90.dp)
                     )
+                    {
+                        // Fade effect gradient
+                        drawRect(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Color(ColorPalette.sa10),
+                                    Color(android.graphics.Color.parseColor("#00000000"))
+                                ),
+                                start = Offset(0f, 0f), // Top
+                                end = Offset(0f, size.height)
+                            )
+                        )
+                    }
                 }
-            }
 
-            // left slide menu
-            AnimatedVisibility(
-                visible = appear,
-                enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
-                    animationSpec = tween(200)
-                ) { fullWidth -> -fullWidth / 2 },
-                exit = fadeOut(animationSpec = tween(200)) + slideOutHorizontally(
-                    animationSpec = tween(200)
-                ) { fullWidth -> -fullWidth / 2 }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .background(Color(ColorPalette.sa50))
-                        .fillMaxHeight()
-                        .fillMaxWidth(0.4f)
+                // left slide menu
+                AnimatedVisibility(
+                    visible = appear,
+                    enter = fadeIn(animationSpec = tween(200)) + slideInHorizontally(
+                        animationSpec = tween(200)
+                    ) { fullWidth -> -fullWidth / 2 },
+                    exit = fadeOut(animationSpec = tween(200)) + slideOutHorizontally(
+                        animationSpec = tween(200)
+                    ) { fullWidth -> -fullWidth / 2 }
                 ) {
-                    SlideMenuContent()
+                    Column(
+                        modifier = Modifier
+                            .background(Color(ColorPalette.sa50))
+                            .fillMaxHeight()
+                            .fillMaxWidth(0.4f)
+                    ) {
+                        SlideMenuContent()
+                    }
                 }
             }
         }
@@ -388,6 +390,7 @@ fun SlideMenuContent(){
 
 @Composable
 fun MyOverlayComposable() {
+    renderMainMenu = false
     Log.d("BackgroundService","Overlay")
     Box(
         modifier = Modifier

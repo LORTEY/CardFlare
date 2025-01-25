@@ -1,33 +1,24 @@
 package com.example.cardflare
 
+import android.app.ActivityManager
+import android.content.Intent
+import android.graphics.PixelFormat
 import android.os.Bundle
 import android.provider.Settings
-import android.text.TextUtils
+import android.view.Gravity
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import android.content.Intent
-import android.graphics.PixelFormat
-import android.view.Gravity
-import android.view.WindowManager
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import com.example.cardflare.ui.theme.MyOverlayComposable
 
+
 class OverlayActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        killMainActivity()
         // Check if the app has the permission to draw over other apps
         if (!Settings.canDrawOverlays(this)) {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
@@ -64,6 +55,17 @@ class OverlayActivity : ComponentActivity() {
                 showOverlay() // If permission is granted, show overlay
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    private fun killMainActivity() {
+        val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val tasks = activityManager.getRunningTasks(10) // Get running tasks
+
+        for (task in tasks) {
+            if (task.topActivity!!.className == "com.example.cardflare.MainActivity") {
+                activityManager.killBackgroundProcesses(task.topActivity!!.packageName)
+                break
             }
         }
     }
