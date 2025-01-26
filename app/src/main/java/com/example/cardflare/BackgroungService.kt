@@ -14,36 +14,36 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
 class AppMonitorService : Service() {
-
+    // This is the foreground service that checks if certain apps are open and starts OverlayActivity
     private val handler = Handler(Looper.getMainLooper())
-    private val checkInterval = 2000L // Check every 2 seconds
+    private val checkInterval = 2000L // Recheck every 2 seconds
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("BackgroundService", "started")
-        // Start the foreground service with a notification
-        //startForeground(1, createNotification())
+        //Starts monitoring
         startMonitoring()
     }
 
     fun startMonitoring() {
         handler.post(object : Runnable {
             override fun run() {
-                val currentApp = getForegroundApp(this@AppMonitorService)  // Use applicationContext here
-                Log.d("BackgroundService", currentApp?:"null")
+                val currentApp = getForegroundApp(this@AppMonitorService)
+                //Starts OverlayService if current runing app is instagram
                 if (currentApp == "com.instagram.android") {
-
                     startOverlay()
                 }
-                handler.postDelayed(this, checkInterval)
+              handler.postDelayed(this, checkInterval) // Adds delay between checks
             }
         })
     }
-    fun getForegroundApp(context: Context): String? {
+
+    //returns the name of currently used app
+   fun getForegroundApp(context: Context): String? {
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val endTime = System.currentTimeMillis()
-        val startTime = endTime - 1000 * 10 // Check for recent app usage
+        val startTime = endTime - 1000 * 10 //checks recently used apps
 
+        // Gets android usage stats recently used app
         val usageStats = usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_DAILY,
             startTime,
@@ -51,19 +51,22 @@ class AppMonitorService : Service() {
         )
 
         if (usageStats == null || usageStats.isEmpty()) {
-            Log.d("getForegroundApp", "No usage stats data available")
+            // if result empty return null
             return null
         }
         usageStats?.let {
+            //sorts usage stats data by most recently used
             val sortedStats = it.sortedByDescending { stats -> stats.lastTimeUsed }
+            // returns the most recently used app name
             return sortedStats.firstOrNull()?.packageName
         }
         return null
     }
-    private fun startOverlay() {
 
+    // Starts OverlayService
+    private fun startOverlay() {
+        // checks if overlay permissions are granted
         if (Settings.canDrawOverlays(this)) {
-            Log.d("BackgroundService","insta");
             val intent = Intent(this, OverlayActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             this.startActivity(intent)
@@ -71,14 +74,5 @@ class AppMonitorService : Service() {
             Log.e("BackgroundService", "Overlay permission not granted")
         }
     }
-
-    private fun createNotification(): Notification {
-        return NotificationCompat.Builder(this, "monitor_channel_id")
-            .setContentTitle("Monitoring Apps")
-            .setContentText("App monitoring is running")
-            .setSmallIcon(R.drawable.bar_chart_2)
-            .build()
-    }
-
     override fun onBind(intent: Intent?): IBinder? = null
 }

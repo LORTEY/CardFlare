@@ -1,10 +1,13 @@
 package com.example.cardflare
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
@@ -14,6 +17,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,29 +49,44 @@ data class ColorPaletteData(
 private const val STORAGE_PERMISSION_CODE = 101
 
 class MainActivity : androidx.activity.ComponentActivity(){
+    private var receiver: BroadcastReceiver? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        if (isActivityRunning(OverlayActivity::class.java)) {
-            Log.d("ActivityA", "Activity B is running. Killing Activity A.")
-            finish() // Finish Activity A if Activity B is running
-        }
+        listenToKillYourselfBroadcast()
         enableEdgeToEdge()
         loadColorPalette()
         checkAndRequestPermissions()
         startMainMenu()
     }
-    private fun isActivityRunning(activityClass: Class<*>): Boolean {
-        val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        for (task in activityManager.getRunningTasks(10)) {
-            // Check if Activity B is running
-            if (task.topActivity!!.className == activityClass.name) {
-                return true // Activity B is running
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister the receiver to avoid memory leaks
+        unregisterReceiver(receiver)
+        Log.d("MainActivity", "Receiver unregistered")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    // listens to broadcast that kills this activity when overlay activity starts
+    private fun listenToKillYourselfBroadcast(){
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                Log.d("MainActivity", "Broadcast received")
+                if ("com.example.KILL_MAIN_ACTIVITY" == intent.action) {
+                    finish()
+                }
             }
         }
-        return false // Activity B is not running
+
+        val filter = IntentFilter("com.example.KILL_MAIN_ACTIVITY")
+        registerReceiver(receiver, filter, RECEIVER_EXPORTED)
     }
+
+
     private fun loadColorPalette() {
         val jsonString =
             getResources().openRawResource(R.raw.colorstouse).bufferedReader().use { it.readText() }
@@ -98,10 +117,9 @@ class MainActivity : androidx.activity.ComponentActivity(){
         renderMainMenu = true
         setContent {
             CardFlareTheme {
-                // Initialize the NavController
+                // initialize the NavController
                 val navController = rememberNavController()
-
-                // Set up the navigation graph
+                // navigation graph
                 NavHost(
                     navController = navController,
                     startDestination = "main_menu"
@@ -112,6 +130,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
             }
         }
     }
+
 
 /*
 @Preview(showBackground = true)

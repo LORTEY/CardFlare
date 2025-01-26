@@ -35,6 +35,13 @@
             android:excludeFromRecents="true"
             android:permission="android.permission.SYSTEM_ALERT_WINDOW">
         </activity>
+        <receiver android:name=".broadcasters.KillMain"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.KILL_MAIN_ACTIVITY" />
+            </intent-filter>
+        </receiver>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
