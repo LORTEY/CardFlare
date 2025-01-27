@@ -1,8 +1,7 @@
 package com.example.cardflare
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.app.ActivityManager
+
 import android.app.AppOpsManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -51,7 +50,6 @@ private const val STORAGE_PERMISSION_CODE = 101
 class MainActivity : androidx.activity.ComponentActivity(){
     private var receiver: BroadcastReceiver? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -70,7 +68,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
         Log.d("MainActivity", "Receiver unregistered")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     // listens to broadcast that kills this activity when overlay activity starts
     private fun listenToKillYourselfBroadcast(){
         receiver = object : BroadcastReceiver() {
@@ -110,8 +107,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
             Log.e("MainActivity", "Error loading color palette: ${e.message}")
         }
     }
-    public fun startMainMenu(){
-
+    private fun startMainMenu(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         renderMainMenu = true
@@ -157,10 +153,9 @@ class MainActivity : androidx.activity.ComponentActivity(){
         }
         if (!isUsageAccessGranted(getApplicationContext())) {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             getApplicationContext().startActivity(intent)
         }
-
-
 
     }
     private fun requestStoragePermission() {
@@ -171,15 +166,13 @@ class MainActivity : androidx.activity.ComponentActivity(){
         )
     }
     fun isUsageAccessGranted(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-            val mode = appOpsManager.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(),
-                context.packageName
-            )
-            return mode == AppOpsManager.MODE_ALLOWED
-        }
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOpsManager.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            context.packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
         return false
     }
 }

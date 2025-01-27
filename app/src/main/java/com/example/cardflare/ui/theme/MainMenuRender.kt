@@ -1,5 +1,5 @@
 package com.example.cardflare.ui.theme
-import android.annotation.SuppressLint
+
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,13 +60,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.TextField
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
+
 
 var currentOpenedDeck : Deck? by mutableStateOf(null);
 var appearAddMenu by mutableStateOf(false)
@@ -82,7 +81,6 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
     qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
-    val screenHeight = LocalConfiguration.current.screenHeightDp
 
     if(renderMainMenu){
         Box(
@@ -305,6 +303,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 @Composable
 fun deckScreen(context: Context){
     val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
+    //val cards = openedTarget.cards
     Box(
         modifier = Modifier.background(Color(ColorPalette.sa10))
             .padding(WindowInsets.systemBars.asPaddingValues())
@@ -315,52 +314,48 @@ fun deckScreen(context: Context){
                 .background(Color(ColorPalette.sa10))
                 .padding(10.dp)
         ) {
-            LazyColumn() {
-                items(openedTarget.cards.size){ index ->
-                    Row(modifier = Modifier
-                        .padding(2.dp)
-                        .fillMaxWidth()
-                        .height(80.dp),
-                        verticalAlignment = Alignment.CenterVertically){
-
-                        Text(text = openedTarget.cards[index][0].toString(),
-                            textAlign = TextAlign.Center,
-                            color = Color(ColorPalette.pa0),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(80.dp)
-                                .weight(1.0f)
-                                .padding(5.dp)
-                                //.wrapContentHeight(Alignment.CenterVertically)
-                                .clickable {  }
-                                .background(brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(ColorPalette.sa30), // Start color
-                                        Color(ColorPalette.sa20) // End color
-                                    )
-                                ),
-                                    shape = RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp)))
-                        Text(text = openedTarget.cards[index][1].toString(),
-                            textAlign = TextAlign.Center,
-                            color = Color(ColorPalette.sa0),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(80.dp)
-                                .weight(1.0f)
-                                .padding(5.dp)
-                                //.wrapContentHeight(Alignment.CenterVertically)
-                                .clickable {  }
-                                .background(brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(ColorPalette.pa30), // Start color
-                                        Color(ColorPalette.pa20) // End color
-                                    )
-                                ),
-                                    shape = RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp)))
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            )
+            {
+                var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
+                items(cards.size) { index ->
+                    Column(modifier = Modifier
+                        .shadow(
+                            elevation = 10.dp,
+                            shape = RoundedCornerShape(10.dp),
+                            clip = false
+                        )
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(ColorPalette.sa30), // Start color
+                                    Color(ColorPalette.sa20) // End color
+                                )
+                            )
+                        )
+                        .fillMaxWidth(1f/2f)
+                        .height((250/3f).dp)
+                        .padding(10.dp)
+                    ){
+                        Text(
+                            text = cards[index][0].toString(),
+                            color = Color(ColorPalette.pa50),
+                            fontWeight = FontWeight.Bold
+                            )
+                        Text(
+                            text = cards[index][1].toString(),
+                            color = Color(ColorPalette.sa40),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                            )
                     }
                 }
             }
-
         }
     }
 }
@@ -409,7 +404,6 @@ fun MyOverlayComposable() {
 // The menu that appears when you click the add button in right bottom of screen
 @Composable
 fun PopAddMenu(){
-
     AnimatedVisibility(
                 visible = appearAddMenu,
                 enter = fadeIn(animationSpec = tween(100)) + slideInVertically (
@@ -461,23 +455,13 @@ fun PopAddMenu(){
             .size(128.dp)
             .padding(15.dp)
             .background(Color(ColorPalette.sa10), shape = CircleShape)
-            .clickable { appearAddMenu = !appearAddMenu; Log.d("bools",appearAddMenu.toString())}
+            .clickable { appearAddMenu = !appearAddMenu}
     )
 }
 
 @Composable
-fun DropDownMenu(){
-    DropdownMenu(
-        expanded = appearAddMenu,
-        onDismissRequest = { appearAddMenu = false }, // Close menu on dismiss
-        modifier = Modifier.padding(start = 16.dp)
-    ) {
-        // Menu options
-    }
-}
-
-@Composable
 fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
+
     Text("Sort By", fontSize = 20.sp, color = Color(ColorPalette.pa30))
 
     Text("Name (Ascending)",
@@ -589,24 +573,16 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 .padding(vertical = 5.dp))
 
 }
+@Preview()
 @Composable
-fun AddMenu(context: Context, navController: NavHostController) {
-    Box(modifier = Modifier.fillMaxSize().background(Color(ColorPalette.sa50)))
+fun preview(){
+    val navController = rememberNavController()
+    // navigation graph
+    NavHost(
+        navController = navController,
+        startDestination = "deck_menu"
+    ) {
+        composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
+
+        composable("deck_menu") { deckScreen(context = LocalContext.current) }}
 }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun preview(){
-        val navController = rememberNavController()
-        NavHost(
-            navController = navController,
-            startDestination = "main_menu"
-        ) {
-            // Main Menu Screen
-            composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
-
-            composable("deck_menu") { deckScreen(context = LocalContext.current) }}
-    }
-
-
-
