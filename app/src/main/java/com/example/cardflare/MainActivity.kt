@@ -122,7 +122,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                 ) {
                     composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
-                    composable("deck_menu") { deckScreen(context = LocalContext.current) }}
+                    composable("deck_menu") { deckScreen(context = LocalContext.current, navController) }}
             }
         }
     }

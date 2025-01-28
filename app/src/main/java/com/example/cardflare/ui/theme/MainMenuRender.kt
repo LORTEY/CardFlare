@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardflare.R
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -62,6 +63,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
@@ -301,9 +303,23 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 
 // loads the screen when you click certain deck
 @Composable
-fun deckScreen(context: Context){
+fun deckScreen(context: Context, navController: NavController){
     val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
     //val cards = openedTarget.cards
+    //val cardsSelected = MutableList(openedTarget.cards.size) { 0 }
+    var selectMode by remember{ mutableStateOf(false) }
+    var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
+    var cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 })}
+
+    BackHandler { // Handle the back button press
+        if (selectMode){
+            selectMode = false
+            cardsSelected.fill(0)
+        }else{
+            navController.popBackStack()
+        }
+    }
+
     Box(
         modifier = Modifier.background(Color(ColorPalette.sa10))
             .padding(WindowInsets.systemBars.asPaddingValues())
@@ -323,8 +339,9 @@ fun deckScreen(context: Context){
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             )
             {
-                var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
+
                 items(cards.size) { index ->
+
                     Column(modifier = Modifier
                         .shadow(
                             elevation = 10.dp,
@@ -333,16 +350,33 @@ fun deckScreen(context: Context){
                         )
                         .background(
                             brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(ColorPalette.sa30), // Start color
-                                    Color(ColorPalette.sa20) // End color
-                                )
+                                colors = if (cardsSelected[index]==0) listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20)) else listOf(Color(ColorPalette.pa20), Color(ColorPalette.pa0))
                             )
                         )
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    cardsSelected[index] = 1
+                                    selectMode = true
+                                },
+                                onTap = {
+                                    if (selectMode){
+                                        cardsSelected[index] = 1 - cardsSelected[index] //flips ones to zeroes and vice versa
+                                        if (cardsSelected.count { it == 1 } == 0){
+                                            // if no more selected cards left stop select mode
+                                            selectMode = false
+                                        }
+                                    }else{
+                                        // Here Add View Card Menu will do it later
+                                    }
+                                }
+                            )
+                        }
                         .fillMaxWidth(1f/2f)
                         .height((250/3f).dp)
                         .padding(10.dp)
                     ){
+                        Log.d("Cards2",cardsSelected[index].toString())
                         Text(
                             text = cards[index][0].toString(),
                             color = Color(ColorPalette.pa50),
@@ -584,5 +618,5 @@ fun preview(){
     ) {
         composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
 
-        composable("deck_menu") { deckScreen(context = LocalContext.current) }}
+        composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
 }
