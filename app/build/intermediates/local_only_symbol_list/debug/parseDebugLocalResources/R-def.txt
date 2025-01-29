@@ -13,6 +13,8 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable menu
 drawable nav_arrow_down
+drawable nav_arrow_left
+drawable nav_arrow_right
 drawable plus_circle
 drawable plus_circle_solid
 drawable settings

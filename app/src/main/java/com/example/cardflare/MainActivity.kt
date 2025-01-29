@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.CardFlareTheme
 import com.example.cardflare.ui.theme.ColorPalette
 import com.example.cardflare.ui.theme.MainMenuRender
+import com.example.cardflare.ui.theme.cardMenu
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
 import com.google.gson.Gson
@@ -121,8 +122,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
                     startDestination = "main_menu"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
-
-                    composable("deck_menu") { deckScreen(context = LocalContext.current, navController) }}
+                    composable("card_menu") { cardMenu(navController) }
+                    composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
             }
         }
     }

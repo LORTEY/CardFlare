@@ -76,6 +76,7 @@ var isAscending by  mutableStateOf(true)
 var appearSortMenu by mutableStateOf(false)
 var sortType by mutableStateOf(SortType.ByName)
 var qualifiedDecks = listOf<Deck>()
+var currentOpenFlashCard by mutableStateOf(0)
 public var renderMainMenu by mutableStateOf(true)
 
 @Composable
@@ -305,10 +306,9 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 @Composable
 fun deckScreen(context: Context, navController: NavController){
     val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
-    //val cards = openedTarget.cards
-    //val cardsSelected = MutableList(openedTarget.cards.size) { 0 }
+    val cards = openedTarget.cards
     var selectMode by remember{ mutableStateOf(false) }
-    var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
+    //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
     var cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 })}
 
     BackHandler { // Handle the back button press
@@ -367,7 +367,9 @@ fun deckScreen(context: Context, navController: NavController){
                                             selectMode = false
                                         }
                                     }else{
-                                        // Here Add View Card Menu will do it later
+                                        currentOpenFlashCard = index
+                                        Log.d("CardFlare2","clicked")
+                                        navController.navigate("card_menu")
                                     }
                                 }
                             )
@@ -393,6 +395,50 @@ fun deckScreen(context: Context, navController: NavController){
         }
     }
 }
+@Composable
+fun cardMenu(navController: NavController){
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
+    val cards = openedTarget.cards
+    Column(
+        modifier = Modifier.background(Color(ColorPalette.sa10))
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+                .weight(0.1f)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
+                    ),
+                    shape = RoundedCornerShape(20.dp)
+                )
+
+        ) {
+            Text(text = cards[currentOpenFlashCard], color = Color(ColorPalette.pa50),modifier=Modifier.align(Alignment.Center))
+        }
+        //Action buttons row
+        Row (horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.padding(20.dp).fillMaxWidth().height(50.dp)){
+            // Move one flashcard left if arrow left pressed
+            Icon(
+                painter = painterResource(id = R.drawable.nav_arrow_left),
+                contentDescription = "left",
+                tint = Color(ColorPalette.pa0),
+                modifier = Modifier.clickable { if(currentOpenFlashCard > 0) currentOpenFlashCard-=1 } // handle boundary
+            )
+
+            // Move one flashcard right if arrow right pressed
+            Icon(
+                painter = painterResource(id = R.drawable.nav_arrow_right),
+                contentDescription = "left",
+                tint = Color(ColorPalette.pa0),
+                modifier = Modifier.clickable { if(currentOpenFlashCard < cards.size - 1) currentOpenFlashCard+=1 } // handle boundary
+            )
+        }
+    }
+}
+
 
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
@@ -617,6 +663,6 @@ fun preview(){
         startDestination = "deck_menu"
     ) {
         composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
-
+        composable("card_menu") { cardMenu(navController) }
         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
 }
