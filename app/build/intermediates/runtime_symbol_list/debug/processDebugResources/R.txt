@@ -695,6 +695,7 @@ int drawable notification_tile_bg 0x7f07006f
 int drawable notify_panel_notification_icon_bg 0x7f070070
 int drawable plus_circle 0x7f070071
 int drawable plus_circle_solid 0x7f070072
+int drawable redo 0x7f07007a
 int drawable settings 0x7f070073
 int drawable sort_ascending 0x7f070074
 int drawable test_level_drawable 0x7f070075

@@ -696,6 +696,7 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable plus_circle
 drawable plus_circle_solid
+drawable redo
 drawable settings
 drawable sort_ascending
 drawable test_level_drawable

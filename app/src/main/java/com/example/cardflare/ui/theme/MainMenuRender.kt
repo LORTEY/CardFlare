@@ -42,6 +42,8 @@ import androidx.compose.ui.unit.sp
 import com.example.cardflare.R
 import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -61,6 +63,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
@@ -77,6 +80,7 @@ var appearSortMenu by mutableStateOf(false)
 var sortType by mutableStateOf(SortType.ByName)
 var qualifiedDecks = listOf<Deck>()
 var currentOpenFlashCard by mutableStateOf(0)
+var deckAddMenu by mutableStateOf(false)
 public var renderMainMenu by mutableStateOf(true)
 
 @Composable
@@ -85,6 +89,14 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
     var appear by remember { mutableStateOf(false) }
     qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
 
+    BackHandler { // Handle the back button press
+        if (appear || appearAddMenu){
+            appearAddMenu = false
+            appear = false
+        }else{
+            navController.popBackStack()
+        }
+    }
     if(renderMainMenu){
         Box(
             modifier = Modifier.background(Color(ColorPalette.sa10))
@@ -305,14 +317,16 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
     val cards = openedTarget.cards
     var selectMode by remember{ mutableStateOf(false) }
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
     var cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 })}
 
     BackHandler { // Handle the back button press
-        if (selectMode){
+        if (deckAddMenu){
+            deckAddMenu = false
+        } else if (selectMode){
             selectMode = false
             cardsSelected.fill(0)
         }else{
@@ -330,6 +344,7 @@ fun deckScreen(context: Context, navController: NavController){
                 .background(Color(ColorPalette.sa10))
                 .padding(10.dp)
         ) {
+
             LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -392,32 +407,151 @@ fun deckScreen(context: Context, navController: NavController){
                     }
                 }
             }
+            if(deckAddMenu){
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    deckAddMenu = false
+                                }
+                            )
+                        })
+            }
+            Column(modifier = Modifier.align(Alignment.BottomEnd)) {
+                Column(modifier = Modifier.width(128.dp).align(Alignment.End)) {
+                    DeckAddMenu()
+                }
+            }
         }
     }
+
 }
 @Composable
+fun DeckAddMenu(){
+    AnimatedVisibility(
+        visible = deckAddMenu,
+        enter = fadeIn(animationSpec = tween(100)) + slideInVertically (
+            animationSpec = tween(100)
+        ) { fullWidth -> fullWidth / 2 },
+        exit = fadeOut(animationSpec = tween(100)) + slideOutVertically (
+            animationSpec = tween(100)
+        ) { fullWidth -> fullWidth / 2 }
+    ) {
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.background(
+                    Color(ColorPalette.sa50),
+                    shape = RoundedCornerShape(128.dp)
+                ).fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Here are all buttons for the menu
+                Icon(
+                    painter = painterResource(id = R.drawable.settings),
+                    contentDescription = "chart",
+                    tint = Color(ColorPalette.pa40),
+                    modifier = Modifier
+                        .size(64.dp)
+                        .padding(15.dp)
+                        .clickable{}
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.bar_chart_2),
+                    contentDescription = "chart",
+                    tint = Color(ColorPalette.pa40),
+                    modifier = Modifier
+                        .size(64.dp)
+                        .padding(15.dp)
+                        .clickable{}
+                )
+            }
+        }
+    }
+
+    Icon(
+        painter = painterResource(id = R.drawable.plus_circle_solid),
+        contentDescription = "chart",
+        tint = Color(ColorPalette.pa40),
+        modifier = Modifier
+            .size(128.dp)
+            .padding(15.dp)
+            .background(Color(ColorPalette.sa10), shape = CircleShape)
+            .clickable { deckAddMenu = !deckAddMenu}
+    )
+}
+
+@Composable
 fun cardMenu(navController: NavController){
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<String>())
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
     val cards = openedTarget.cards
+    var isFlipped by remember { mutableStateOf(false) }
+    val rotationYy by animateFloatAsState(
+        targetValue = if (isFlipped) 180f else 0f,
+        animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
+    )
     Column(
         modifier = Modifier.background(Color(ColorPalette.sa10))
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-                .weight(0.1f)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        rotationY = rotationYy
+                        cameraDistance = 8 * density // prevents distortion
+                    }
+                    .weight(0.1f)
+                    .clickable { isFlipped = !isFlipped },
+                contentAlignment = Alignment.Center
+            ) {
+                if (rotationYy <= 90f) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
+                                ),
+                                shape = RoundedCornerShape(20.dp)
+                            )
 
-        ) {
-            Text(text = cards[currentOpenFlashCard], color = Color(ColorPalette.pa50),modifier=Modifier.align(Alignment.Center))
-        }
+                    ) {
+                        Text(
+                            text = cards[currentOpenFlashCard][0],
+                            color = Color(ColorPalette.pa50),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer { rotationY = 180f } //prevents the text from rendering right to left
+                            .padding(20.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
+                                ),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+
+                    ) {
+                        Text(
+                            text = cards[currentOpenFlashCard][1],
+                            color = Color(ColorPalette.pa50),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+            }
+
+
         //Action buttons row
         Row (horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.padding(20.dp).fillMaxWidth().height(50.dp)){
             // Move one flashcard left if arrow left pressed
@@ -426,6 +560,13 @@ fun cardMenu(navController: NavController){
                 contentDescription = "left",
                 tint = Color(ColorPalette.pa0),
                 modifier = Modifier.clickable { if(currentOpenFlashCard > 0) currentOpenFlashCard-=1 } // handle boundary
+            )
+            // Rotate Flashcard
+            Icon(
+                painter = painterResource(id = R.drawable.redo),
+                contentDescription = "left",
+                tint = Color(ColorPalette.pa0),
+                modifier = Modifier.clickable { isFlipped = !isFlipped} // Flip flashcard sides
             )
 
             // Move one flashcard right if arrow right pressed

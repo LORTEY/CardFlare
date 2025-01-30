@@ -36,11 +36,10 @@ import java.io.InputStreamReader
                     val dateMade = fileContents[0].split(',')[0].toInt()
                     val lastEdited = fileContents[0].split(',')[1].toInt()
                     val tags = fileContents[0].split(',').subList(2, fileContents[0].split(',').size)
-                    val cards = mutableListOf<String>()
+                    val cards = mutableListOf<Array<String>>()
 
                     fileContents.toList().subList(1,fileContents.size).forEach(){ card->
-                        cards.add(card.split(',').toTypedArray()[0])
-                        cards.add(card.split(',').toTypedArray()[1])
+                        cards.add(arrayOf(card.split(',').toTypedArray()[0],card.split(',').toTypedArray()[1]))
                     }
 
                     decks.add(Deck(name = fileName, date_made = dateMade, last_edited = lastEdited, tags = tags, cards = cards))
@@ -112,4 +111,4 @@ public data class Deck(
     val date_made: Int,
     val last_edited: Int,
     val tags: List<String>,
-    val cards: List<String>)
+    val cards: List<Array<String>>)

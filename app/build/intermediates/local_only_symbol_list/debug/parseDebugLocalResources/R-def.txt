@@ -17,6 +17,7 @@ drawable nav_arrow_left
 drawable nav_arrow_right
 drawable plus_circle
 drawable plus_circle_solid
+drawable redo
 drawable settings
 drawable sort_ascending
 mipmap ic_launcher
