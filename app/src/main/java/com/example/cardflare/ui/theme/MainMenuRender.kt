@@ -429,7 +429,7 @@ fun deckScreen(context: Context, navController: NavController){
 
 }
 @Composable
-fun DeckAddMenu(){
+fun DeckAddMenu(){ // nothing here yet
     AnimatedVisibility(
         visible = deckAddMenu,
         enter = fadeIn(animationSpec = tween(100)) + slideInVertically (
@@ -486,7 +486,7 @@ fun DeckAddMenu(){
 }
 
 @Composable
-fun cardMenu(navController: NavController){
+fun cardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
     val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
@@ -509,7 +509,7 @@ fun cardMenu(navController: NavController){
                     .clickable { isFlipped = !isFlipped },
                 contentAlignment = Alignment.Center
             ) {
-                if (rotationYy <= 90f) {
+                if (rotationYy <= 90f) { // I will fix this dnry violation
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
