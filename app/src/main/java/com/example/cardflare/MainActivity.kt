@@ -26,10 +26,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.CardFlareTheme
 import com.example.cardflare.ui.theme.ColorPalette
 import com.example.cardflare.ui.theme.MainMenuRender
-import com.example.cardflare.ui.theme.cardMenu
+import com.example.cardflare.ui.theme.CardMenu
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
 import com.google.gson.Gson
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
 
 data class ColorPaletteData(
@@ -108,6 +109,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
             Log.e("MainActivity", "Error loading color palette: ${e.message}")
         }
     }
+    @OptIn(ExperimentalSnapperApi::class)
     private fun startMainMenu(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
@@ -122,7 +124,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                     startDestination = "main_menu"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
-                    composable("card_menu") { cardMenu(navController) }
+                    composable("card_menu") { CardMenu(navController) }
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
             }
         }

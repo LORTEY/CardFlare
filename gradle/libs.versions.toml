@@ -12,6 +12,8 @@ gson = "2.11.0"
 pagingCommon = "3.3.5"
 appcompat = "1.7.0"
 navigationCompose = "2.8.5"
+accompanistPager = "0.36.0"
+accompanistPagerIndicators = "0.36.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +34,8 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "pagingCommon" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
+accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -47,6 +47,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -62,8 +63,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
@@ -71,6 +76,11 @@ import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
+import kotlinx.coroutines.launch
+import androidx.compose.material3.*
+import com.google.accompanist.pager.*
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
+import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 
 
 var currentOpenedDeck : Deck? by mutableStateOf(null);
@@ -484,72 +494,78 @@ fun DeckAddMenu(){ // nothing here yet
             .clickable { deckAddMenu = !deckAddMenu}
     )
 }
-
+@ExperimentalSnapperApi
 @Composable
-fun cardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
+fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
     val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
     val cards = openedTarget.cards
+
     var isFlipped by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+    val snapperBehavior = rememberSnapperFlingBehavior(listState)
+    val coroutineScope = rememberCoroutineScope()
     val rotationYy by animateFloatAsState(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
+    LaunchedEffect(Unit) {
+        listState.scrollToItem(currentOpenFlashCard)
+    }
+
     Column(
         modifier = Modifier.background(Color(ColorPalette.sa10))
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer {
-                        rotationY = rotationYy
-                        cameraDistance = 8 * density // prevents distortion
-                    }
-                    .weight(0.1f)
-                    .clickable { isFlipped = !isFlipped },
-                contentAlignment = Alignment.Center
-            ) {
-                if (rotationYy <= 90f) { // I will fix this dnry violation
+        LazyRow(
+            state = listState,
+            flingBehavior = snapperBehavior,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            //contentPadding = PaddingValues(horizontal = 64.dp),
+            modifier = Modifier.fillMaxWidth()
+                .fillMaxHeight()
+                .weight(0.1f)
+        ) {
+
+            items(cards.size) { flashcardIndex->
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(0.1f)
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                        .graphicsLayer {
+                            rotationY = rotationYy
+                            cameraDistance = 8 * density // prevents distortion
+                        }
+                        .clickable { isFlipped = !isFlipped },
+                    contentAlignment = Alignment.Center
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
+                            .graphicsLayer {
+                                if (rotationYy > 90f)  rotationY = 180f
+                            } //prevents the text from rendering right to left
                             .padding(20.dp)
                             .background(
                                 brush = Brush.verticalGradient(
-                                    colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
+                                    colors = listOf(
+                                        Color(ColorPalette.sa30),
+                                        Color(ColorPalette.sa20)
+                                    )
                                 ),
                                 shape = RoundedCornerShape(20.dp)
                             )
 
                     ) {
                         Text(
-                            text = cards[currentOpenFlashCard][0],
-                            color = Color(ColorPalette.pa50),
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer { rotationY = 180f } //prevents the text from rendering right to left
-                            .padding(20.dp)
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Color(ColorPalette.sa30), Color(ColorPalette.sa20))
-                                ),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-
-                    ) {
-                        Text(
-                            text = cards[currentOpenFlashCard][1],
+                            text = if (rotationYy > 90f)  cards[flashcardIndex][1] else cards[flashcardIndex][0],
                             color = Color(ColorPalette.pa50),
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }
             }
+        }
 
 
         //Action buttons row
@@ -559,7 +575,10 @@ fun cardMenu(navController: NavController){ //is the menu you see when viewing i
                 painter = painterResource(id = R.drawable.nav_arrow_left),
                 contentDescription = "left",
                 tint = Color(ColorPalette.pa0),
-                modifier = Modifier.clickable { if(currentOpenFlashCard > 0) currentOpenFlashCard-=1 } // handle boundary
+                modifier = Modifier.clickable { coroutineScope.launch {
+                    val prevIndex = maxOf(listState.firstVisibleItemIndex - 1, 0)
+                    listState.animateScrollToItem(prevIndex)
+                }} // handle boundary
             )
             // Rotate Flashcard
             Icon(
@@ -574,7 +593,11 @@ fun cardMenu(navController: NavController){ //is the menu you see when viewing i
                 painter = painterResource(id = R.drawable.nav_arrow_right),
                 contentDescription = "left",
                 tint = Color(ColorPalette.pa0),
-                modifier = Modifier.clickable { if(currentOpenFlashCard < cards.size - 1) currentOpenFlashCard+=1 } // handle boundary
+                modifier = Modifier.clickable {
+                    coroutineScope.launch {
+                        val nextIndex = minOf(listState.firstVisibleItemIndex + 1, cards.size - 1)
+                        listState.animateScrollToItem(nextIndex)
+                    }} // handle boundary
             )
         }
     }
@@ -794,6 +817,7 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 .padding(vertical = 5.dp))
 
 }
+@OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
 fun preview(){
@@ -804,6 +828,6 @@ fun preview(){
         startDestination = "deck_menu"
     ) {
         composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
-        composable("card_menu") { cardMenu(navController) }
+        composable("card_menu") { CardMenu(navController) }
         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
 }
