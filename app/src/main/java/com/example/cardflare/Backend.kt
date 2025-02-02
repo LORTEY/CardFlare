@@ -105,6 +105,9 @@ public enum class SortType{
     ByLastEdited
 }
 
+public data class Flashcard(
+    val SideA: String,
+    val SideB: String)
 
 public data class Deck(
     val name: String,
