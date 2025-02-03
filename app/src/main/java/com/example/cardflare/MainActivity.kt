@@ -59,6 +59,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         enableEdgeToEdge()
         loadColorPalette()
         checkAndRequestPermissions()
+        copyAssetsToFilesDir(getApplicationContext())
         startMainMenu()
     }
 
@@ -123,7 +124,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                     navController = navController,
                     startDestination = "main_menu"
                 ) {
-                    composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
+                    composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current), context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
             }

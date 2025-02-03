@@ -78,6 +78,7 @@ import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import androidx.compose.material3.*
+import com.example.cardflare.addDeck
 import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
@@ -94,7 +95,7 @@ var deckAddMenu by mutableStateOf(false)
 public var renderMainMenu by mutableStateOf(true)
 
 @Composable
-fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
+fun MainMenuRender(navController: NavHostController, decks : Array<Deck>, context: Context) {
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
     qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
@@ -183,7 +184,7 @@ fun MainMenuRender(navController: NavHostController, decks : Array<Deck>) {
 
                         Column(modifier = Modifier.align(Alignment.BottomEnd)) {
                             Column(modifier = Modifier.width(128.dp).align(Alignment.End)) {
-                                PopAddMenu()
+                                PopAddMenu(context = context)
                             }
                         }
                     }
@@ -647,7 +648,7 @@ fun MyOverlayComposable() {
 
 // The menu that appears when you click the add button in right bottom of screen
 @Composable
-fun PopAddMenu(){
+fun PopAddMenu(context: Context){
     AnimatedVisibility(
                 visible = appearAddMenu,
                 enter = fadeIn(animationSpec = tween(100)) + slideInVertically (
@@ -676,7 +677,7 @@ fun PopAddMenu(){
                             modifier = Modifier
                                 .size(64.dp)
                                 .padding(15.dp)
-                                .clickable{}
+                                .clickable{ addDeck(context = context, fileName = "456dfy") }
                         )
                         Icon(
                                 painter = painterResource(id = R.drawable.bar_chart_2),
@@ -827,7 +828,7 @@ fun preview(){
         navController = navController,
         startDestination = "deck_menu"
     ) {
-        composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current)) }
+        composable("main_menu") { MainMenuRender(navController, loadData("", context = LocalContext.current), context = LocalContext.current) }
         composable("card_menu") { CardMenu(navController) }
         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }}
 }
