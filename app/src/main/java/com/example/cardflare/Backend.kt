@@ -2,12 +2,10 @@ package com.example.cardflare
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
-import java.io.BufferedReader
+import com.example.cardflare.ui.theme.reloadDecks
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.io.OutputStream
 
 fun copyAssetsToFilesDir(context: Context) {
@@ -107,9 +105,10 @@ fun addDeck(context: Context, fileName: String) {
     val file = File(flashcardDirectory, fileName) // File inside the directory
     if (!file.exists()) {
         file.createNewFile() // Create new file
-        file.writeText("13012025,13012025,Japanese\n" +
-                "Hello,おはよ\n" +
-                "Thank you,ありがとう") // Write initial content (optional)
+        val currentTimeMillis = System.currentTimeMillis()
+        val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
+        file.writeText("$currentTimeTenSec,$currentTimeTenSec,\n") // Write initial content
+        reloadDecks(context)
     } else {
         Log.d("FilesDir", flashcardDirectory.list().toList().toString())
     }
