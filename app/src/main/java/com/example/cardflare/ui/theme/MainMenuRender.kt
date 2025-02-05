@@ -78,6 +78,7 @@ import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import androidx.compose.material3.*
+import com.example.cardflare.Flashcard
 import com.example.cardflare.addDeck
 import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
@@ -93,7 +94,7 @@ var qualifiedDecks = listOf<Deck>()
 var currentOpenFlashCard by mutableStateOf(0)
 var deckAddMenu by mutableStateOf(false)
 public var renderMainMenu by mutableStateOf(true)
-var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Array<String>>()))
+var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Flashcard>()))
 
 public fun reloadDecks(context: Context){
     decks = loadData("", context = context)
@@ -342,7 +343,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())
     val cards = openedTarget.cards
     var selectMode by remember{ mutableStateOf(false) }
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
@@ -425,12 +426,12 @@ fun deckScreen(context: Context, navController: NavController){
                     ){
                         Log.d("Cards2",cardsSelected[index].toString())
                         Text(
-                            text = cards[index][0].toString(),
+                            text = cards[index].SideA,
                             color = Color(ColorPalette.pa50),
                             fontWeight = FontWeight.Bold
                             )
                         Text(
-                            text = cards[index][1].toString(),
+                            text = cards[index].SideB,
                             color = Color(ColorPalette.sa40),
                             modifier = Modifier.padding(vertical = 4.dp)
                             )
@@ -521,7 +522,7 @@ fun DeckAddMenu(){ // nothing here yet
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Array<String>>())
+    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -583,7 +584,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
 
                     ) {
                         Text(
-                            text = if (rotationYy > 90f)  cards[flashcardIndex][1] else cards[flashcardIndex][0],
+                            text = if (rotationYy > 90f)  cards[flashcardIndex].SideB else cards[flashcardIndex].SideA,
                             color = Color(ColorPalette.pa50),
                             modifier = Modifier.align(Alignment.Center)
                         )

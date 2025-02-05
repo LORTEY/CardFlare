@@ -78,10 +78,10 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
             val dateMade = fileContents[0].split(',')[0].toInt()
             val lastEdited = fileContents[0].split(',')[1].toInt()
             val tags = fileContents[0].split(',').subList(2, fileContents[0].split(',').size)
-            val cards = mutableListOf<Array<String>>()
+            val cards = mutableListOf<Flashcard>()
 
             fileContents.toList().subList(1, fileContents.size).forEach { card ->
-                cards.add(arrayOf(card.split(',').toTypedArray()[0], card.split(',').toTypedArray()[1]))
+                cards.add(Flashcard(id = card.split(',').toTypedArray()[0].toInt(), SideA = card.split(',').toTypedArray()[1], SideB = card.split(',').toTypedArray()[2]))
             }
 
             decks.add(Deck(name = fileName, date_made = dateMade, last_edited = lastEdited, tags = tags, cards = cards))
@@ -93,7 +93,9 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
     return decks.toTypedArray()
 }
 
+fun editFlashcard(fileName: String, id: Int){
 
+}
 fun addDeck(context: Context, fileName: String) {
     val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
     if (!flashcardDirectory.exists()) {
@@ -162,6 +164,7 @@ public enum class SortType{
 }
 
 public data class Flashcard(
+    val id: Int,
     val SideA: String,
     val SideB: String)
 
@@ -170,4 +173,4 @@ public data class Deck(
     val date_made: Int,
     val last_edited: Int,
     val tags: List<String>,
-    val cards: List<Array<String>>)
+    val cards: List<Flashcard>)
