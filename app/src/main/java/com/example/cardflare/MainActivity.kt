@@ -17,6 +17,12 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,10 +30,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.AddDeckScreen
-import com.example.cardflare.ui.theme.CardFlareTheme
-import com.example.cardflare.ui.theme.ColorPalette
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
+import com.example.cardflare.ui.theme.Material3AppTheme
+import com.example.cardflare.ui.theme.Typography
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
 import com.google.gson.Gson
@@ -58,7 +64,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
         super.onCreate(savedInstanceState)
         listenToKillYourselfBroadcast()
         enableEdgeToEdge()
-        loadColorPalette()
         checkAndRequestPermissions()
         copyAssetsToFilesDir(getApplicationContext())
         startMainMenu()
@@ -88,61 +93,48 @@ class MainActivity : androidx.activity.ComponentActivity(){
     }
 
 
-    private fun loadColorPalette() {
-        val jsonString =
-            getResources().openRawResource(R.raw.colorstouse).bufferedReader().use { it.readText() }
-        val colorPaletteData = Gson().fromJson(jsonString, ColorPaletteData::class.java)
-        try {
-            ColorPalette.pa0 = Color.parseColor(colorPaletteData.pa0)
-            ColorPalette.pa10 = Color.parseColor(colorPaletteData.pa10)
-            ColorPalette.pa20 = Color.parseColor(colorPaletteData.pa20)
-            ColorPalette.pa30 = Color.parseColor(colorPaletteData.pa30)
-            ColorPalette.pa40 = Color.parseColor(colorPaletteData.pa40)
-            ColorPalette.pa50 = Color.parseColor(colorPaletteData.pa50)
-            ColorPalette.sa0 = Color.parseColor(colorPaletteData.sa0)
-            ColorPalette.sa10 = Color.parseColor(colorPaletteData.sa10)
-            ColorPalette.sa20 = Color.parseColor(colorPaletteData.sa20)
-            ColorPalette.sa30 = Color.parseColor(colorPaletteData.sa30)
-            ColorPalette.sa40 = Color.parseColor(colorPaletteData.sa40)
-            ColorPalette.sa50 = Color.parseColor(colorPaletteData.sa50)
 
-            Log.d("MainActivity", "Color Palette Loaded Successfully")
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error loading color palette: ${e.message}")
-        }
-    }
     @OptIn(ExperimentalSnapperApi::class)
-    private fun startMainMenu(){
+    private fun startMainMenu() {
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         renderMainMenu = true
+
         setContent {
-            CardFlareTheme {
-                // initialize the NavController
+            // Apply Material 3 Theme with Dynamic Colors
+            Material3AppTheme {
                 val navController = rememberNavController()
-                // navigation graph
-                NavHost(
-                    navController = navController,
-                    startDestination = "main_menu"
+                val colorScheme = MaterialTheme.colorScheme
+                Log.d("ThemeDebug", MaterialTheme.colorScheme.primary.toString())
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = colorScheme.background
                 ) {
-                    composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
-                    composable("card_menu") { CardMenu(navController) }
-                    composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
-                    composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
+                    NavHost(
+                        navController = navController,
+                        startDestination = "main_menu"
+                    ) {
+                        composable("main_menu") { MainMenuRender(navController, LocalContext.current) }
+                        composable("card_menu") { CardMenu(navController) }
+                        composable("deck_menu") { deckScreen(LocalContext.current, navController) }
+                        composable("deck_add_screen") { AddDeckScreen(LocalContext.current, navController) }
+                    }
+                }
             }
         }
     }
 
 
-/*
-@Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-        CardFlareTheme {
-            loadColorPalette()
-            MainMenuRender(this)
-        }
-    }*/
+
+    /*
+    @Preview(showBackground = true)
+        @Composable
+        fun GreetingPreview() {
+            CardFlareTheme {
+                loadColorPalette()
+                MainMenuRender(this)
+            }
+        }*/
 
 
     private fun checkAndRequestPermissions() {

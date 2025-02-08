@@ -66,11 +66,11 @@ fun readFileFromFilesDir(fileName: String, context: Context): String {
         ""
     }
 }
+
 fun loadData(fileName: String = "", context: Context): Array<Deck> {
     Log.d("Flares", "Loading")
     val fileNames: Array<String> = listFilesInFilesDir(context)
     val decks = mutableListOf<Deck>()
-
     fileNames.forEach { fileName ->
         try {
             val fileContents: Array<String> = readFileFromFilesDir(fileName, context).split("\n").toTypedArray()
@@ -81,13 +81,16 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
             val cards = mutableListOf<Flashcard>()
 
             fileContents.toList().subList(1, fileContents.size).forEach { card ->
+                Log.d("cards" ,card);
                 cards.add(Flashcard(id = card.split(',').toTypedArray()[0].toInt(), SideA = card.split(',').toTypedArray()[1], SideB = card.split(',').toTypedArray()[2]))
             }
 
             decks.add(Deck(name = fileName, date_made = dateMade, last_edited = lastEdited, tags = tags, cards = cards))
 
         } catch (e: Exception) {
-            Log.d("corrupted", fileName)
+            Log.d("corrupted", "$fileName ${e.message}")
+        val filesDir = context.filesDir.absolutePath
+        Log.d("FilesDir", "Path: $filesDir")
         }
     }
     return decks.toTypedArray()
@@ -109,7 +112,7 @@ fun addDeck(context: Context, fileName: String) {
         file.createNewFile() // Create new file
         val currentTimeMillis = System.currentTimeMillis()
         val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
-        file.writeText("$currentTimeTenSec,$currentTimeTenSec,\n") // Write initial content
+        file.writeText("$currentTimeTenSec,$currentTimeTenSec,\n1,hi,ioe") // Write initial content
         reloadDecks(context)
     } else {
         Log.d("FilesDir", flashcardDirectory.list().toList().toString())

@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -33,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -41,13 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cardflare.R
 import android.content.Context
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -65,27 +63,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
-import androidx.compose.material3.*
 import com.example.cardflare.Flashcard
 import com.example.cardflare.addDeck
-import com.google.accompanist.pager.*
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 
 
-var currentOpenedDeck : Deck? by mutableStateOf(null);
+var currentOpenedDeck : Deck? by mutableStateOf(null)
 var appearAddMenu by mutableStateOf(false)
 var isAscending by  mutableStateOf(true)
 var appearSortMenu by mutableStateOf(false)
@@ -117,13 +112,13 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
     if(renderMainMenu){
         Box(
             modifier = Modifier
-                .background(Color(ColorPalette.sa10))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(WindowInsets.systemBars.asPaddingValues())
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(ColorPalette.sa10))
+                    .background(MaterialTheme.colorScheme.background)
             ) {
 
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -142,11 +137,11 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         )
                         {
-                            //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu");
+                            //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu")
                                 items(qualifiedDecks.size) { index ->
                                     Text(
                                         text = qualifiedDecks[index].name,
-                                        color = Color(ColorPalette.pa0),
+                                        color = MaterialTheme.colorScheme.onBackground,
                                         modifier = Modifier
                                             .shadow(
                                                 elevation = 10.dp,
@@ -154,20 +149,15 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                                 clip = false
                                             )
                                             .background(
-
-                                                brush = Brush.verticalGradient(
-                                                    colors = listOf(
-                                                        Color(ColorPalette.sa30), // Start color
-                                                        Color(ColorPalette.sa20) // End color
-                                                    )
-                                                )
+                                            MaterialTheme.colorScheme.surfaceVariant
                                             )
                                             .fillMaxWidth(0.5f)
                                             .height(100.dp)
                                             .padding(10.dp)
                                             .clickable {
                                                 currentOpenedDeck =
-                                                    qualifiedDecks[index]; navController.navigate("deck_menu")
+                                                    qualifiedDecks[index];
+                                                navController.navigate("deck_menu")
                                             }
                                     )
 
@@ -218,12 +208,15 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                             .padding(horizontal = 10.dp)
                             .height(50.dp)
                             .background(
+                                /*
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        Color(ColorPalette.sa30), // Start color
-                                        Color(ColorPalette.sa20) // End color
+                                        MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f), // Start color
+                                        MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f) // End color
                                     )
-                                ), shape = RoundedCornerShape(10.dp)
+                                ),*/
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                shape = RoundedCornerShape(10.dp)
                             )
                             .padding(horizontal = 10.dp, vertical = 10.dp),
                     ) {
@@ -232,7 +225,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                         Icon(
                             painter = painterResource(id = R.drawable.menu),
                             contentDescription = "chart",
-                            tint = Color(ColorPalette.pa40),
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .clickable { appear = !appear }
@@ -256,7 +249,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                 value = searchQuery,
                                 onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, true)},
                                 textStyle = TextStyle(
-                                    color = Color(ColorPalette.pa50),
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontSize = 16.sp
                                 ),
                                 modifier = Modifier.fillMaxWidth()
@@ -264,7 +257,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                             if (searchQuery.isEmpty()) {
                                 Text(
                                     text = "Search Sets...",
-                                    color = Color(ColorPalette.sa40), // Placeholder text color
+                                    color = MaterialTheme.colorScheme.onBackground, // Placeholder text color
                                     modifier = Modifier.align(Alignment.CenterStart)
                                 )
                             }
@@ -275,10 +268,10 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                            Icon(
                                painter = painterResource(id = R.drawable.sort_ascending),
                                contentDescription = "chart",
-                               tint = Color(ColorPalette.pa40),
+                               tint = MaterialTheme.colorScheme.primary,
                                modifier = Modifier
                                    .fillMaxHeight()
-                                   .clickable { appearSortMenu = !appearSortMenu; }
+                                   .clickable { appearSortMenu = !appearSortMenu }
                                    .width(40.dp)
                            )
                            DropdownMenu(
@@ -286,7 +279,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                onDismissRequest = { appearSortMenu = false }, // Close menu on dismiss
                                modifier = Modifier
                                    .width(200.dp)
-                                   .background(Color(ColorPalette.sa20))
+                                   .background(MaterialTheme.colorScheme.surfaceVariant)
                                    .padding(start = 16.dp)
                            ) {
                                SortMenuContent(decks = decks, searchQuery = searchQuery)
@@ -296,24 +289,17 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
 
                     }
 
-                    Canvas(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(90.dp)
-                    )
-                    {
-                        // Fade effect gradient
-                        drawRect(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Color(ColorPalette.sa10),
-                                    Color(android.graphics.Color.parseColor("#00000000"))
-                                ),
-                                start = Offset(0f, 0f), // Top
-                                end = Offset(0f, size.height)
-                            )
+                            .background(brush = Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                            ))
                         )
-                    }
+                    ){}
                 }
 
                 // left slide menu
@@ -328,7 +314,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                 ) {
                     Column(
                         modifier = Modifier
-                            .background(Color(ColorPalette.sa50))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
                             .fillMaxHeight()
                             .fillMaxWidth(0.4f)
                     ) {
@@ -362,13 +348,13 @@ fun deckScreen(context: Context, navController: NavController){
 
     Box(
         modifier = Modifier
-            .background(Color(ColorPalette.sa10))
+            .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(ColorPalette.sa10))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(10.dp)
         ) {
 
@@ -391,12 +377,8 @@ fun deckScreen(context: Context, navController: NavController){
                             clip = false
                         )
                         .background(
-                            brush = Brush.verticalGradient(
-                                colors = if (cardsSelected[index] == 0) listOf(
-                                    Color(ColorPalette.sa30),
-                                    Color(ColorPalette.sa20)
-                                ) else listOf(Color(ColorPalette.pa20), Color(ColorPalette.pa0))
-                            )
+                            //brush = Brush.verticalGradient(
+                            if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primary
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
@@ -427,12 +409,12 @@ fun deckScreen(context: Context, navController: NavController){
                         Log.d("Cards2",cardsSelected[index].toString())
                         Text(
                             text = cards[index].SideA,
-                            color = Color(ColorPalette.pa50),
+                            color =  if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.Bold
                             )
                         Text(
                             text = cards[index].SideB,
-                            color = Color(ColorPalette.sa40),
+                            color = if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.surfaceVariant,
                             modifier = Modifier.padding(vertical = 4.dp)
                             )
                     }
@@ -480,7 +462,7 @@ fun DeckAddMenu(){ // nothing here yet
             Column(
                 modifier = Modifier
                     .background(
-                        Color(ColorPalette.sa50),
+                        MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(128.dp)
                     )
                     .fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
@@ -489,7 +471,7 @@ fun DeckAddMenu(){ // nothing here yet
                 Icon(
                     painter = painterResource(id = R.drawable.settings),
                     contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(64.dp)
                         .padding(15.dp)
@@ -498,7 +480,7 @@ fun DeckAddMenu(){ // nothing here yet
                 Icon(
                     painter = painterResource(id = R.drawable.bar_chart_2),
                     contentDescription = "chart",
-                    tint = Color(ColorPalette.pa40),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(64.dp)
                         .padding(15.dp)
@@ -511,11 +493,11 @@ fun DeckAddMenu(){ // nothing here yet
     Icon(
         painter = painterResource(id = R.drawable.plus_circle_solid),
         contentDescription = "chart",
-        tint = Color(ColorPalette.pa40),
+        tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .size(128.dp)
             .padding(15.dp)
-            .background(Color(ColorPalette.sa10), shape = CircleShape)
+            .background(MaterialTheme.colorScheme.background, shape = CircleShape)
             .clickable { deckAddMenu = !deckAddMenu }
     )
 }
@@ -538,7 +520,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
 
     Column(
         modifier = Modifier
-            .background(Color(ColorPalette.sa10))
+            .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
         LazyRow(
@@ -573,19 +555,14 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
                             } //prevents the text from rendering right to left
                             .padding(20.dp)
                             .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(ColorPalette.sa30),
-                                        Color(ColorPalette.sa20)
-                                    )
-                                ),
+                                MaterialTheme.colorScheme.surfaceVariant,
                                 shape = RoundedCornerShape(20.dp)
                             )
 
                     ) {
                         Text(
                             text = if (rotationYy > 90f)  cards[flashcardIndex].SideB else cards[flashcardIndex].SideA,
-                            color = Color(ColorPalette.pa50),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -603,7 +580,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.nav_arrow_left),
                 contentDescription = "left",
-                tint = Color(ColorPalette.pa0),
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.clickable { coroutineScope.launch {
                     val prevIndex = maxOf(listState.firstVisibleItemIndex - 1, 0)
                     listState.animateScrollToItem(prevIndex)
@@ -613,7 +590,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.redo),
                 contentDescription = "left",
-                tint = Color(ColorPalette.pa0),
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.clickable { isFlipped = !isFlipped} // Flip flashcard sides
             )
 
@@ -621,7 +598,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.nav_arrow_right),
                 contentDescription = "left",
-                tint = Color(ColorPalette.pa0),
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.clickable {
                     coroutineScope.launch {
                         val nextIndex = minOf(listState.firstVisibleItemIndex + 1, cards.size - 1)
@@ -643,9 +620,9 @@ fun SlideMenuContent(){
         Icon(
             painter = painterResource(id = R.drawable.bar_chart_2),
             contentDescription = "chart",
-            tint = Color(ColorPalette.pa10),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Text(text = "Menuoption1", color = Color(ColorPalette.pa20))
+        Text(text = "Menuoption1", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
     }
     Row(modifier = Modifier
@@ -655,9 +632,9 @@ fun SlideMenuContent(){
         Icon(
             painter = painterResource(id = R.drawable.home),
             contentDescription = "chart",
-            tint = Color(ColorPalette.pa10),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Text(text = "Menuoption2", color = Color(ColorPalette.pa20))
+        Text(text = "Menuoption2", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
     }
 }
@@ -684,15 +661,15 @@ fun AddDeckScreen(context: Context,navController: NavController){
     var DeckName by remember{ mutableStateOf("") }
     Column(
         modifier = Modifier
-            .background(Color(ColorPalette.sa10))
+            .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-        Text("Name", color = Color(ColorPalette.pa50))
+        Text("Name", color = MaterialTheme.colorScheme.primary)
         BasicTextField(
             value = DeckName,
             onValueChange = { DeckName = it },
             textStyle = TextStyle(
-                color = Color(ColorPalette.pa50),
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 16.sp
             ),
             modifier = Modifier.fillMaxWidth()
@@ -720,7 +697,7 @@ fun PopAddMenu(context: Context, navController: NavController){
                     Column(
                         modifier = Modifier
                             .background(
-                                Color(ColorPalette.sa50),
+                                MaterialTheme.colorScheme.surfaceVariant,
                                 shape = RoundedCornerShape(128.dp)
                             )
                             .fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
@@ -729,7 +706,7 @@ fun PopAddMenu(context: Context, navController: NavController){
                         Icon(
                             painter = painterResource(id = R.drawable.addempty),
                             contentDescription = "chart",
-                            tint = Color(ColorPalette.pa40),
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .size(64.dp)
                                 .padding(15.dp)
@@ -738,7 +715,7 @@ fun PopAddMenu(context: Context, navController: NavController){
                         Icon(
                                 painter = painterResource(id = R.drawable.bar_chart_2),
                         contentDescription = "chart",
-                        tint = Color(ColorPalette.pa40),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .size(64.dp)
                             .padding(15.dp)
@@ -751,11 +728,11 @@ fun PopAddMenu(context: Context, navController: NavController){
     Icon(
         painter = painterResource(id = R.drawable.plus_circle_solid),
         contentDescription = "chart",
-        tint = Color(ColorPalette.pa40),
+        tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .size(128.dp)
             .padding(15.dp)
-            .background(Color(ColorPalette.sa10), shape = CircleShape)
+            .background(MaterialTheme.colorScheme.background, shape = CircleShape)
             .clickable { appearAddMenu = !appearAddMenu }
     )
 }
@@ -763,16 +740,16 @@ fun PopAddMenu(context: Context, navController: NavController){
 @Composable
 fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
-    Text("Sort By", fontSize = 20.sp, color = Color(ColorPalette.pa30))
+    Text("Sort By", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
 
     Text("Name (Ascending)",
         fontSize = 16.sp,
-        color = Color(ColorPalette.pa50),
+        color = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .clickable {
-                sortType = SortType.ByName;
-                appearSortMenu = false;
-                isAscending = true;
+                sortType = SortType.ByName
+                appearSortMenu = false
+                isAscending = true
                 qualifiedDecks = sortDecks(
                     searchQuery,
                     decks,
@@ -785,12 +762,12 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Name (Descending)",
         fontSize = 16.sp,
-        color = Color(ColorPalette.pa50),
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
             .clickable {
-                sortType = SortType.ByName;
-                appearSortMenu = false;
-                isAscending = false;
+                sortType = SortType.ByName
+                appearSortMenu = false
+                isAscending = false
                 qualifiedDecks = sortDecks(
                     searchQuery,
                     decks,
@@ -803,12 +780,12 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Last Modified (Ascending)",
         fontSize = 16.sp,
-        color = Color(ColorPalette.pa50),
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
             .clickable {
-                sortType = SortType.ByLastEdited;
-                appearSortMenu = false;
-                isAscending = true;
+                sortType = SortType.ByLastEdited
+                appearSortMenu = false
+                isAscending = true
                 qualifiedDecks = sortDecks(
                     searchQuery,
                     decks,
@@ -821,12 +798,12 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Date Modified (Descending)",
         fontSize = 16.sp,
-        color = Color(ColorPalette.pa50),
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
             .clickable {
-                sortType = SortType.ByLastEdited;
-                appearSortMenu = false;
-                isAscending = false;
+                sortType = SortType.ByLastEdited
+                appearSortMenu = false
+                isAscending = false
                 qualifiedDecks = sortDecks(
                     searchQuery,
                     decks,
@@ -839,12 +816,12 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Date Created (Ascending)",
         fontSize = 16.sp,
-        color = Color(ColorPalette.pa50),
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
             .clickable {
-                sortType = SortType.ByLastEdited;
-                appearSortMenu = false;
-                isAscending = true;
+                sortType = SortType.ByLastEdited
+                appearSortMenu = false
+                isAscending = true
                 qualifiedDecks = sortDecks(
                     searchQuery,
                     decks,
@@ -857,12 +834,12 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Date Created (Descending)",
     fontSize = 16.sp,
-    color = Color(ColorPalette.pa50),
+    color = MaterialTheme.colorScheme.onBackground,
     modifier = Modifier
         .clickable {
-            sortType = SortType.ByLastEdited;
-            appearSortMenu = false;
-            isAscending = false;
+            sortType = SortType.ByLastEdited
+            appearSortMenu = false
+            isAscending = false
             qualifiedDecks = sortDecks(
                 searchQuery,
                 decks,
@@ -878,14 +855,19 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 @Preview()
 @Composable
 fun preview(){
-    val navController = rememberNavController()
-    // navigation graph
-    NavHost(
-        navController = navController,
-        startDestination = "deck_menu"
-    ) {
-        composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
-        composable("card_menu") { CardMenu(navController) }
-        composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
-        composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
+        //CardFlareTheme {
+    Material3AppTheme{
+                // initialize the NavController
+                val navController = rememberNavController()
+                // navigation graph
+                NavHost(
+                    navController = navController,
+                    startDestination = "main_menu"
+                ) {
+                    composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
+                    composable("card_menu") { CardMenu(navController) }
+                    composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
+                    composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
+            }
+    //}
 }
