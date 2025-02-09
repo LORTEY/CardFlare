@@ -13,7 +13,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
+// I will add custom color picking to settings
 private val DarkColorScheme = darkColorScheme(
     primary = Blue80,
     onPrimary = Blue20,
