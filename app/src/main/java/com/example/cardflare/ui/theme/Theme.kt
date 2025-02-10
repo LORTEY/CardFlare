@@ -13,6 +13,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.example.cardflare.USER_ENABLED_DYNAMIC_COLORS
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue80,
@@ -37,14 +38,14 @@ private val DarkColorScheme = darkColorScheme(
     surface = BlueGrey30,
     onSurface = BlueGrey80,
     inverseSurface = Grey90,
-    inverseOnSurface = Grey10,
+    inverseOnSurface = Grey20,
     surfaceVariant = BlueGrey30,
     onSurfaceVariant = BlueGrey80,
     outline = BlueGrey80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Blue40,
+    primary = Blue30,
     onPrimary = Color.White,
     primaryContainer = Blue90,
     onPrimaryContainer = Blue10,
@@ -66,7 +67,7 @@ private val LightColorScheme = lightColorScheme(
     surface = BlueGrey90,
     onSurface = BlueGrey30,
     inverseSurface = Grey20,
-    inverseOnSurface = Grey95,
+    inverseOnSurface = Grey90,
     surfaceVariant = BlueGrey90,
     onSurfaceVariant = BlueGrey30,
     outline = BlueGrey50
@@ -84,7 +85,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun Material3AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit){
-    val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val useDynamicColors = USER_ENABLED_DYNAMIC_COLORS && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
     val colors = when{
         useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
         useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)

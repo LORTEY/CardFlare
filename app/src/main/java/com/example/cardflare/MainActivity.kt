@@ -33,6 +33,7 @@ import com.example.cardflare.ui.theme.AddDeckScreen
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
 import com.example.cardflare.ui.theme.Material3AppTheme
+import com.example.cardflare.ui.theme.SettingsMenu
 import com.example.cardflare.ui.theme.Typography
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
@@ -55,7 +56,7 @@ data class ColorPaletteData(
     val sa50: String
 )
 private const val STORAGE_PERMISSION_CODE = 101
-
+public var USER_ENABLED_DYNAMIC_COLORS = false
 class MainActivity : androidx.activity.ComponentActivity(){
     private var receiver: BroadcastReceiver? = null
 
@@ -114,11 +115,11 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         navController = navController,
                         startDestination = "main_menu"
                     ) {
-                        composable("main_menu") { MainMenuRender(navController, LocalContext.current) }
+                        composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                         composable("card_menu") { CardMenu(navController) }
-                        composable("deck_menu") { deckScreen(LocalContext.current, navController) }
-                        composable("deck_add_screen") { AddDeckScreen(LocalContext.current, navController) }
-                    }
+                        composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
+                        composable("settings") { SettingsMenu(navController) }
+                        composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
                 }
             }
         }

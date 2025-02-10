@@ -65,6 +65,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
@@ -75,6 +77,7 @@ import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
+import com.example.cardflare.USER_ENABLED_DYNAMIC_COLORS
 import com.example.cardflare.addDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
@@ -149,7 +152,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                                 clip = false
                                             )
                                             .background(
-                                            MaterialTheme.colorScheme.surfaceVariant
+                                            MaterialTheme.colorScheme.inverseOnSurface
                                             )
                                             .fillMaxWidth(0.5f)
                                             .height(100.dp)
@@ -215,7 +218,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                         MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f) // End color
                                     )
                                 ),*/
-                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                color = MaterialTheme.colorScheme.inverseOnSurface,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .padding(horizontal = 10.dp, vertical = 10.dp),
@@ -279,7 +282,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                onDismissRequest = { appearSortMenu = false }, // Close menu on dismiss
                                modifier = Modifier
                                    .width(200.dp)
-                                   .background(MaterialTheme.colorScheme.surfaceVariant)
+                                   .background(MaterialTheme.colorScheme.inverseOnSurface)
                                    .padding(start = 16.dp)
                            ) {
                                SortMenuContent(decks = decks, searchQuery = searchQuery)
@@ -314,11 +317,11 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                 ) {
                     Column(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(MaterialTheme.colorScheme.inverseOnSurface)
                             .fillMaxHeight()
                             .fillMaxWidth(0.4f)
                     ) {
-                        SlideMenuContent()
+                        SlideMenuContent(navController)
                     }
                 }
             }
@@ -378,7 +381,7 @@ fun deckScreen(context: Context, navController: NavController){
                         )
                         .background(
                             //brush = Brush.verticalGradient(
-                            if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primary
+                            if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
@@ -414,7 +417,7 @@ fun deckScreen(context: Context, navController: NavController){
                             )
                         Text(
                             text = cards[index].SideB,
-                            color = if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.surfaceVariant,
+                            color = if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.inverseOnSurface,
                             modifier = Modifier.padding(vertical = 4.dp)
                             )
                     }
@@ -462,7 +465,7 @@ fun DeckAddMenu(){ // nothing here yet
             Column(
                 modifier = Modifier
                     .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.colorScheme.inverseOnSurface,
                         shape = RoundedCornerShape(128.dp)
                     )
                     .fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
@@ -555,14 +558,14 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
                             } //prevents the text from rendering right to left
                             .padding(20.dp)
                             .background(
-                                MaterialTheme.colorScheme.surfaceVariant,
+                                MaterialTheme.colorScheme.inverseOnSurface,
                                 shape = RoundedCornerShape(20.dp)
                             )
 
                     ) {
                         Text(
                             text = if (rotationYy > 90f)  cards[flashcardIndex].SideB else cards[flashcardIndex].SideA,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.inverseSurface,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -580,7 +583,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.nav_arrow_left),
                 contentDescription = "left",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable { coroutineScope.launch {
                     val prevIndex = maxOf(listState.firstVisibleItemIndex - 1, 0)
                     listState.animateScrollToItem(prevIndex)
@@ -590,7 +593,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.redo),
                 contentDescription = "left",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable { isFlipped = !isFlipped} // Flip flashcard sides
             )
 
@@ -598,7 +601,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             Icon(
                 painter = painterResource(id = R.drawable.nav_arrow_right),
                 contentDescription = "left",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable {
                     coroutineScope.launch {
                         val nextIndex = minOf(listState.firstVisibleItemIndex + 1, cards.size - 1)
@@ -612,17 +615,17 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
 
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
-fun SlideMenuContent(){
+fun SlideMenuContent(navController: NavController){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)
-        .clickable { }){
+        .clickable { navController.navigate("settings")}){
         Icon(
-            painter = painterResource(id = R.drawable.bar_chart_2),
+            painter = painterResource(id = R.drawable.settings),
             contentDescription = "chart",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Menuoption1", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = "Settings", color = MaterialTheme.colorScheme.primary)
 
     }
     Row(modifier = Modifier
@@ -632,9 +635,9 @@ fun SlideMenuContent(){
         Icon(
             painter = painterResource(id = R.drawable.home),
             contentDescription = "chart",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Menuoption2", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = "Menuoption2", color = MaterialTheme.colorScheme.primary)
 
     }
 }
@@ -697,7 +700,7 @@ fun PopAddMenu(context: Context, navController: NavController){
                     Column(
                         modifier = Modifier
                             .background(
-                                MaterialTheme.colorScheme.surfaceVariant,
+                                MaterialTheme.colorScheme.inverseOnSurface,
                                 shape = RoundedCornerShape(128.dp)
                             )
                             .fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
@@ -849,8 +852,36 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
         }
         .fillMaxWidth()
         .padding(vertical = 5.dp))
-
 }
+
+@Composable
+fun SettingsMenu(navController: NavHostController){
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        Row(modifier = Modifier.fillMaxWidth()){
+            Text("Dynamic Colors")
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                            Slider(
+                                value = if (USER_ENABLED_DYNAMIC_COLORS) 1.0f else 0f,
+                                onValueChange = { USER_ENABLED_DYNAMIC_COLORS = it < 0.5f },
+                                valueRange = 0f..1f,
+                                steps = 1,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = if (USER_ENABLED_DYNAMIC_COLORS) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surface,
+                                    activeTrackColor = if (USER_ENABLED_DYNAMIC_COLORS) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primaryContainer
+                                )
+                            )
+                }
+
+        }
+    }
+}
+
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -862,11 +893,12 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "main_menu"
+                    startDestination = "settings"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
+                    composable("settings") { SettingsMenu(navController) }
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
             }
     //}
