@@ -13,7 +13,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.example.cardflare.USER_ENABLED_DYNAMIC_COLORS
+import com.example.cardflare.AppSettings
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue80,
@@ -85,7 +85,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun Material3AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit){
-    val useDynamicColors = USER_ENABLED_DYNAMIC_COLORS && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    val useDynamicColors = AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state as Boolean && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
     val colors = when{
         useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
         useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)

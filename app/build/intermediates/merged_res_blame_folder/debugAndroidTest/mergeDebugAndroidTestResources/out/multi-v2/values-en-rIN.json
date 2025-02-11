@@ -4,24 +4,7 @@
             "outputFile": "com.example.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-en-rIN/values-en-rIN.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/98c432b3532add98406c1abc04830d56/transformed/core-1.15.0/res/values-en-rIN/values-en-rIN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,151,253,352,451,555,658,774",
-                        "endColumns": "95,101,98,98,103,102,115,100",
-                        "endOffsets": "146,248,347,446,550,653,769,870"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,24",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,201,303,402,501,605,708,2073",
-                        "endColumns": "95,101,98,98,103,102,115,100",
-                        "endOffsets": "196,298,397,496,600,703,819,2169"
-                    }
-                },
-                {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/277714ccca6b93c9ce4b7820df77920b/transformed/ui-release/res/values-en-rIN/values-en-rIN.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/0334d8b6cec133217d69f82c7303c16b/transformed/ui-release/res/values-en-rIN/values-en-rIN.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -35,6 +18,23 @@
                         "startOffsets": "824,916,998,1092,1191,1278,1360,1449,1538,1622,1700,1782,1855,1931,2003,2174,2251,2317",
                         "endColumns": "91,81,93,98,86,81,88,88,83,77,81,72,75,71,69,76,65,120",
                         "endOffsets": "911,993,1087,1186,1273,1355,1444,1533,1617,1695,1777,1850,1926,1998,2068,2246,2312,2433"
+                    }
+                },
+                {
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/ca4ead1712484f2f4db564421646a6f5/transformed/core-1.15.0/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,151,253,352,451,555,658,774",
+                        "endColumns": "95,101,98,98,103,102,115,100",
+                        "endOffsets": "146,248,347,446,550,653,769,870"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,24",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,201,303,402,501,605,708,2073",
+                        "endColumns": "95,101,98,98,103,102,115,100",
+                        "endOffsets": "196,298,397,496,600,703,819,2169"
                     }
                 }
             ]

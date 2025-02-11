@@ -61,23 +61,26 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.example.cardflare.AppSettings
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
-import com.example.cardflare.USER_ENABLED_DYNAMIC_COLORS
 import com.example.cardflare.addDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
@@ -747,7 +750,7 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 
     Text("Name (Ascending)",
         fontSize = 16.sp,
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
             .clickable {
                 sortType = SortType.ByName
@@ -861,22 +864,21 @@ fun SettingsMenu(navController: NavHostController){
             .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-        Row(modifier = Modifier.fillMaxWidth()){
-            Text("Dynamic Colors")
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                            Slider(
-                                value = if (USER_ENABLED_DYNAMIC_COLORS) 1.0f else 0f,
-                                onValueChange = { USER_ENABLED_DYNAMIC_COLORS = it < 0.5f },
-                                valueRange = 0f..1f,
-                                steps = 1,
-                                colors = SliderDefaults.colors(
-                                    thumbColor = if (USER_ENABLED_DYNAMIC_COLORS) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surface,
-                                    activeTrackColor = if (USER_ENABLED_DYNAMIC_COLORS) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primaryContainer
-                                )
-                            )
+        Text("Appearance", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
+        HorizontalDivider()
+        Row(horizontalArrangement = Arrangement.Absolute.SpaceBetween, modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)){
+            Text("Dynamic Colors", modifier = Modifier.padding(vertical = 10.dp))
+            val dynamicColorsEnabled = remember { mutableStateOf(AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state) }
+
+            Switch(
+                checked = dynamicColorsEnabled.value,
+                onCheckedChange = { newValue ->
+                    dynamicColorsEnabled.value = newValue // Update local state
+                    AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state = newValue
+                Log.d("Settings changed", "${AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state}")// Update AppSettings
                 }
+            )
+
 
         }
     }

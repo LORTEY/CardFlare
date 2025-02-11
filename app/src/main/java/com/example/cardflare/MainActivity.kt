@@ -56,7 +56,6 @@ data class ColorPaletteData(
     val sa50: String
 )
 private const val STORAGE_PERMISSION_CODE = 101
-public var USER_ENABLED_DYNAMIC_COLORS = false
 class MainActivity : androidx.activity.ComponentActivity(){
     private var receiver: BroadcastReceiver? = null
 

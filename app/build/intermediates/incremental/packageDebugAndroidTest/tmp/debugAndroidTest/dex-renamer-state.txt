@@ -1,4 +1,4 @@
-#Sun Jan 26 12:26:34 GMT 2025
+#Tue Feb 11 15:19:06 GMT 2025
 base.0=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debugAndroidTest/mergeExtDexDebugAndroidTest/classes.dex
 base.1=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debugAndroidTest/mergeProjectDexDebugAndroidTest/0/classes.dex
 base.2=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debugAndroidTest/mergeProjectDexDebugAndroidTest/10/classes.dex
