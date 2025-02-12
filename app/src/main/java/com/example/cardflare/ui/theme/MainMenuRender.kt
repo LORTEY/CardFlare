@@ -73,6 +73,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.cardflare.AppSettings
 import com.example.cardflare.Deck
@@ -439,8 +440,9 @@ fun deckScreen(context: Context, navController: NavController){
                         })
             }
             Column(modifier = Modifier.align(Alignment.BottomEnd)) {
-                Column(modifier = Modifier
-                    .width(128.dp)
+                Column(horizontalAlignment = Alignment.End,
+                    modifier = Modifier
+                    //.width(128.dp)
                     .align(Alignment.End)) {
                     DeckAddMenu()
                 }
@@ -451,62 +453,137 @@ fun deckScreen(context: Context, navController: NavController){
 }
 @Composable
 fun DeckAddMenu(){ // nothing here yet
-    AnimatedVisibility(
-        visible = deckAddMenu,
-        enter = fadeIn(animationSpec = tween(100)) + slideInVertically (
-            animationSpec = tween(100)
-        ) { fullWidth -> fullWidth / 2 },
-        exit = fadeOut(animationSpec = tween(100)) + slideOutVertically (
-            animationSpec = tween(100)
-        ) { fullWidth -> fullWidth / 2 }
-    ) {
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+        AnimatedVisibility(
+            modifier = Modifier.padding(horizontal = 32.dp),
+            visible = deckAddMenu,
+            enter = fadeIn(animationSpec = tween(100)) + slideInVertically(
+                animationSpec = tween(100)
+            ) { fullWidth -> fullWidth / 2 },
+            exit = fadeOut(animationSpec = tween(100)) + slideOutVertically(
+                animationSpec = tween(100)
+            ) { fullWidth -> fullWidth / 2 }
         ) {
-            Column(
-                modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.inverseOnSurface,
-                        shape = RoundedCornerShape(128.dp)
-                    )
-                    .fillMaxWidth(0.5f), horizontalAlignment = Alignment.CenterHorizontally
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.End) {
+            // Here are all buttons for the menu
+            Row(modifier = Modifier
+                .height(64.dp)
+                .clickable {},
+                horizontalArrangement = Arrangement.SpaceBetween
+
             ) {
-                // Here are all buttons for the menu
-                Icon(
-                    painter = painterResource(id = R.drawable.settings),
-                    contentDescription = "chart",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .padding(15.dp)
-                        .clickable {}
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.bar_chart_2),
-                    contentDescription = "chart",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .padding(15.dp)
-                        .clickable {}
-                )
+                Box(modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 8.dp)
+                    .background(
+                        shape = RoundedCornerShape(128.dp),
+                        color = MaterialTheme.colorScheme.inverseOnSurface)
+
+                    ){
+                Text(
+                    "Add Empty Flashcard",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
+                )}
+                //row is here just for background color
+                Row(modifier = Modifier.background(
+                    shape = RoundedCornerShape(128.dp),
+                    color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.settings),
+                        contentDescription = "chart",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(64.dp)
+                            .padding(10.dp)
+                    )
+                }
             }
+                Row(modifier = Modifier
+                    .height(64.dp)
+                    .clickable {},
+                    horizontalArrangement = Arrangement.SpaceBetween
+
+                ) {
+                    Box(modifier = Modifier
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .background(
+                            shape = RoundedCornerShape(128.dp),
+                            color = MaterialTheme.colorScheme.inverseOnSurface)
+
+                    ){
+                        Text(
+                            "Something Else",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
+                        )}
+                    //row is here just for background color
+                    Row(modifier = Modifier.background(
+                        shape = RoundedCornerShape(128.dp),
+                        color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.addempty),
+                            contentDescription = "chart",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(10.dp)
+                        )
+                    }
+                }
+                Row(modifier = Modifier
+                    .height(64.dp)
+                    .clickable {},
+                    horizontalArrangement = Arrangement.SpaceBetween
+
+                ) {
+                    Box(modifier = Modifier
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .background(
+                            shape = RoundedCornerShape(128.dp),
+                            color = MaterialTheme.colorScheme.inverseOnSurface)
+
+                    ){
+                        Text(
+                            "Also Something Else",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
+                        )}
+                    //row is here just for background color
+                    Row(modifier = Modifier.background(
+                        shape = RoundedCornerShape(128.dp),
+                        color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.bar_chart_2),
+                            contentDescription = "chart",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(10.dp)
+                        )
+                    }
+                }
         }
+
+
+        }
+
+        Icon(
+            painter = painterResource(id = R.drawable.plus_circle_solid),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .size(128.dp)
+                .padding(15.dp)
+                .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                .clickable { deckAddMenu = !deckAddMenu }
+        )
     }
 
-    Icon(
-        painter = painterResource(id = R.drawable.plus_circle_solid),
-        contentDescription = "chart",
-        tint = MaterialTheme.colorScheme.primary,
-        modifier = Modifier
-            .size(128.dp)
-            .padding(15.dp)
-            .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-            .clickable { deckAddMenu = !deckAddMenu }
-    )
-}
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
@@ -533,7 +610,6 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
             state = listState,
             flingBehavior = snapperBehavior,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            //contentPadding = PaddingValues(horizontal = 64.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -700,6 +776,7 @@ fun PopAddMenu(context: Context, navController: NavController){
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+
                     Column(
                         modifier = Modifier
                             .background(
@@ -895,7 +972,7 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "settings"
+                    startDestination = "deck_menu"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
