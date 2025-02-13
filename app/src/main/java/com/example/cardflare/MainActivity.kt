@@ -32,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.AddDeckScreen
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
+import com.example.cardflare.ui.theme.LearnScreen
 import com.example.cardflare.ui.theme.Material3AppTheme
 import com.example.cardflare.ui.theme.SettingsMenu
 import com.example.cardflare.ui.theme.Typography
@@ -116,6 +117,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                     ) {
                         composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                         composable("card_menu") { CardMenu(navController) }
+                        composable("learn_screen") { LearnScreen(navController) }
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                         composable("settings") { SettingsMenu(navController) }
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}

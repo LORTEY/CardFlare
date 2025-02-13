@@ -95,6 +95,7 @@ var sortType by mutableStateOf(SortType.ByName)
 var qualifiedDecks = listOf<Deck>()
 var currentOpenFlashCard by mutableStateOf(0)
 var deckAddMenu by mutableStateOf(false)
+var CardsToLearn: Array<Flashcard>? = null
 public var renderMainMenu by mutableStateOf(true)
 var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Flashcard>()))
 
@@ -444,7 +445,7 @@ fun deckScreen(context: Context, navController: NavController){
                     modifier = Modifier
                     //.width(128.dp)
                     .align(Alignment.End)) {
-                    DeckAddMenu()
+                    DeckAddMenu(navController)
                 }
             }
         }
@@ -452,7 +453,7 @@ fun deckScreen(context: Context, navController: NavController){
 
 }
 @Composable
-fun DeckAddMenu(){ // nothing here yet
+fun DeckAddMenu(navController: NavController){ // nothing here yet
         AnimatedVisibility(
             modifier = Modifier.padding(horizontal = 32.dp),
             visible = deckAddMenu,
@@ -501,7 +502,7 @@ fun DeckAddMenu(){ // nothing here yet
             }
                 Row(modifier = Modifier
                     .height(64.dp)
-                    .clickable {},
+                    .clickable {navController.navigate("learn_screen")},
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
@@ -513,7 +514,7 @@ fun DeckAddMenu(){ // nothing here yet
 
                     ){
                         Text(
-                            "Something Else",
+                            "Learn",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
@@ -960,7 +961,50 @@ fun SettingsMenu(navController: NavHostController){
         }
     }
 }
+@Composable
+fun LearnScreen(navController: NavController){
+    CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
+    var isFlipped by remember { mutableStateOf(false) }
+    if (CardsToLearn == null){
+        throw IllegalArgumentException("LearnScreen called nut CardsToLearn is null")
+        navController.popBackStack()
+    }
+    val rotationYy by animateFloatAsState(
+        targetValue = if (isFlipped) 180f else 0f,
+        animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(LocalConfiguration.current.screenWidthDp.dp)
+            .graphicsLayer {
+                rotationY = rotationYy
+                cameraDistance = 8 * density // prevents distortion
+            }
+            .clickable { isFlipped = !isFlipped },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    if (rotationYy > 90f) rotationY = 180f
+                } //prevents the text from rendering right to left
+                .padding(20.dp)
+                .background(
+                    MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = RoundedCornerShape(20.dp)
+                )
 
+        ) {
+            Text(
+                text = if (rotationYy > 90f)  CardsToLearn!![0].SideB else CardsToLearn!![0].SideA,
+                color = MaterialTheme.colorScheme.inverseSurface,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -972,10 +1016,11 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "deck_menu"
+                    startDestination = "learn_screen"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
+                    composable("learn_screen") { LearnScreen(navController)}
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                     composable("settings") { SettingsMenu(navController) }
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
