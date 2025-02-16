@@ -1009,7 +1009,6 @@ fun LearnScreen(navController: NavController){
 @Preview()
 @Composable
 fun preview(){
-        //CardFlareTheme {
     Material3AppTheme{
                 // initialize the NavController
                 val navController = rememberNavController()
@@ -1025,5 +1024,4 @@ fun preview(){
                     composable("settings") { SettingsMenu(navController) }
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
             }
-    //}
 }
