@@ -17,7 +17,7 @@ fun copyAssetsToFilesDir(context: Context) {
         flashcardDirectory.mkdirs()
         Log.d("FilesDir", "FlashcardDirectory created.")
     }
-
+//not gonna lie was busy today and I didn't have time to do anything but I need to push
     try {
         // List the files in the "FlashcardDirectory" within assets folder
         val assetFiles = assetManager.list("FlashcardDirectory")
