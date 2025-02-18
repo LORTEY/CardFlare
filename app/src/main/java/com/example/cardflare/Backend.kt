@@ -7,7 +7,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
-
+// This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
     val assetManager = context.assets
     val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
