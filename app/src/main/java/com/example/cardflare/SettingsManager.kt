@@ -2,7 +2,7 @@ package com.example.cardflare
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-
+// This file handles settings of the app
 public var AppSettings = mapOf(
     "USER_ENABLED_DYNAMIC_COLORS" to SettingEntry(
         name = "USER_ENABLED_DYNAMIC_COLORS",
