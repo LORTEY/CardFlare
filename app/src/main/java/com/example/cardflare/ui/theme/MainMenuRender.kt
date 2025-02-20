@@ -86,7 +86,7 @@ import com.example.cardflare.addDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 
-
+//This file contains all the ui
 var currentOpenedDeck : Deck? by mutableStateOf(null)
 var appearAddMenu by mutableStateOf(false)
 var isAscending by  mutableStateOf(true)
