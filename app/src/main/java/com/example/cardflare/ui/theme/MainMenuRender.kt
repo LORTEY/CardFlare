@@ -39,12 +39,16 @@ import androidx.compose.ui.unit.sp
 import com.example.cardflare.R
 import android.content.Context
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -74,6 +78,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavController
 import com.example.cardflare.AppSettings
 import com.example.cardflare.Deck
@@ -85,6 +90,8 @@ import com.example.cardflare.Flashcard
 import com.example.cardflare.addDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 //This file contains all the ui
 var currentOpenedDeck : Deck? by mutableStateOf(null)
@@ -455,7 +462,7 @@ fun deckScreen(context: Context, navController: NavController){
 @Composable
 fun DeckAddMenu(navController: NavController){ // nothing here yet
         AnimatedVisibility(
-            modifier = Modifier.padding(horizontal = 32.dp),
+            modifier = Modifier.padding(horizontal = 40.dp),
             visible = deckAddMenu,
             enter = fadeIn(animationSpec = tween(100)) + slideInVertically(
                 animationSpec = tween(100)
@@ -467,13 +474,12 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
             Column(verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.End) {
             // Here are all buttons for the menu
             Row(modifier = Modifier
-                .height(64.dp)
                 .clickable {},
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ) {
                 Box(modifier = Modifier
-                    .padding(vertical = 16.dp, horizontal = 8.dp)
+                    .padding(vertical = 10.dp, horizontal = 8.dp)
                     .background(
                         shape = RoundedCornerShape(128.dp),
                         color = MaterialTheme.colorScheme.inverseOnSurface)
@@ -489,7 +495,9 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                 //row is here just for background color
                 Row(modifier = Modifier.background(
                     shape = RoundedCornerShape(128.dp),
-                    color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                    color = MaterialTheme.colorScheme.inverseOnSurface)
+                    .size(48.dp)
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.settings),
                         contentDescription = "chart",
@@ -501,13 +509,12 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                 }
             }
                 Row(modifier = Modifier
-                    .height(64.dp)
                     .clickable {navController.navigate("learn_screen")},
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
                     Box(modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .padding(vertical = 10.dp, horizontal = 8.dp)
                         .background(
                             shape = RoundedCornerShape(128.dp),
                             color = MaterialTheme.colorScheme.inverseOnSurface)
@@ -523,7 +530,8 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                     //row is here just for background color
                     Row(modifier = Modifier.background(
                         shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                        color = MaterialTheme.colorScheme.inverseOnSurface)
+                        .size(48.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.addempty),
                             contentDescription = "chart",
@@ -535,13 +543,11 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                     }
                 }
                 Row(modifier = Modifier
-                    .height(64.dp)
                     .clickable {},
                     horizontalArrangement = Arrangement.SpaceBetween
-
                 ) {
                     Box(modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .padding(vertical = 10.dp, horizontal = 8.dp)
                         .background(
                             shape = RoundedCornerShape(128.dp),
                             color = MaterialTheme.colorScheme.inverseOnSurface)
@@ -557,7 +563,8 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                     //row is here just for background color
                     Row(modifier = Modifier.background(
                         shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                        color = MaterialTheme.colorScheme.inverseOnSurface)
+                        .size(48.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.bar_chart_2),
                             contentDescription = "chart",
@@ -962,49 +969,124 @@ fun SettingsMenu(navController: NavHostController){
     }
 }
 @Composable
-fun LearnScreen(navController: NavController){
+fun LearnScreen(navController: NavController, context: Context){
     CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
-    var isFlipped by remember { mutableStateOf(false) }
+
     if (CardsToLearn == null){
         throw IllegalArgumentException("LearnScreen called nut CardsToLearn is null")
         navController.popBackStack()
     }
+
+
+            SwipeableFlashcard(
+                flashcard = CardsToLearn!![0],
+                onSwipeLeft = {
+                    Toast.makeText(context, "❌ Wrong Answer", Toast.LENGTH_SHORT).show()
+                    //flashcards = flashcards.drop(1).toMutableList()
+                },
+                onSwipeRight = {
+                    Toast.makeText(context, "✔ Good Answer", Toast.LENGTH_SHORT).show()
+                    //flashcards = flashcards.drop(1).toMutableList()
+                },
+                modifierParsed = Modifier.background(
+                    MaterialTheme.colorScheme.inverseOnSurface,
+            shape = RoundedCornerShape(20.dp)
+            )
+            )
+
+        }
+
+
+
+@Composable
+fun SwipeableFlashcard(
+    flashcard: Flashcard,
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit,
+    modifierParsed: Modifier) {
+    val offsetX = remember { Animatable(0f) }
+    val coroutineScope = rememberCoroutineScope()
+    val swipeThreshold = 100f  // Distance needed to register a swipe
+    var isFlipped by remember { mutableStateOf(false) }
     val rotationYy by animateFloatAsState(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
-    Box(
-        modifier = Modifier
-            .fillMaxHeight()
-            .width(LocalConfiguration.current.screenWidthDp.dp)
-            .graphicsLayer {
-                rotationY = rotationYy
-                cameraDistance = 8 * density // prevents distortion
-            }
-            .clickable { isFlipped = !isFlipped },
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    if (rotationYy > 90f) rotationY = 180f
-                } //prevents the text from rendering right to left
-                .padding(20.dp)
-                .background(
-                    MaterialTheme.colorScheme.inverseOnSurface,
-                    shape = RoundedCornerShape(20.dp)
-                )
 
-        ) {
-            Text(
-                text = if (rotationYy > 90f)  CardsToLearn!![0].SideB else CardsToLearn!![0].SideA,
-                color = MaterialTheme.colorScheme.inverseSurface,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectHorizontalDragGestures(
+                            onDragEnd = {
+                                // Decide if the card should snap back or swipe away
+                                coroutineScope.launch {
+                                    when {
+                                        offsetX.value > swipeThreshold -> {
+                                            offsetX.animateTo(1000f, tween(300))
+                                            onSwipeRight()
+                                        }
+
+                                        offsetX.value < -swipeThreshold -> {
+                                            offsetX.animateTo(-1000f, tween(300))
+                                            onSwipeLeft()
+                                        }
+
+                                        else -> {
+                                            offsetX.animateTo(0f, tween(300)) // Reset position
+                                        }
+                                    }
+                                }
+                            }
+                        ) { _, dragAmount ->
+                            coroutineScope.launch {
+                                offsetX.snapTo(offsetX.value + dragAmount)  // Move card with finger
+                            }
+                        }
+                    }
+                    .offset { IntOffset(offsetX.value.roundToInt(), 0) }
+                    .background(MaterialTheme.colorScheme.background)
+                    .size(300.dp, 200.dp),  // Flashcard size
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(LocalConfiguration.current.screenWidthDp.dp)
+                        .graphicsLayer {
+                            rotationY = rotationYy
+                            cameraDistance = 8 * density // prevents distortion
+                        }
+                        .clickable { isFlipped = !isFlipped }
+                        .padding(20.dp)
+                        .border((abs(offsetX.value)/100).dp, if(offsetX.value < 0) Color(0xff00cc99) else if(offsetX.value > 0) Color(0xffff4d4d) else Color(0x00000000), RoundedCornerShape(20.dp))
+                        .background(
+                            MaterialTheme.colorScheme.inverseOnSurface,
+                            shape = RoundedCornerShape(20.dp)
+                        ),
+
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer {
+                                if (rotationYy > 90f) rotationY = 180f
+                            } //prevents the text from rendering right to left
+                            .padding(20.dp),
+                        contentAlignment = Alignment.Center
+
+                    ) {
+                        Text(
+                            text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
+                            color = MaterialTheme.colorScheme.inverseSurface,
+                            textAlign = TextAlign.Center
+                        )
+            }
         }
     }
 }
+
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -1015,11 +1097,11 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "learn_screen"
+                    startDestination = "deck_menu"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
-                    composable("learn_screen") { LearnScreen(navController)}
+                    composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                     composable("settings") { SettingsMenu(navController) }
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
