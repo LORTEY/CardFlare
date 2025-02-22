@@ -88,6 +88,7 @@ import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
 import com.example.cardflare.addDeck
+import com.example.cardflare.updateSetting
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlin.math.abs
@@ -101,8 +102,9 @@ var appearSortMenu by mutableStateOf(false)
 var sortType by mutableStateOf(SortType.ByName)
 var qualifiedDecks = listOf<Deck>()
 var currentOpenFlashCard by mutableStateOf(0)
+var cardsSelected = mutableStateListOf( *Array(0) { 0 })
 var deckAddMenu by mutableStateOf(false)
-var CardsToLearn: Array<Flashcard>? = null
+var CardsToLearn: MutableList<Flashcard> = mutableListOf()
 public var renderMainMenu by mutableStateOf(true)
 var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Flashcard>()))
 
@@ -348,7 +350,7 @@ fun deckScreen(context: Context, navController: NavController){
     val cards = openedTarget.cards
     var selectMode by remember{ mutableStateOf(false) }
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    var cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 })}
+    cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 })}
 
     BackHandler { // Handle the back button press
         if (deckAddMenu){
@@ -509,7 +511,7 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                 }
             }
                 Row(modifier = Modifier
-                    .clickable {navController.navigate("learn_screen")},
+                    .clickable {CardsToLearn.clear(); cardsSelected.forEachIndexed { index,value-> if(value == 1) CardsToLearn.add(currentOpenedDeck!!.cards[index])}; if (CardsToLearn.size == 0) CardsToLearn = currentOpenedDeck!!.cards.toMutableList(); navController.navigate("learn_screen")},
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
@@ -953,14 +955,15 @@ fun SettingsMenu(navController: NavHostController){
         HorizontalDivider()
         Row(horizontalArrangement = Arrangement.Absolute.SpaceBetween, modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)){
             Text("Dynamic Colors", modifier = Modifier.padding(vertical = 10.dp))
-            val dynamicColorsEnabled = remember { mutableStateOf(AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state) }
+            val appSettings = AppSettings.value
+            var dynamicColorsEnabled = appSettings["USER_ENABLED_DYNAMIC_COLORS"]?.state ?: false
+            require(dynamicColorsEnabled is Boolean)
 
             Switch(
-                checked = dynamicColorsEnabled.value,
+                checked =  dynamicColorsEnabled,
                 onCheckedChange = { newValue ->
-                    dynamicColorsEnabled.value = newValue // Update local state
-                    AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state = newValue
-                Log.d("Settings changed", "${AppSettings["USER_ENABLED_DYNAMIC_COLORS"]!!.state}")// Update AppSettings
+                    dynamicColorsEnabled = newValue // Update local state
+                    updateSetting("USER_ENABLED_DYNAMIC_COLORS",newValue)
                 }
             )
 
@@ -970,7 +973,7 @@ fun SettingsMenu(navController: NavHostController){
 }
 @Composable
 fun LearnScreen(navController: NavController, context: Context){
-    CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
+    //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
 
     if (CardsToLearn == null){
         throw IllegalArgumentException("LearnScreen called nut CardsToLearn is null")
@@ -993,7 +996,6 @@ fun LearnScreen(navController: NavController, context: Context){
             shape = RoundedCornerShape(20.dp)
             )
             )
-
         }
 
 
@@ -1006,82 +1008,83 @@ fun SwipeableFlashcard(
     modifierParsed: Modifier) {
     val offsetX = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
-    val swipeThreshold = 100f  // Distance needed to register a swipe
+    val swipeThreshold = 300f  // Distance needed to register a swipe
     var isFlipped by remember { mutableStateOf(false) }
     val rotationYy by animateFloatAsState(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectHorizontalDragGestures(
-                            onDragEnd = {
-                                // Decide if the card should snap back or swipe away
-                                coroutineScope.launch {
-                                    when {
-                                        offsetX.value > swipeThreshold -> {
-                                            offsetX.animateTo(1000f, tween(300))
-                                            onSwipeRight()
-                                        }
-
-                                        offsetX.value < -swipeThreshold -> {
-                                            offsetX.animateTo(-1000f, tween(300))
-                                            onSwipeLeft()
-                                        }
-
-                                        else -> {
-                                            offsetX.animateTo(0f, tween(300)) // Reset position
-                                        }
-                                    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        // Decide if the card should snap back or swipe away
+                        coroutineScope.launch {
+                            when {
+                                offsetX.value > swipeThreshold -> {
+                                    offsetX.animateTo(1000f, tween(300))
+                                    onSwipeRight()
                                 }
-                            }
-                        ) { _, dragAmount ->
-                            coroutineScope.launch {
-                                offsetX.snapTo(offsetX.value + dragAmount)  // Move card with finger
+
+                                offsetX.value < -swipeThreshold -> {
+                                    offsetX.animateTo(-1000f, tween(300))
+                                    onSwipeLeft()
+                                }
+
+                                else -> {
+                                    offsetX.animateTo(0f, tween(300)) // Reset position
+                                }
                             }
                         }
                     }
-                    .offset { IntOffset(offsetX.value.roundToInt(), 0) }
-                    .background(MaterialTheme.colorScheme.background)
-                    .size(300.dp, 200.dp),  // Flashcard size
+                ) { _, dragAmount ->
+                    coroutineScope.launch {
+                        offsetX.snapTo(offsetX.value + dragAmount)  // Move card with finger
+                    }
+                }
+            }
+            .offset { IntOffset(offsetX.value.roundToInt(), 0) }
+            .background(MaterialTheme.colorScheme.background)
+            .size(300.dp, 200.dp),  // Flashcard size
+        contentAlignment = Alignment.Center
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(LocalConfiguration.current.screenWidthDp.dp)
+                .graphicsLayer {
+                    rotationY = rotationYy
+                    cameraDistance = 8 * density // prevents distortion
+                }
+                .clickable { isFlipped = !isFlipped }
+                .padding(20.dp)
+                .border( if(swipeThreshold<abs(offsetX.value)) (abs(offsetX.value)/100+2).dp else 0.dp, if(offsetX.value < 0) Color(0xff00cc99) else if(offsetX.value > 0) Color(0xffff4d4d) else Color(0x00000000), RoundedCornerShape(20.dp))
+                .background(
+                    MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = RoundedCornerShape(20.dp)
+                ),
+
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        if (rotationYy > 90f) rotationY = 180f
+                    } //prevents the text from rendering right to left
+                    .padding(20.dp),
                 contentAlignment = Alignment.Center
+
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(LocalConfiguration.current.screenWidthDp.dp)
-                        .graphicsLayer {
-                            rotationY = rotationYy
-                            cameraDistance = 8 * density // prevents distortion
-                        }
-                        .clickable { isFlipped = !isFlipped }
-                        .padding(20.dp)
-                        .border((abs(offsetX.value)/100).dp, if(offsetX.value < 0) Color(0xff00cc99) else if(offsetX.value > 0) Color(0xffff4d4d) else Color(0x00000000), RoundedCornerShape(20.dp))
-                        .background(
-                            MaterialTheme.colorScheme.inverseOnSurface,
-                            shape = RoundedCornerShape(20.dp)
-                        ),
-
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer {
-                                if (rotationYy > 90f) rotationY = 180f
-                            } //prevents the text from rendering right to left
-                            .padding(20.dp),
-                        contentAlignment = Alignment.Center
-
-                    ) {
-                        Text(
-                            text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
-                            color = MaterialTheme.colorScheme.inverseSurface,
-                            textAlign = TextAlign.Center
-                        )
+                Text(
+                    text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
