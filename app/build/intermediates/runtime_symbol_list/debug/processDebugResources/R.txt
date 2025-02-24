@@ -677,6 +677,7 @@ int drawable ic_call_decline 0x7f07005f
 int drawable ic_call_decline_low 0x7f070060
 int drawable ic_launcher_background 0x7f070061
 int drawable ic_launcher_foreground 0x7f070062
+int drawable info 0x7f07007c
 int drawable menu 0x7f070063
 int drawable nav_arrow_down 0x7f070064
 int drawable nav_arrow_left 0x7f070065

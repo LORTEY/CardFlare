@@ -85,9 +85,9 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun Material3AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit){
-    val appSettings = AppSettings.value
-    require(appSettings["USER_ENABLED_DYNAMIC_COLORS"]?.state is Boolean)
-    val useDynamicColors = (appSettings["USER_ENABLED_DYNAMIC_COLORS"]?.state ?: false) as Boolean && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    val appSettings = AppSettings
+    require(appSettings["Use Dynamic Color"]?.state is Boolean)
+    val useDynamicColors = (appSettings["Use Dynamic Color"]?.state ?: false) as Boolean && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
     val colors = when{
         useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
         useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)

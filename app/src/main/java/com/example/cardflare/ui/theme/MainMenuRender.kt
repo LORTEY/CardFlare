@@ -67,26 +67,36 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
+import androidx.compose.material3.TextField
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 import com.example.cardflare.AppSettings
+import com.example.cardflare.Category
+import com.example.cardflare.Chooser
 import com.example.cardflare.Deck
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
 import com.example.cardflare.sortDecks
 import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
+import com.example.cardflare.SettingEntry
+import com.example.cardflare.SettingsType
 import com.example.cardflare.addDeck
 import com.example.cardflare.updateSetting
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
@@ -386,7 +396,6 @@ fun deckScreen(context: Context, navController: NavController){
             {
 
                 items(cards.size) { index ->
-
                     Column(modifier = Modifier
                         .shadow(
                             elevation = 10.dp,
@@ -394,7 +403,6 @@ fun deckScreen(context: Context, navController: NavController){
                             clip = false
                         )
                         .background(
-                            //brush = Brush.verticalGradient(
                             if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
                         )
                         .pointerInput(Unit) {
@@ -413,7 +421,6 @@ fun deckScreen(context: Context, navController: NavController){
                                         }
                                     } else {
                                         currentOpenFlashCard = index
-                                        Log.d("CardFlare2", "clicked")
                                         navController.navigate("card_menu")
                                     }
                                 }
@@ -945,32 +952,135 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
 }
 
 @Composable
-fun SettingsMenu(navController: NavHostController){
-    Column(
+fun SettingsMenu(navController: NavHostController, context: Context) {
+    val appSettings = remember { AppSettings } // ✅ Directly reference mutableStateMapOf
+
+    LazyColumn(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-        Text("Appearance", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
-        HorizontalDivider()
-        Row(horizontalArrangement = Arrangement.Absolute.SpaceBetween, modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)){
-            Text("Dynamic Colors", modifier = Modifier.padding(vertical = 10.dp))
-            val appSettings = AppSettings.value
-            var dynamicColorsEnabled = appSettings["USER_ENABLED_DYNAMIC_COLORS"]?.state ?: false
-            require(dynamicColorsEnabled is Boolean)
+        // Correctly loop through categories
+        Category.entries.forEach { category ->
+            val filtered = appSettings.values.filter { it.category == category }
 
-            Switch(
-                checked =  dynamicColorsEnabled,
-                onCheckedChange = { newValue ->
-                    dynamicColorsEnabled = newValue // Update local state
-                    updateSetting("USER_ENABLED_DYNAMIC_COLORS",newValue)
+            if (filtered.isNotEmpty()) {
+                Log.d("FilteredCardFlare", filtered.toString())
+
+                item { // Correctly add category title
+                    Text(
+                        text = category.toString().replace("_", " "),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    HorizontalDivider()
                 }
-            )
 
-
+                // Use `items(filtered)` instead of manual indexing
+                items(filtered) { setting ->
+                    SettingsEntryComposable(setting, appSettings, context)
+                }
+            }
         }
     }
 }
+
+
+
+@Composable
+fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>,context: Context) {
+    var openPopup by remember { mutableStateOf(false) }
+    if (openPopup) {
+        Popup(
+            alignment = Alignment.TopStart,
+            //offset = IntOffset(popupPosition.x.toInt(), popupPosition.y.toInt())
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small)
+                    .padding(16.dp)
+                    .border(1.dp, Color.Gray, MaterialTheme.shapes.small)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(setting.description!!, style = MaterialTheme.typography.titleMedium,color = MaterialTheme.colorScheme.onBackground)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(onClick = { openPopup = false }) {
+                        Text("Close")
+                    }
+                }
+            }
+        }
+    }
+        if ((setting.type == SettingsType.BOOLEAN && setting.customChooser == Chooser.NonSpecified) || setting.customChooser == Chooser.Switch) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = "info",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable { openPopup = true}
+                        .padding(vertical = 10.dp)
+                )
+                Text(setting.name, modifier = Modifier.padding(vertical = 10.dp),color = MaterialTheme.colorScheme.onBackground)
+                Spacer(modifier = Modifier.weight(1f))
+                val state = remember { mutableStateOf(setting.state as Boolean) }
+                Switch(
+                    checked = state.value,
+                    onCheckedChange = { newValue ->
+                        state.value = newValue // Update local state
+                        updateSetting(setting.name, newValue) // Update appSettings state
+                    }
+                )
+            }
+        }else if ((setting.type == SettingsType.SLIDER && setting.customChooser == Chooser.NonSpecified) || setting.customChooser == Chooser.Slider) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 10.dp)){
+                val state = remember { mutableStateOf(setting.state as Float) }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = "info",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable { openPopup = true}
+                        .padding(vertical = 10.dp)
+                )
+                Text(setting.name, modifier = Modifier.padding(vertical = 10.dp))
+                Spacer(modifier = Modifier.weight(1f))
+                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp,vertical = 10.dp).background(MaterialTheme.colorScheme.inverseOnSurface), horizontalArrangement = Arrangement.SpaceEvenly){
+                Text(
+                    text = state.value.toString(),
+                )}
+            }
+            Slider(
+                value = state.value,
+                onValueChange = { newValue ->
+                    state.value = newValue
+                    updateSetting(setting.name, newValue)
+                },
+                valueRange = 0f..800f,
+                steps = 15,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        }
+    }
+
+
 @Composable
 fun LearnScreen(navController: NavController, context: Context){
     //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
@@ -979,11 +1089,9 @@ fun LearnScreen(navController: NavController, context: Context){
         throw IllegalArgumentException("LearnScreen called nut CardsToLearn is null")
         navController.popBackStack()
     }
-
-
             SwipeableFlashcard(
                 flashcard = CardsToLearn!![0],
-                onSwipeLeft = {
+                onSwipeWrong = {
                     Toast.makeText(context, "❌ Wrong Answer", Toast.LENGTH_SHORT).show()
                     //flashcards = flashcards.drop(1).toMutableList()
                 },
@@ -998,17 +1106,19 @@ fun LearnScreen(navController: NavController, context: Context){
             )
         }
 
-
-
 @Composable
 fun SwipeableFlashcard(
     flashcard: Flashcard,
-    onSwipeLeft: () -> Unit,
+    onSwipeWrong: () -> Unit,
     onSwipeRight: () -> Unit,
     modifierParsed: Modifier) {
     val offsetX = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
-    val swipeThreshold = 300f  // Distance needed to register a swipe
+    val appSettings = AppSettings
+    require(appSettings["Flashcard Swipe Threshold"]?.state is Float)
+    require(appSettings["Flip Flashcard Right Wrong Answer"]?.state is Boolean)
+
+    val swipeThreshold = appSettings["Flashcard Swipe Threshold"]?.state as Float // Distance needed to register a swipe
     var isFlipped by remember { mutableStateOf(false) }
     val rotationYy by animateFloatAsState(
         targetValue = if (isFlipped) 180f else 0f,
@@ -1024,14 +1134,22 @@ fun SwipeableFlashcard(
                         // Decide if the card should snap back or swipe away
                         coroutineScope.launch {
                             when {
-                                offsetX.value > swipeThreshold -> {
-                                    offsetX.animateTo(1000f, tween(300))
-                                    onSwipeRight()
-                                }
-
                                 offsetX.value < -swipeThreshold -> {
                                     offsetX.animateTo(-1000f, tween(300))
-                                    onSwipeLeft()
+                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean){
+                                        onSwipeWrong()
+                                    } else {
+                                        onSwipeRight()
+                                    }
+                                }
+
+                                offsetX.value > swipeThreshold -> {
+                                    offsetX.animateTo(1000f, tween(300))
+                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean){
+                                        onSwipeRight()
+                                    } else {
+                                        onSwipeWrong()
+                                    }
                                 }
 
                                 else -> {
@@ -1062,7 +1180,21 @@ fun SwipeableFlashcard(
                 }
                 .clickable { isFlipped = !isFlipped }
                 .padding(20.dp)
-                .border( if(swipeThreshold<abs(offsetX.value)) (abs(offsetX.value)/100+2).dp else 0.dp, if(offsetX.value < 0) Color(0xff00cc99) else if(offsetX.value > 0) Color(0xffff4d4d) else Color(0x00000000), RoundedCornerShape(20.dp))
+                .border(
+                    //Setting Border thickness
+                    if(swipeThreshold<abs(offsetX.value)) {
+                        (abs(offsetX.value) / 100 + 2).dp
+                    }else{
+                        0.dp},
+                    //Setting Color
+                    if((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
+                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)) {
+                        Color(0xff00cc99)
+                    }else if((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
+                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)){
+                        Color(0xffff4d4d)
+                        } else {Color(0x00000000)}
+    ,                   RoundedCornerShape(20.dp))
                 .background(
                     MaterialTheme.colorScheme.inverseOnSurface,
                     shape = RoundedCornerShape(20.dp)
@@ -1100,13 +1232,13 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "deck_menu"
+                    startDestination = "settings"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
                     composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
-                    composable("settings") { SettingsMenu(navController) }
+                    composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
             }
 }

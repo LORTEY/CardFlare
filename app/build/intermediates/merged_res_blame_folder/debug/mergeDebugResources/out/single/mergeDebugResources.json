@@ -8,16 +8,16 @@
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/nav_arrow_down.xml"
     },
     {
-        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_menu.xml.flat",
-        "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/menu.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_nav_arrow_left.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/nav_arrow_left.xml"
     },
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/mipmap-xxhdpi_ic_launcher.webp.flat",
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_nav_arrow_left.xml.flat",
-        "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/nav_arrow_left.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_menu.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/menu.xml"
     },
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/mipmap-mdpi_ic_launcher_round.webp.flat",
@@ -40,6 +40,10 @@
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
+        "merged": "com.example.cardflare.app-debug-66:/drawable_info.xml.flat",
+        "source": "com.example.cardflare.app-main-68:/drawable/info.xml"
+    },
+    {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/mipmap-xhdpi/ic_launcher.webp"
     },
@@ -54,6 +58,10 @@
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_home.xml.flat",
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/home.xml"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_addempty.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/drawable/addempty.xml"
     },
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_plus_circle_solid.xml.flat",
@@ -74,10 +82,6 @@
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-main-68:/mipmap-hdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "com.example.cardflare.app-debug-66:/drawable_addempty.xml.flat",
-        "source": "com.example.cardflare.app-main-68:/drawable/addempty.xml"
     },
     {
         "merged": "/home/lortey/.gradle/daemon/8.10.2/com.example.cardflare.app-debug-66:/drawable_ic_launcher_foreground.xml.flat",

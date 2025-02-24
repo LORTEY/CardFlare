@@ -12,6 +12,7 @@ drawable bar_chart_2
 drawable home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable info
 drawable menu
 drawable nav_arrow_down
 drawable nav_arrow_left

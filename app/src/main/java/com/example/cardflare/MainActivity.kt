@@ -119,7 +119,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("card_menu") { CardMenu(navController) }
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
-                        composable("settings") { SettingsMenu(navController) }
+                        composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
                 }
             }
