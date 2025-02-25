@@ -7,6 +7,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+
+
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
     val assetManager = context.assets
@@ -77,7 +79,8 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
 
             val dateMade = fileContents[0].split(',')[0].toInt()
             val lastEdited = fileContents[0].split(',')[1].toInt()
-            val tags = fileContents[0].split(',').subList(2, fileContents[0].split(',').size)
+            // current flashcard id is skipped
+            val tags = fileContents[0].split(',').subList(3, fileContents[0].split(',').size)
             val cards = mutableListOf<Flashcard>()
 
             fileContents.toList().subList(1, fileContents.size).forEach { card ->
@@ -96,8 +99,42 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
     return decks.toTypedArray()
 }
 
-fun editFlashcard(fileName: String, id: Int){
+/*fun editFlashcard(fileName: String, id: Int){
+    val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
+    val file = File(flashcardDirectory, fileName) // File inside the directory
+    var readData = readFileToArray(fileName, context).toMutableList()
+    readData[0] = updateModifiedTime(readData[0])
+    readData.add("\n${flashcardContent.id},${flashcardContent.SideA},${flashcardContent.SideB}")
+}*/
 
+fun addFlashcard(fileName: String, flashcardContent: Flashcard, context: Context){
+    val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
+    val file = File(flashcardDirectory, fileName) // File inside the directory
+    var readData = readFileToArray(fileName, context).toMutableList()
+    readData[0] = updateModifiedTime(readData[0])
+    var minimalIdResult = getMinimalFlashcardId(readData[0])
+    readData[0] = minimalIdResult.first
+    readData.add("\n${minimalIdResult.second},${flashcardContent.SideA},${flashcardContent.SideB}")
+}
+private fun readFileToArray(fileName: String, context: Context): List<String>{
+    val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
+    val file = File(flashcardDirectory, fileName) // File inside the directory
+    if (file.exists()) {
+        return file.readText().split("\n")
+    }
+    return listOf()
+}
+private fun updateModifiedTime(firstLine:String):String{
+    val currentTimeMillis = System.currentTimeMillis()
+    val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
+    var newLine = firstLine.split(",").toMutableList()
+    newLine[1]= currentTimeTenSec.toString()
+    return newLine.joinToString { "," }
+}
+private fun getMinimalFlashcardId(firstLine:String):Pair<String,Int>{
+    var newLine = firstLine.split(",").toMutableList()
+    newLine[2] = (newLine[2].toInt()+1).toString()
+    return Pair(newLine.joinToString { "," }, newLine[2].toInt())
 }
 fun addDeck(context: Context, fileName: String) {
     val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
@@ -112,7 +149,7 @@ fun addDeck(context: Context, fileName: String) {
         file.createNewFile() // Create new file
         val currentTimeMillis = System.currentTimeMillis()
         val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
-        file.writeText("$currentTimeTenSec,$currentTimeTenSec,\n1,hi,ioe") // Write initial content
+        file.writeText("$currentTimeTenSec,$currentTimeTenSec,0,\n1,hi,ioe") // Write initial content
         reloadDecks(context)
     } else {
         Log.d("FilesDir", flashcardDirectory.list().toList().toString())

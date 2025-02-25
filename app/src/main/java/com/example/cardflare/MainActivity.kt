@@ -30,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.AddDeckScreen
+import com.example.cardflare.ui.theme.AddFlashcardScreen
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
 import com.example.cardflare.ui.theme.LearnScreen
@@ -38,6 +39,7 @@ import com.example.cardflare.ui.theme.SettingsMenu
 import com.example.cardflare.ui.theme.Typography
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
+import com.example.cardflare.ui.theme.translatedFlashcardSide
 import com.google.gson.Gson
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
@@ -67,6 +69,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
         enableEdgeToEdge()
         checkAndRequestPermissions()
         copyAssetsToFilesDir(getApplicationContext())
+        //createTranslator()
+
         startMainMenu()
     }
 
@@ -120,7 +124,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
-                        composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
+                        composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
+                        composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }}
                 }
             }
         }

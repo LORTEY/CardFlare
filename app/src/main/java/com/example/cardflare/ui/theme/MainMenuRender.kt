@@ -78,10 +78,12 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.window.Popup
@@ -97,10 +99,14 @@ import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
 import com.example.cardflare.SettingEntry
 import com.example.cardflare.SettingsType
+import com.example.cardflare.TranslateHelper
 import com.example.cardflare.addDeck
 import com.example.cardflare.updateSetting
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -117,7 +123,7 @@ var deckAddMenu by mutableStateOf(false)
 var CardsToLearn: MutableList<Flashcard> = mutableListOf()
 public var renderMainMenu by mutableStateOf(true)
 var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Flashcard>()))
-
+var translatedFlashcardSide:String = ""
 public fun reloadDecks(context: Context){
     decks = loadData("", context = context)
 }
@@ -483,7 +489,7 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
             Column(verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.End) {
             // Here are all buttons for the menu
             Row(modifier = Modifier
-                .clickable {},
+                .clickable {navController.navigate("add_flashcard")},
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ) {
@@ -495,7 +501,7 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
 
                     ){
                 Text(
-                    "Add Empty Flashcard",
+                    "Add Flashcard",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
@@ -1221,7 +1227,69 @@ fun SwipeableFlashcard(
         }
     }
 }
+@Composable
+fun AddFlashcardScreen(navController: NavController, context: Context){
+    var textStateA by remember {  mutableStateOf("") }
+    var textStateB by remember { mutableStateOf("") }
+    Box(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        Column {
+            Text("Side A", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
 
+            TextField(
+                value = if (textStateA.isBlank()) translatedFlashcardSide else textStateA,
+                onValueChange = { newText -> textStateA = newText; if(textStateB.isEmpty()) getTranslation(textStateA, "pl","en")},
+                //label = { Text(text = if(textStateB.isEmpty()) "Enter Text Of Side A" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp, max = 200.dp)
+                    .background(color = MaterialTheme.colorScheme.inverseOnSurface),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    disabledContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.inverseSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.inverseSurface,
+                ),
+                maxLines = 5,
+                minLines = 1
+            )
+
+            Text("Side B", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+            TextField(
+                value = if (textStateB.isBlank()) translatedFlashcardSide else textStateB,
+                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isEmpty()) getTranslation(textStateB, "en","pl")},
+                //label = { Text(text = if(textStateB.isBlank()) "Enter Text Of Side B" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp, max = 200.dp)
+                    .background(color = MaterialTheme.colorScheme.inverseOnSurface),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    disabledContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.inverseSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.inverseSurface,
+                ),
+                maxLines = 5,
+                minLines = 1
+            )
+        }
+    }
+}
+fun getTranslation(text: String, sourceLanguage: String, targetLanguage: String) {
+    // Use Coroutine to run the translation in background
+    CoroutineScope(Dispatchers.IO).launch {
+        val translated = TranslateHelper.translate(text, sourceLanguage, targetLanguage)
+        withContext(Dispatchers.Main) {
+            Log.d("CardFlareTranslator", translatedFlashcardSide)
+            translatedFlashcardSide = translated
+        }
+    }
+}
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -1232,13 +1300,14 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "settings"
+                    startDestination = "add_flashcard"
                 ) {
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
                     composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
                     composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                     composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
-                    composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }}
+                    composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
+                    composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }}
             }
 }
