@@ -69,7 +69,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
         enableEdgeToEdge()
         checkAndRequestPermissions()
         copyAssetsToFilesDir(getApplicationContext())
-        //createTranslator()
 
         startMainMenu()
     }

@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.cardflare.app-mergeDebugResources-64:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.example.cardflare.app-mergeDebugResources-67:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/0334d8b6cec133217d69f82c7303c16b/transformed/ui-release/res/values-en-rXC/values-en-rXC.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,296,481,678,880,1067,1252,1445,1633,1820,2001,2186,2352,2530,2705,2876,3055,3222",
-                        "endColumns": "190,184,196,201,186,184,192,187,186,180,184,165,177,174,170,178,166,237",
-                        "endOffsets": "291,476,673,875,1062,1247,1440,1628,1815,1996,2181,2347,2525,2700,2871,3050,3217,3455"
-                    },
-                    "to": {
-                        "startLines": "36,37,38,39,40,41,42,99,100,101,102,104,105,106,107,109,110,111",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "6955,7146,7331,7528,7730,7917,8102,20013,20201,20388,20569,20940,21106,21284,21459,21834,22013,22180",
-                        "endColumns": "190,184,196,201,186,184,192,187,186,180,184,165,177,174,170,178,166,237",
-                        "endOffsets": "7141,7326,7523,7725,7912,8097,8290,20196,20383,20564,20749,21101,21279,21454,21625,22008,22175,22413"
-                    }
-                },
-                {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/2c575811a979e70632bd7cd9a6df55dc/transformed/foundation-release/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/80328b3252b6aadac151ae75a75cd99e/transformed/foundation-release/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/a59eb0535fb2ef67e8a3308f0add92aa/transformed/material3-release/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/a15face6b1d582b2f3990dd481260387/transformed/material3-release/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,7 +38,24 @@
                     }
                 },
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/ca4ead1712484f2f4db564421646a6f5/transformed/core-1.15.0/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/11c42e253f83c86541b21c521a3af3ac/transformed/ui-release/res/values-en-rXC/values-en-rXC.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,296,481,678,880,1067,1252,1445,1633,1820,2001,2186,2352,2530,2705,2876,3055,3222",
+                        "endColumns": "190,184,196,201,186,184,192,187,186,180,184,165,177,174,170,178,166,237",
+                        "endOffsets": "291,476,673,875,1062,1247,1440,1628,1815,1996,2181,2347,2525,2700,2871,3050,3217,3455"
+                    },
+                    "to": {
+                        "startLines": "36,37,38,39,40,41,42,99,100,101,102,104,105,106,107,109,110,111",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "6955,7146,7331,7528,7730,7917,8102,20013,20201,20388,20569,20940,21106,21284,21459,21834,22013,22180",
+                        "endColumns": "190,184,196,201,186,184,192,187,186,180,184,165,177,174,170,178,166,237",
+                        "endOffsets": "7141,7326,7523,7725,7912,8097,8290,20196,20383,20564,20749,21101,21279,21454,21625,22008,22175,22413"
+                    }
+                },
+                {
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/57f1ac49024b4af1cce36443d182306f/transformed/core-1.15.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -72,7 +72,7 @@
                     }
                 },
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/7914c116561972b7aa1cf5ca15d444fc/transformed/appcompat-1.7.0/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/ba95b590f47c4695eda4bebbf3f35da7/transformed/appcompat-1.7.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

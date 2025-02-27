@@ -99,9 +99,12 @@ import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
 import com.example.cardflare.SettingEntry
 import com.example.cardflare.SettingsType
-import com.example.cardflare.TranslateHelper
 import com.example.cardflare.addDeck
+import com.example.cardflare.addFlashcard
+import com.example.cardflare.createTranslator
 import com.example.cardflare.updateSetting
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translator
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlinx.coroutines.CoroutineScope
@@ -188,8 +191,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                             .height(100.dp)
                                             .padding(10.dp)
                                             .clickable {
-                                                currentOpenedDeck =
-                                                    qualifiedDecks[index];
+                                                currentOpenedDeck = qualifiedDecks[index];
                                                 navController.navigate("deck_menu")
                                             }
                                     )
@@ -318,10 +320,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                SortMenuContent(decks = decks, searchQuery = searchQuery)
                            }
                        }
-
-
                     }
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1231,6 +1230,10 @@ fun SwipeableFlashcard(
 fun AddFlashcardScreen(navController: NavController, context: Context){
     var textStateA by remember {  mutableStateOf("") }
     var textStateB by remember { mutableStateOf("") }
+    var defaultStateA by remember {  mutableStateOf("") }
+    var defaultStateB by remember { mutableStateOf("") }
+    val translator = remember { createTranslator(TranslateLanguage.ENGLISH, TranslateLanguage.POLISH) }
+    translator.downloadModelIfNeeded()
     Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -1240,8 +1243,9 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             Text("Side A", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
 
             TextField(
-                value = if (textStateA.isBlank()) translatedFlashcardSide else textStateA,
-                onValueChange = { newText -> textStateA = newText; if(textStateB.isEmpty()) getTranslation(textStateA, "pl","en")},
+                value = textStateA,
+                placeholder = {Text(defaultStateA, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f))},
+                onValueChange = { newText -> textStateA = newText; if(textStateB.isBlank()) translateText(textStateA, translator){result-> defaultStateB = result}},
                 //label = { Text(text = if(textStateB.isEmpty()) "Enter Text Of Side A" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1260,8 +1264,9 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
 
             Text("Side B", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
             TextField(
-                value = if (textStateB.isBlank()) translatedFlashcardSide else textStateB,
-                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isEmpty()) getTranslation(textStateB, "en","pl")},
+                value = textStateB,
+                placeholder = {Text(defaultStateB, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f))},
+                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isBlank()) translateText(textStateB, translator){result-> defaultStateA = result} },
                 //label = { Text(text = if(textStateB.isBlank()) "Enter Text Of Side B" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1277,18 +1282,42 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 maxLines = 5,
                 minLines = 1
             )
+                val ableToAdd = (textStateA.isNotBlank() || defaultStateA.isNotBlank()) && (textStateB.isNotBlank() || defaultStateB.isNotBlank())
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp, horizontal = 20.dp)
+                    .background(color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = if(ableToAdd) 1f else 0.5f))
+                    .height(50.dp)
+                    .clickable {
+                        if (ableToAdd) {
+                            addFlashcard(
+                                currentOpenedDeck!!.name,
+                                Flashcard(
+                                    0,
+                                    SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
+                                    SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB
+                                ), context = context
+                            )
+                            currentOpenedDeck = loadData(fileName = currentOpenedDeck!!.name,context = context)[0]
+                            defaultStateA = ""
+                            defaultStateB = ""
+                            textStateA = ""
+                            textStateB = ""
+                        }
+                    },
+                    horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Text("Add", style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = if (ableToAdd) 1f else 0.5f),)
+                }
+            }
         }
     }
-}
-fun getTranslation(text: String, sourceLanguage: String, targetLanguage: String) {
-    // Use Coroutine to run the translation in background
-    CoroutineScope(Dispatchers.IO).launch {
-        val translated = TranslateHelper.translate(text, sourceLanguage, targetLanguage)
-        withContext(Dispatchers.Main) {
-            Log.d("CardFlareTranslator", translatedFlashcardSide)
-            translatedFlashcardSide = translated
-        }
-    }
+fun translateText(text: String, translator: Translator, onResult: (String) -> Unit) {
+    Log.d("CardflareTranslator","hii");
+    translator.translate(text)
+        .addOnSuccessListener { translatedText -> onResult(translatedText) }
+        .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }
 }
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
