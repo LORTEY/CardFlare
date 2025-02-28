@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -41,6 +42,7 @@ import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
 import com.example.cardflare.ui.theme.translatedFlashcardSide
 import com.google.gson.Gson
+import com.google.mlkit.nl.translate.TranslateLanguage
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
 
@@ -65,6 +67,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        val translator = createTranslator(TranslateLanguage.ENGLISH, TranslateLanguage.POLISH)
+        translator.downloadModelIfNeeded()
         listenToKillYourselfBroadcast()
         enableEdgeToEdge()
         checkAndRequestPermissions()

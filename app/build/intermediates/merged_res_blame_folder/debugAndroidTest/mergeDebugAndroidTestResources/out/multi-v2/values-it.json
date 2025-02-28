@@ -4,7 +4,7 @@
             "outputFile": "com.example.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-it/values-it.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/0334d8b6cec133217d69f82c7303c16b/transformed/ui-release/res/values-it/values-it.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/a1018a280fd777e551e298a1ec69fc9c/transformed/ui-release/res/values-it/values-it.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/ca4ead1712484f2f4db564421646a6f5/transformed/core-1.15.0/res/values-it/values-it.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/res/values-it/values-it.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

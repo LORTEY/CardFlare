@@ -89,12 +89,18 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
             // current flashcard id is skipped
             val tags = fileContents[0].split(',').subList(3, fileContents[0].split(',').size)
             val cards = mutableListOf<Flashcard>()
-
-            fileContents.toList().subList(1, fileContents.size).forEach { card ->
-                Log.d("cards", card)
-                cards.add(Flashcard(id = card.split(',').toTypedArray()[0].toInt(), SideA = card.split(',').toTypedArray()[1], SideB = card.split(',').toTypedArray()[2]))
+            if(fileContents.toList().size > 1) {
+                fileContents.toList().subList(1, fileContents.size).forEach { card ->
+                    Log.d("cards", card)
+                    cards.add(
+                        Flashcard(
+                            id = card.split(',').toTypedArray()[0].toInt(),
+                            SideA = deSanitizeString(card.split(',').toTypedArray()[1]),
+                            SideB = deSanitizeString(card.split(',').toTypedArray()[2])
+                        )
+                    )
+                }
             }
-
             decks.add(Deck(name = fileName, date_made = dateMade, last_edited = lastEdited, tags = tags, cards = cards))
 
         } catch (e: Exception) {
@@ -120,7 +126,7 @@ fun addFlashcard(fileName: String, flashcardContent: Flashcard, context: Context
     Log.d("CardFlareLine", readData.toString())
     var minimalIdResult = getMinimalFlashcardId(readData.get(0))
     readData[0] = minimalIdResult.first
-    readData.add("${minimalIdResult.second},${flashcardContent.SideA},${flashcardContent.SideB}")
+    readData.add("${minimalIdResult.second},${sanitizeString(flashcardContent.SideA)},${sanitizeString(flashcardContent.SideB)}")
     Log.d("CardFlareLine",readData.joinToString("\n"))
     writeToFile(fileName, context = context, readData.joinToString("\n"))
 }
@@ -150,6 +156,34 @@ private fun updateModifiedTime(firstLine:String):String{
     val returner = newLine.joinToString ("," )
     return returner
 }
+
+private fun sanitizeString(text:String):String{
+    var returnedText = ""
+    val illegalCharacters:Array<Char> = arrayOf(',','\n','\\')
+    text.forEachIndexed { index, character->
+        if (character in illegalCharacters) {
+            val encoded = "\\" + character.toInt().toString() + "\\"
+            returnedText += encoded
+        }else{
+            returnedText += character
+        }
+    }
+    Log.d("CardflareLine", returnedText)
+    return returnedText
+}
+private fun deSanitizeString(text:String):String{
+    var returnedText = text.split("\\").toMutableList()
+
+    returnedText.forEachIndexed { index, string->
+
+        if (index%2 == 1){
+                returnedText[index] = string.toInt().toChar().toString()
+        }else{
+            returnedText[index] = string
+        }
+    }
+    return returnedText.joinToString("")
+}
 private fun getMinimalFlashcardId(firstLine:String):Pair<String,Int>{
     var newLine = firstLine.split(",")
     Log.d("CardFlareLine",firstLine.toString())
@@ -170,7 +204,7 @@ fun addDeck(context: Context, fileName: String) {
         file.createNewFile() // Create new file
         val currentTimeMillis = System.currentTimeMillis()
         val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
-        file.writeText("$currentTimeTenSec,$currentTimeTenSec,0,\n1,hi,ioe") // Write initial content
+        file.writeText("$currentTimeTenSec,$currentTimeTenSec,0,") // Write initial content
         reloadDecks(context)
     } else {
         Log.d("FilesDir", flashcardDirectory.list().toList().toString())

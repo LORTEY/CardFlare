@@ -1,117 +1,94 @@
 package com.example.cardflare.ui.theme
 
+import android.R.attr.maxLines
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cardflare.R
-import android.content.Context
-import android.os.Build
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.runtime.*
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Popup
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Switch
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.window.Popup
-import androidx.navigation.NavController
 import com.example.cardflare.AppSettings
 import com.example.cardflare.Category
 import com.example.cardflare.Chooser
 import com.example.cardflare.Deck
-import com.example.cardflare.SortType
-import com.example.cardflare.loadData
-import com.example.cardflare.sortDecks
-import kotlinx.coroutines.launch
 import com.example.cardflare.Flashcard
+import com.example.cardflare.R
 import com.example.cardflare.SettingEntry
 import com.example.cardflare.SettingsType
+import com.example.cardflare.SortType
 import com.example.cardflare.addDeck
 import com.example.cardflare.addFlashcard
 import com.example.cardflare.createTranslator
+import com.example.cardflare.loadData
+import com.example.cardflare.sortDecks
 import com.example.cardflare.updateSetting
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translator
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
+
 
 //This file contains all the ui
 var currentOpenedDeck : Deck? by mutableStateOf(null)
@@ -185,7 +162,7 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                                 clip = false
                                             )
                                             .background(
-                                            MaterialTheme.colorScheme.inverseOnSurface
+                                                MaterialTheme.colorScheme.inverseOnSurface
                                             )
                                             .fillMaxWidth(0.5f)
                                             .height(100.dp)
@@ -193,7 +170,9 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                                             .clickable {
                                                 currentOpenedDeck = qualifiedDecks[index];
                                                 navController.navigate("deck_menu")
-                                            }
+                                            },
+                                        maxLines = 3,
+                                        overflow = TextOverflow.Ellipsis
                                     )
 
 
@@ -325,12 +304,14 @@ fun MainMenuRender(navController: NavHostController, context: Context) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(90.dp)
-                            .background(brush = Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.background,
-                                MaterialTheme.colorScheme.background.copy(alpha = 0f)
-                            ))
-                        )
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        MaterialTheme.colorScheme.background,
+                                        MaterialTheme.colorScheme.background.copy(alpha = 0f)
+                                    )
+                                )
+                            )
                     ){}
                 }
 
@@ -408,7 +389,7 @@ fun deckScreen(context: Context, navController: NavController){
                             clip = false
                         )
                         .background(
-                            if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
+                            if (cardsSelected[index] == 0) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
@@ -439,12 +420,16 @@ fun deckScreen(context: Context, navController: NavController){
                         Text(
                             text = cards[index].SideA,
                             color =  if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                             )
                         Text(
                             text = cards[index].SideB,
                             color = if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.inverseOnSurface,
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                             )
                     }
                 }
@@ -496,7 +481,8 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                     .padding(vertical = 10.dp, horizontal = 8.dp)
                     .background(
                         shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface)
+                        color = MaterialTheme.colorScheme.inverseOnSurface
+                    )
 
                     ){
                 Text(
@@ -507,9 +493,11 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                     modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
                 )}
                 //row is here just for background color
-                Row(modifier = Modifier.background(
-                    shape = RoundedCornerShape(128.dp),
-                    color = MaterialTheme.colorScheme.inverseOnSurface)
+                Row(modifier = Modifier
+                    .background(
+                        shape = RoundedCornerShape(128.dp),
+                        color = MaterialTheme.colorScheme.inverseOnSurface
+                    )
                     .size(48.dp)
                 ) {
                     Icon(
@@ -531,7 +519,8 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                         .padding(vertical = 10.dp, horizontal = 8.dp)
                         .background(
                             shape = RoundedCornerShape(128.dp),
-                            color = MaterialTheme.colorScheme.inverseOnSurface)
+                            color = MaterialTheme.colorScheme.inverseOnSurface
+                        )
 
                     ){
                         Text(
@@ -542,9 +531,11 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
                         )}
                     //row is here just for background color
-                    Row(modifier = Modifier.background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface)
+                    Row(modifier = Modifier
+                        .background(
+                            shape = RoundedCornerShape(128.dp),
+                            color = MaterialTheme.colorScheme.inverseOnSurface
+                        )
                         .size(48.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.addempty),
@@ -564,7 +555,8 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                         .padding(vertical = 10.dp, horizontal = 8.dp)
                         .background(
                             shape = RoundedCornerShape(128.dp),
-                            color = MaterialTheme.colorScheme.inverseOnSurface)
+                            color = MaterialTheme.colorScheme.inverseOnSurface
+                        )
 
                     ){
                         Text(
@@ -575,9 +567,11 @@ fun DeckAddMenu(navController: NavController){ // nothing here yet
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
                         )}
                     //row is here just for background color
-                    Row(modifier = Modifier.background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface)
+                    Row(modifier = Modifier
+                        .background(
+                            shape = RoundedCornerShape(128.dp),
+                            color = MaterialTheme.colorScheme.inverseOnSurface
+                        )
                         .size(48.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.bar_chart_2),
@@ -667,7 +661,8 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
                         Text(
                             text = if (rotationYy > 90f)  cards[flashcardIndex].SideB else cards[flashcardIndex].SideA,
                             color = MaterialTheme.colorScheme.inverseSurface,
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -720,7 +715,7 @@ fun SlideMenuContent(navController: NavController){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)
-        .clickable { navController.navigate("settings")}){
+        .clickable { navController.navigate("settings") }){
         Icon(
             painter = painterResource(id = R.drawable.settings),
             contentDescription = "chart",
@@ -1002,7 +997,10 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
         ) {
             Box(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.small)
+                    .background(
+                        MaterialTheme.colorScheme.inverseOnSurface,
+                        shape = MaterialTheme.shapes.small
+                    )
                     .padding(16.dp)
                     .border(1.dp, Color.Gray, MaterialTheme.shapes.small)
             ) {
@@ -1033,7 +1031,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .clickable { openPopup = true}
+                        .clickable { openPopup = true }
                         .padding(vertical = 10.dp)
                 )
                 Text(setting.name, modifier = Modifier.padding(vertical = 10.dp),color = MaterialTheme.colorScheme.onBackground)
@@ -1061,12 +1059,15 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .clickable { openPopup = true}
+                        .clickable { openPopup = true }
                         .padding(vertical = 10.dp)
                 )
                 Text(setting.name, modifier = Modifier.padding(vertical = 10.dp))
                 Spacer(modifier = Modifier.weight(1f))
-                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp,vertical = 10.dp).background(MaterialTheme.colorScheme.inverseOnSurface), horizontalArrangement = Arrangement.SpaceEvenly){
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 10.dp)
+                    .background(MaterialTheme.colorScheme.inverseOnSurface), horizontalArrangement = Arrangement.SpaceEvenly){
                 Text(
                     text = state.value.toString(),
                 )}
@@ -1141,7 +1142,7 @@ fun SwipeableFlashcard(
                             when {
                                 offsetX.value < -swipeThreshold -> {
                                     offsetX.animateTo(-1000f, tween(300))
-                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean){
+                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean) {
                                         onSwipeWrong()
                                     } else {
                                         onSwipeRight()
@@ -1150,7 +1151,7 @@ fun SwipeableFlashcard(
 
                                 offsetX.value > swipeThreshold -> {
                                     offsetX.animateTo(1000f, tween(300))
-                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean){
+                                    if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean) {
                                         onSwipeRight()
                                     } else {
                                         onSwipeWrong()
@@ -1187,19 +1188,24 @@ fun SwipeableFlashcard(
                 .padding(20.dp)
                 .border(
                     //Setting Border thickness
-                    if(swipeThreshold<abs(offsetX.value)) {
+                    if (swipeThreshold < abs(offsetX.value)) {
                         (abs(offsetX.value) / 100 + 2).dp
-                    }else{
-                        0.dp},
+                    } else {
+                        0.dp
+                    },
                     //Setting Color
-                    if((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
-                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)) {
+                    if ((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
+                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
+                    ) {
                         Color(0xff00cc99)
-                    }else if((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
-                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)){
+                    } else if ((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
+                        || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
+                    ) {
                         Color(0xffff4d4d)
-                        } else {Color(0x00000000)}
-    ,                   RoundedCornerShape(20.dp))
+                    } else {
+                        Color(0x00000000)
+                    }, RoundedCornerShape(20.dp)
+                )
                 .background(
                     MaterialTheme.colorScheme.inverseOnSurface,
                     shape = RoundedCornerShape(20.dp)
@@ -1287,7 +1293,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 10.dp, horizontal = 20.dp)
-                    .background(color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = if(ableToAdd) 1f else 0.5f))
+                    .background(color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = if (ableToAdd) 1f else 0.5f))
                     .height(50.dp)
                     .clickable {
                         if (ableToAdd) {
@@ -1299,7 +1305,8 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                                     SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB
                                 ), context = context
                             )
-                            currentOpenedDeck = loadData(fileName = currentOpenedDeck!!.name,context = context)[0]
+                            currentOpenedDeck =
+                                loadData(fileName = currentOpenedDeck!!.name, context = context)[0]
                             defaultStateA = ""
                             defaultStateB = ""
                             textStateA = ""
@@ -1307,8 +1314,10 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                         }
                     },
                     horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text("Add", style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = if (ableToAdd) 1f else 0.5f),)
+                    Text(
+                        "Add", style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = if (ableToAdd) 1f else 0.5f),
+                    )
                 }
             }
         }

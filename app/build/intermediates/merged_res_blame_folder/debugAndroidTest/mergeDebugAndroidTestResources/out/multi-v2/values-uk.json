@@ -4,24 +4,7 @@
             "outputFile": "com.example.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-uk/values-uk.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/ca4ead1712484f2f4db564421646a6f5/transformed/core-1.15.0/res/values-uk/values-uk.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,155,257,358,459,564,669,782",
-                        "endColumns": "99,101,100,100,104,104,112,100",
-                        "endOffsets": "150,252,353,454,559,664,777,878"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,24",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,205,307,408,509,614,719,2112",
-                        "endColumns": "99,101,100,100,104,104,112,100",
-                        "endOffsets": "200,302,403,504,609,714,827,2208"
-                    }
-                },
-                {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/0334d8b6cec133217d69f82c7303c16b/transformed/ui-release/res/values-uk/values-uk.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/a1018a280fd777e551e298a1ec69fc9c/transformed/ui-release/res/values-uk/values-uk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -35,6 +18,23 @@
                         "startOffsets": "832,925,1009,1111,1212,1296,1378,1467,1555,1637,1722,1810,1882,1958,2035,2213,2293,2363",
                         "endColumns": "92,83,101,100,83,81,88,87,81,84,87,71,75,76,76,79,69,122",
                         "endOffsets": "920,1004,1106,1207,1291,1373,1462,1550,1632,1717,1805,1877,1953,2030,2107,2288,2358,2481"
+                    }
+                },
+                {
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/res/values-uk/values-uk.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,155,257,358,459,564,669,782",
+                        "endColumns": "99,101,100,100,104,104,112,100",
+                        "endOffsets": "150,252,353,454,559,664,777,878"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,24",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,205,307,408,509,614,719,2112",
+                        "endColumns": "99,101,100,100,104,104,112,100",
+                        "endOffsets": "200,302,403,504,609,714,827,2208"
                     }
                 }
             ]
