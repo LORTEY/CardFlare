@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-55:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-55:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-55:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-55:12
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-57:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-57:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-57:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-57:12
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/2660c86c60f6dbb09b0c555f3a792502/transformed/coil-svg-2.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:2:1-20:12
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:2:1-26:12
@@ -128,9 +128,15 @@ MERGED from [com.google.android.datatransport:transport-runtime:2.2.6] /home/lor
 MERGED from [com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:22:5-79
 	android:name
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:22-76
+uses-permission#android.permission.QUERY_ALL_PACKAGES
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:5-9:53
+	tools:ignore
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:9-50
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:22-74
 application
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:5-49:19
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:5-49:19
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:5-51:19
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:5-51:19
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:10:5-18:19
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:10:5-18:19
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:8:5-24:19
@@ -166,99 +172,99 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/lorte
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:16:9-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:18:9-35
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:14:9-41
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:16:9-41
 	android:fullBackupContent
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:12:9-54
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:14:9-54
 	android:roundIcon
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:15:9-54
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:17:9-54
 	tools:targetApi
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:9-29
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:9-29
 	android:icon
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:9-43
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:15:9-43
 	android:allowBackup
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:10:9-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:12:9-35
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:17:9-47
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:9-47
 	android:dataExtractionRules
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:9-65
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:9-65
 	android:usesCleartextTraffic
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:18:9-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:20:9-44
 service#com.example.cardflare.AppMonitorService
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:20:9-23:72
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:22:9-25:72
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:22:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:13-36
 	android:foregroundServiceType
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:23:13-69
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:25:13-69
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:13-46
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:23:13-46
 activity#com.example.cardflare.MainActivity
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:9-33:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:26:9-35:20
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:13-45
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:29:13-45
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:26:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:13-36
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:13-51
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:30:13-51
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:25:13-41
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:29:13-32:29
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:31:13-34:29
 action#android.intent.action.MAIN
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:30:17-69
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:32:17-69
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:30:25-66
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:32:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:31:17-77
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:33:17-77
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:31:27-74
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:33:27-74
 activity#com.example.cardflare.OverlayActivity
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:34:9-41:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:36:9-43:20
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:36:13-45
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:38:13-45
 	android:excludeFromRecents
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:39:13-46
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:41:13-46
 	android:launchMode
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:38:13-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:40:13-44
 	android:permission
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:40:13-72
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:42:13-72
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:37:13-72
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:39:13-72
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:35:13-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:37:13-44
 receiver#com.example.cardflare.broadcasters.KillMain
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:42:9-48:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:44:9-50:20
 	android:enabled
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:43:13-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:45:13-35
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:44:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:13-36
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:42:19-56
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:44:19-56
 intent-filter#action:name:com.example.KILL_MAIN_ACTIVITY
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:45:13-47:29
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:47:13-49:29
 action#com.example.KILL_MAIN_ACTIVITY
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:17-73
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:48:17-73
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:25-70
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:48:25-70
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:50:5-80
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:5-80
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:50:22-77
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:22-77
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:51:5-81
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:5-81
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:51:22-78
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:22-78
 uses-permission#android.permission.SYSTEM_ALERT_WINDOW
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:5-77
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:54:5-77
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:22-75
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:54:22-75
 uses-permission#android.permission.PACKAGE_USAGE_STATS
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:5-114
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:55:5-114
 	tools:ignore
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:76-111
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:55:76-111
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:22-75
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:55:22-75
 uses-sdk
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml

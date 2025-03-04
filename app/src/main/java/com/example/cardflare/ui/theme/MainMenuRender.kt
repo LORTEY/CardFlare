@@ -2,6 +2,11 @@ package com.example.cardflare.ui.theme
 
 import android.R.attr.maxLines
 import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Color.parseColor
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -16,6 +21,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -47,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
@@ -66,11 +74,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cardflare.AppInfo
 import com.example.cardflare.AppSettings
 import com.example.cardflare.Category
 import com.example.cardflare.Chooser
 import com.example.cardflare.Deck
 import com.example.cardflare.Flashcard
+import com.example.cardflare.GetListOfApps
 import com.example.cardflare.R
 import com.example.cardflare.SettingEntry
 import com.example.cardflare.SettingsType
@@ -724,17 +734,29 @@ fun SlideMenuContent(navController: NavController){
         Text(text = "Settings", color = MaterialTheme.colorScheme.primary)
 
     }
+
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)
-        .clickable { }){
+        .clickable { navController.navigate("main_menu")}){
         Icon(
             painter = painterResource(id = R.drawable.home),
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Menuoption2", color = MaterialTheme.colorScheme.primary)
+        Text(text = "Home", color = MaterialTheme.colorScheme.primary)
+    }
 
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clickable { navController.navigate("launch_on_manager")}){
+        Icon(
+            painter = painterResource(id = R.drawable.home),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(text = "Launch On Options", color = MaterialTheme.colorScheme.primary)
     }
 }
 
@@ -1328,6 +1350,55 @@ fun translateText(text: String, translator: Translator, onResult: (String) -> Un
         .addOnSuccessListener { translatedText -> onResult(translatedText) }
         .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }
 }
+@Composable
+fun LaunchOnMenu(context: Context, navController: NavController){
+    val apps = remember {GetListOfApps(context)}
+    Log.d("cardflareSS", apps.toString())
+    LazyColumn(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        items(apps){app->
+            Row(){
+                AppItem(app)
+            }
+        }
+    }
+
+}
+@Composable
+fun AppItem(appInfo: AppInfo) {
+    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+        Image(
+            bitmap = drawableToBitmap(appInfo.icon).asImageBitmap(),
+            contentDescription = null,
+            modifier = Modifier.size(48.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = appInfo.name, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+fun drawableToBitmap(drawable: Drawable?): Bitmap {
+    if (drawable == null) {
+        // Return an empty 1x1 transparent bitmap if drawable is null
+        return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888).apply {
+            eraseColor(parseColor("#00000000"))
+        }
+    }
+    if (drawable is BitmapDrawable) {
+        return drawable.bitmap
+    }
+    val bitmap = Bitmap.createBitmap(
+        drawable.intrinsicWidth,
+        drawable.intrinsicHeight,
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = android.graphics.Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
+    drawable.draw(canvas)
+    return bitmap
+}
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -1338,8 +1409,9 @@ fun preview(){
                 // navigation graph
                 NavHost(
                     navController = navController,
-                    startDestination = "add_flashcard"
+                    startDestination = "launch_on_manager"
                 ) {
+                    composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
                     composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                     composable("card_menu") { CardMenu(navController) }
                     composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}

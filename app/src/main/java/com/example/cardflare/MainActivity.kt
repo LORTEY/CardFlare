@@ -34,6 +34,7 @@ import com.example.cardflare.ui.theme.AddDeckScreen
 import com.example.cardflare.ui.theme.AddFlashcardScreen
 import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
+import com.example.cardflare.ui.theme.LaunchOnMenu
 import com.example.cardflare.ui.theme.LearnScreen
 import com.example.cardflare.ui.theme.Material3AppTheme
 import com.example.cardflare.ui.theme.SettingsMenu
@@ -122,6 +123,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         navController = navController,
                         startDestination = "main_menu"
                     ) {
+                        composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
                         composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                         composable("card_menu") { CardMenu(navController) }
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}

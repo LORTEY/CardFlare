@@ -253,6 +253,7 @@ public fun sortDecks(searchQuery: String, decks: Array<Deck>, sortType: SortType
         return decksQualified
     }
 
+
 public enum class SortType{
     ByName,
     ByCreationDate,
