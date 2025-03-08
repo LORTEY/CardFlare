@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
+//File contains functions to fetch apps installed on device and store user configs of qhat decks to launch on what apps
 data class AppInfo(
     val name: String,
     val icon: Drawable?
