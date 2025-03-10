@@ -1,6 +1,9 @@
 package com.example.cardflare
 
+import android.R
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.app.usage.UsageStatsManager
 import android.content.Context
@@ -11,7 +14,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
+
 
 class AppMonitorService : Service() {
     // This is the foreground service that checks if certain apps are open and starts OverlayActivity
@@ -20,6 +23,7 @@ class AppMonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        startForeground(1, createNotification());
         //Starts monitoring
         startMonitoring()
     }
@@ -37,6 +41,22 @@ class AppMonitorService : Service() {
         })
     }
 
+    private fun createNotification(): Notification {
+        
+        val channel = NotificationChannel(
+            "channel_id",
+            "Foreground Service Channel",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
+
+        return NotificationCompat.Builder(this, "channel_id")
+            .setContentTitle("Foreground Service")
+            .setContentText("Running...")
+            .setSmallIcon(R.drawable.ic_notification_overlay)
+            .build()
+    }
     //returns the name of currently used app
    fun getForegroundApp(context: Context): String? {
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager

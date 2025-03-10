@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+
+
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
@@ -22,7 +26,7 @@
         <service
             android:name=".AppMonitorService"
             android:exported="true"
-            android:foregroundServiceType="location|connectedDevice" />
+            android:foregroundServiceType="specialUse"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -68,8 +68,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val translator = createTranslator(TranslateLanguage.ENGLISH, TranslateLanguage.POLISH)
-        translator.downloadModelIfNeeded()
+        val intent = Intent(this, AppMonitorService::class.java)
+        ContextCompat.startForegroundService(this, intent)
         listenToKillYourselfBroadcast()
         enableEdgeToEdge()
         checkAndRequestPermissions()
@@ -105,8 +105,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
     @OptIn(ExperimentalSnapperApi::class)
     private fun startMainMenu() {
-        val intent = Intent(this, AppMonitorService::class.java)
-        ContextCompat.startForegroundService(this, intent)
+
         renderMainMenu = true
 
         setContent {
