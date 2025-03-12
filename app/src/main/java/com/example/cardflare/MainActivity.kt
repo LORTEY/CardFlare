@@ -1,28 +1,22 @@
 package com.example.cardflare
 
 import android.Manifest
-
 import android.app.AppOpsManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -32,18 +26,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.ui.theme.AddDeckScreen
 import com.example.cardflare.ui.theme.AddFlashcardScreen
-import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.CardMenu
 import com.example.cardflare.ui.theme.LaunchOnMenu
 import com.example.cardflare.ui.theme.LearnScreen
+import com.example.cardflare.ui.theme.MainMenuRender
 import com.example.cardflare.ui.theme.Material3AppTheme
 import com.example.cardflare.ui.theme.SettingsMenu
-import com.example.cardflare.ui.theme.Typography
 import com.example.cardflare.ui.theme.deckScreen
 import com.example.cardflare.ui.theme.renderMainMenu
-import com.example.cardflare.ui.theme.translatedFlashcardSide
-import com.google.gson.Gson
-import com.google.mlkit.nl.translate.TranslateLanguage
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
 
@@ -68,9 +58,15 @@ class MainActivity : androidx.activity.ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+
+        listenToKillYourselfBroadcast()
+        if (!hasUsageStatsPermission()) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            startActivity(intent)
+        }
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
-        listenToKillYourselfBroadcast()
         enableEdgeToEdge()
         checkAndRequestPermissions()
         copyAssetsToFilesDir(getApplicationContext())
@@ -184,4 +180,13 @@ class MainActivity : androidx.activity.ComponentActivity(){
         return mode == AppOpsManager.MODE_ALLOWED
         return false
     }
+    private fun hasUsageStatsPermission(): Boolean {
+        val appOps = getSystemService(APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            Process.myUid(), packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
+
 }

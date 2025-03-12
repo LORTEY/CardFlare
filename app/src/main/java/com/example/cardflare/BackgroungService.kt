@@ -23,6 +23,7 @@ class AppMonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        createNotificationChannel()
         startForeground(1, createNotification());
         //Starts monitoring
         startMonitoring()
@@ -41,20 +42,26 @@ class AppMonitorService : Service() {
         })
     }
 
-    private fun createNotification(): Notification {
-        
+    private fun createNotificationChannel() {
+        val channelId = "background_service_channel"
         val channel = NotificationChannel(
-            "channel_id",
-            "Foreground Service Channel",
-            NotificationManager.IMPORTANCE_LOW
+            channelId, "Background Service", NotificationManager.IMPORTANCE_HIGH
+        )
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
+    }
+    private fun createNotification(): Notification {
+        val channelId = "background_service_channel"
+        val channel = NotificationChannel(
+            channelId, "Background Service", NotificationManager.IMPORTANCE_HIGH
         )
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
 
-        return NotificationCompat.Builder(this, "channel_id")
-            .setContentTitle("Foreground Service")
-            .setContentText("Running...")
-            .setSmallIcon(R.drawable.ic_notification_overlay)
+        return NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Service Running")
+            .setContentText("This service runs in the background")
+            .setSmallIcon(com.example.cardflare.R.drawable.ic_launcher_foreground)
             .build()
     }
     //returns the name of currently used app
@@ -94,5 +101,16 @@ class AppMonitorService : Service() {
             Log.e("BackgroundService", "Overlay permission not granted")
         }
     }
-    override fun onBind(intent: Intent?): IBinder? = null
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY // Ensures the service restarts if killed
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
 }
