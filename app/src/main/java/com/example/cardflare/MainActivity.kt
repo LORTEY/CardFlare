@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
@@ -65,6 +66,12 @@ class MainActivity : androidx.activity.ComponentActivity(){
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
             startActivity(intent)
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()

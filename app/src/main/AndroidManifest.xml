@@ -7,9 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -31,8 +29,7 @@
         <service
             android:name=".AppMonitorService"
             android:exported="true"
-            android:foregroundServiceType="dataSync"
-            tools:ignore="ForegroundServicePermission" />
+            android:foregroundServiceType="dataSync"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

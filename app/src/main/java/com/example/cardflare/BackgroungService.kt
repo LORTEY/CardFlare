@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 
 class AppMonitorService : Service() {
     // This is the foreground service that checks if certain apps are open and starts OverlayActivity
+    // I dont know why it does not show a notification but it seems not to be closing automatically so its good
     private val handler = Handler(Looper.getMainLooper())
     private val checkInterval = 2000L // Recheck every 2 seconds
 
