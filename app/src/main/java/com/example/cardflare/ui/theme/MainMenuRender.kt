@@ -778,6 +778,7 @@ fun MyOverlayComposable() {
         )
     }
 }
+// The menu that appears when you press pluss button on the deck view screen
 @Composable
 fun AddDeckScreen(context: Context,navController: NavController){
     var DeckName by remember{ mutableStateOf("") }
@@ -974,9 +975,10 @@ fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
         .padding(vertical = 5.dp))
 }
 
+// The settings screen
 @Composable
 fun SettingsMenu(navController: NavHostController, context: Context) {
-    val appSettings = remember { AppSettings } // ✅ Directly reference mutableStateMapOf
+    val appSettings = remember { AppSettings } mutableStateMapOf
 
     LazyColumn(
         modifier = Modifier
