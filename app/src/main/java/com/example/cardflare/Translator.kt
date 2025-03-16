@@ -5,6 +5,7 @@ import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
 
+// File that manages translator
 fun createTranslator(sourceLang: String, targetLang: String): Translator {
     val options = TranslatorOptions.Builder()
         .setSourceLanguage(sourceLang)
