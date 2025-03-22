@@ -25,16 +25,16 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cardflare.ui.theme.AddDeckScreen
-import com.example.cardflare.ui.theme.AddFlashcardScreen
-import com.example.cardflare.ui.theme.CardMenu
-import com.example.cardflare.ui.theme.LaunchOnMenu
-import com.example.cardflare.ui.theme.LearnScreen
-import com.example.cardflare.ui.theme.MainMenuRender
+import com.example.cardflare.uiRender.AddDeckScreen
+import com.example.cardflare.uiRender.AddFlashcardScreen
+import com.example.cardflare.uiRender.CardMenu
+import com.example.cardflare.uiRender.LaunchOnMenu
+import com.example.cardflare.uiRender.LearnScreen
+import com.example.cardflare.uiRender.MainMenuRender
 import com.example.cardflare.ui.theme.Material3AppTheme
-import com.example.cardflare.ui.theme.SettingsMenu
-import com.example.cardflare.ui.theme.deckScreen
-import com.example.cardflare.ui.theme.renderMainMenu
+import com.example.cardflare.uiRender.SettingsMenu
+import com.example.cardflare.uiRender.deckScreen
+import com.example.cardflare.uiRender.renderMainMenu
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
 
@@ -128,7 +128,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
                         composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
                         composable("card_menu") { CardMenu(navController) }
-                        composable("learn_screen") { LearnScreen(navController,context = LocalContext.current)}
+                        composable("learn_screen") { LearnScreen(navController,context = LocalContext.current) }
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
@@ -137,8 +137,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
             }
         }
     }
-
-
 
     /*
     @Preview(showBackground = true)
@@ -195,5 +193,4 @@ class MainActivity : androidx.activity.ComponentActivity(){
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }
-
 }

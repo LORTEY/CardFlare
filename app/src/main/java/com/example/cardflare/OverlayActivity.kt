@@ -5,7 +5,6 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Toast
@@ -13,7 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import com.example.cardflare.ui.theme.MyOverlayComposable
+import com.example.cardflare.uiRender.MyOverlayComposable
 
 
 class OverlayActivity : ComponentActivity() {
