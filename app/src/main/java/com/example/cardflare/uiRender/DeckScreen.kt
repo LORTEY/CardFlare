@@ -172,7 +172,7 @@ fun deckScreen(context: Context, navController: NavController){
 
 }
 @Composable
-fun DeckAddMenu(navController: NavController){ // nothing here yet
+fun DeckAddMenu(navController: NavController){
     AnimatedVisibility(
         modifier = Modifier.padding(horizontal = 40.dp),
         visible = deckAddMenu,

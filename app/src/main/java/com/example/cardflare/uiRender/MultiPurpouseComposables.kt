@@ -1,0 +1,102 @@
+package com.example.cardflare.uiRender
+
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.cardflare.R
+
+public data class AddMenuEntry(
+    val Name:String,
+    val Icon: Int,
+    val Action :() -> Unit
+)
+@Composable
+fun UniversalAddMenu(context: Context, navController: NavController, visibility: Boolean, entries: List<AddMenuEntry>) {
+    AnimatedVisibility(
+        modifier = Modifier.padding(horizontal = 40.dp),
+        visible = visibility,
+        enter = fadeIn(animationSpec = tween(100)) + slideInVertically(
+            animationSpec = tween(100)
+        ) { fullWidth -> fullWidth / 2 },
+        exit = fadeOut(animationSpec = tween(100)) + slideOutVertically(
+            animationSpec = tween(100)
+        ) { fullWidth -> fullWidth / 2 }
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            // Here are all buttons for the menu
+            entries.forEach() { entry ->
+                Row(
+                    modifier = Modifier
+                        .clickable { entry.Action},
+                    horizontalArrangement = Arrangement.SpaceBetween
+
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(vertical = 10.dp, horizontal = 8.dp)
+                            .background(
+                                shape = RoundedCornerShape(128.dp),
+                                color = MaterialTheme.colorScheme.inverseOnSurface
+                            )
+
+                    ) {
+                        Text(
+                            entry.Name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
+                        )
+                    }
+                    //row is here just for background color
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                shape = RoundedCornerShape(128.dp),
+                                color = MaterialTheme.colorScheme.inverseOnSurface
+                            )
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = entry.Icon),
+                            contentDescription = "chart",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(10.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
