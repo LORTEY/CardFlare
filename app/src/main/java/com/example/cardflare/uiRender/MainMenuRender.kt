@@ -114,7 +114,7 @@ fun MyOverlayComposable() {
         )
     }
 }
-
+/*
 @OptIn(ExperimentalSnapperApi::class)
 @Preview()
 @Composable
@@ -136,4 +136,4 @@ fun preview(){
                     composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
                     composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }}
             }
-}
+}*/

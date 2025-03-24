@@ -1,6 +1,12 @@
 package com.example.cardflare
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateMapOf
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import java.io.File
+
 
 // This file handles settings of the app
 fun updateSetting(key: String, newState: Any) {//the settings map is rebuilt in order to force jetpack compose to update on change
@@ -8,8 +14,69 @@ fun updateSetting(key: String, newState: Any) {//the settings map is rebuilt in 
     AppSettings[key] = currentEntry.copy(state = newState) // ✅ Triggers recomposition
 }
 
+fun saveSettings(context: Context){
+    val json = Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+    }
+    // Convert map to JSON string
+    val jsonString = json.encodeToString(encodeSettings())
+    // Save to file
+    val file = File(context.getExternalFilesDir(null), "settings.json")
+    file.writeText(jsonString)
+}
 
+fun loadSettings(context: Context) {
+    val file = File(context.getExternalFilesDir(null), "settings.json")
+    if (file.exists()) {
+        val json = Json { ignoreUnknownKeys = true }
+            val map = json.decodeFromString<Map<String,String>>(file.readText())
+        decodeSettings(map = map)
+    }
+}
+private fun decodeSettings(map: Map<String,String>){
+    map.forEach{(key, value) ->
+        if(AppSettings[key]?.type != null) {
+            val loadedState = settingTypeToType(value, AppSettings[key]!!.type)
+            AppSettings[key]!!.state = loadedState
+        }
+    }
+    updateSetting("Use Dynamic Color", AppSettings["Use Dynamic Color"]!!.state)
+}
+private fun encodeSettings():Map<String,String> {
+    val mappedSettings: MutableMap<String, String> = mutableMapOf()
 
+    AppSettings.forEach { (key, value) ->
+        mappedSettings[key] = value.state.toString()
+    }
+    return mappedSettings
+}
+private fun settingTypeToType(input:String, type:SettingsType):Any{
+    when (type){
+        SettingsType.BOOLEAN -> {
+            try{
+                return input.toBoolean()
+            }catch (e: Exception){
+                return ""
+            }
+        }
+        SettingsType.SLIDER -> {
+            try{
+                return input.toFloat()
+            }catch (e: Exception){
+                return ""
+            }
+        }
+        SettingsType.COLOR_PICKER -> {
+            try{
+                return input
+            }catch (e: Exception){
+                return ""
+            }
+        }
+
+    }
+}
 val AppSettings = mutableStateMapOf(
     "Use Dynamic Color" to SettingEntry(
         category = Category.Appearance,

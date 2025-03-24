@@ -164,156 +164,24 @@ fun deckScreen(context: Context, navController: NavController){
                     modifier = Modifier
                         //.width(128.dp)
                         .align(Alignment.End)) {
-                    DeckAddMenu(navController)
+                    UniversalAddMenu(deckAddMenu, changeVisibility = { deckAddMenu = !deckAddMenu},
+                        listOf(
+                            AddMenuEntry("Learn",
+                                R.drawable.addempty,
+                                { CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
+                                    if(value == 1) CardsToLearn.add(
+                                    currentOpenedDeck!!.cards[index])};
+                                    if (CardsToLearn.size == 0)
+                                        CardsToLearn = currentOpenedDeck!!.cards.toMutableList();
+                                    navController.navigate("learn_screen") }),
+                            AddMenuEntry("Add Flashcard",
+                                R.drawable.settings,
+                                {navController.navigate("add_flashcard")})
+
+                    ))
                 }
             }
         }
     }
 
-}
-@Composable
-fun DeckAddMenu(navController: NavController){
-    AnimatedVisibility(
-        modifier = Modifier.padding(horizontal = 40.dp),
-        visible = deckAddMenu,
-        enter = fadeIn(animationSpec = tween(100)) + slideInVertically(
-            animationSpec = tween(100)
-        ) { fullWidth -> fullWidth / 2 },
-        exit = fadeOut(animationSpec = tween(100)) + slideOutVertically(
-            animationSpec = tween(100)
-        ) { fullWidth -> fullWidth / 2 }
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp), horizontalAlignment = Alignment.End) {
-            // Here are all buttons for the menu
-            Row(modifier = Modifier
-                .clickable {navController.navigate("add_flashcard")},
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-                Box(modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-
-                ){
-                    Text(
-                        "Add Flashcard",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
-                    )
-                }
-                //row is here just for background color
-                Row(modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-                    .size(48.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.settings),
-                        contentDescription = "chart",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(10.dp)
-                    )
-                }
-            }
-            Row(modifier = Modifier
-                .clickable {
-                    CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value-> if(value == 1) CardsToLearn.add(
-                    currentOpenedDeck!!.cards[index])}; if (CardsToLearn.size == 0) CardsToLearn = currentOpenedDeck!!.cards.toMutableList(); navController.navigate("learn_screen")},
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-                Box(modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-
-                ){
-                    Text(
-                        "Learn",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
-                    )
-                }
-                //row is here just for background color
-                Row(modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-                    .size(48.dp)) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.addempty),
-                        contentDescription = "chart",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(10.dp)
-                    )
-                }
-            }
-            Row(modifier = Modifier
-                .clickable {},
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-
-                ){
-                    Text(
-                        "Also Something Else",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
-                    )
-                }
-                //row is here just for background color
-                Row(modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(128.dp),
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-                    .size(48.dp)) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.bar_chart_2),
-                        contentDescription = "chart",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(64.dp)
-                            .padding(10.dp)
-                    )
-                }
-            }
-        }
-
-
-    }
-
-    Icon(
-        painter = painterResource(id = R.drawable.plus_circle_solid),
-        contentDescription = "chart",
-        tint = MaterialTheme.colorScheme.primary,
-        modifier = Modifier
-            .size(128.dp)
-            .padding(15.dp)
-            .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-            .clickable { deckAddMenu = !deckAddMenu }
-    )
 }

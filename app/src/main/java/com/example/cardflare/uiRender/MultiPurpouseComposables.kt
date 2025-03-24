@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,10 +26,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.R
 
 public data class AddMenuEntry(
@@ -37,7 +41,7 @@ public data class AddMenuEntry(
     val Action :() -> Unit
 )
 @Composable
-fun UniversalAddMenu(context: Context, navController: NavController, visibility: Boolean, entries: List<AddMenuEntry>) {
+fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries: List<AddMenuEntry>) {
     AnimatedVisibility(
         modifier = Modifier.padding(horizontal = 40.dp),
         visible = visibility,
@@ -62,7 +66,7 @@ fun UniversalAddMenu(context: Context, navController: NavController, visibility:
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(vertical = 10.dp, horizontal = 8.dp)
+                            .padding(vertical = 6.dp, horizontal = 8.dp)
                             .background(
                                 shape = RoundedCornerShape(128.dp),
                                 color = MaterialTheme.colorScheme.inverseOnSurface
@@ -99,4 +103,14 @@ fun UniversalAddMenu(context: Context, navController: NavController, visibility:
             }
         }
     }
+    Icon(
+        painter = painterResource(id = R.drawable.plus_circle_solid),
+        contentDescription = "chart",
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .size(128.dp)
+            .padding(15.dp)
+            .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+            .clickable { changeVisibility()})
 }
+

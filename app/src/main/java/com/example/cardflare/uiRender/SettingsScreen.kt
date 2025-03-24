@@ -27,6 +27,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +39,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.example.cardflare.AppSettings
 import com.example.cardflare.Category
@@ -44,6 +48,7 @@ import com.example.cardflare.Chooser
 import com.example.cardflare.R
 import com.example.cardflare.SettingEntry
 import com.example.cardflare.SettingsType
+import com.example.cardflare.saveSettings
 import com.example.cardflare.updateSetting
 
 
@@ -51,7 +56,11 @@ import com.example.cardflare.updateSetting
 @Composable
 fun SettingsMenu(navController: NavHostController, context: Context) {
     val appSettings = remember { AppSettings }
-
+    DisposableEffect(Unit) {
+        onDispose {
+            saveSettings(context)
+        }
+    }
     LazyColumn(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -64,7 +73,7 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
             if (filtered.isNotEmpty()) {
                 Log.d("FilteredCardFlare", filtered.toString())
 
-                item { // Correctly add category title
+                item {
                     Text(
                         text = category.toString().replace("_", " "),
                         style = MaterialTheme.typography.headlineMedium,
@@ -73,7 +82,6 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
                     HorizontalDivider()
                 }
 
-                // Use `items(filtered)` instead of manual indexing
                 items(filtered) { setting ->
                     SettingsEntryComposable(setting, appSettings, context)
                 }
@@ -82,15 +90,12 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
     }
 }
 
-
-
 @Composable
 fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>, context: Context) {
     var openPopup by remember { mutableStateOf(false) }
     if (openPopup) {
         Popup(
             alignment = Alignment.TopStart,
-            //offset = IntOffset(popupPosition.x.toInt(), popupPosition.y.toInt())
         ) {
             Box(
                 modifier = Modifier

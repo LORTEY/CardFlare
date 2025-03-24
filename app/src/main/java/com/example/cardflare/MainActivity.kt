@@ -32,6 +32,7 @@ import com.example.cardflare.uiRender.LaunchOnMenu
 import com.example.cardflare.uiRender.LearnScreen
 import com.example.cardflare.uiRender.MainMenuRender
 import com.example.cardflare.ui.theme.Material3AppTheme
+import com.example.cardflare.uiRender.Greeter
 import com.example.cardflare.uiRender.SettingsMenu
 import com.example.cardflare.uiRender.deckScreen
 import com.example.cardflare.uiRender.renderMainMenu
@@ -71,11 +72,10 @@ class MainActivity : androidx.activity.ComponentActivity(){
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
-
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
-        checkAndRequestPermissions()
+
         copyAssetsToFilesDir(getApplicationContext())
 
         startMainMenu()
@@ -108,7 +108,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
     @OptIn(ExperimentalSnapperApi::class)
     private fun startMainMenu() {
-
+        loadSettings(applicationContext)
         renderMainMenu = true
 
         setContent {
@@ -126,7 +126,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         startDestination = "main_menu"
                     ) {
                         composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
-                        composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
+                        composable("main_menu") { MainMenuRender(navController, context = LocalContext.current, ::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1) }
                         composable("card_menu") { CardMenu(navController) }
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current) }
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
@@ -149,7 +149,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         }*/
 
 
-    private fun checkAndRequestPermissions() {
+    private fun checkAndRequestPermissions1() {
         // List of permissions to check
         val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
         Log.d("ReadWrite:", "Feature enabled: " + (ContextCompat.checkSelfPermission(this, storagePermission)!= PackageManager.PERMISSION_GRANTED).toString())
@@ -175,21 +175,36 @@ class MainActivity : androidx.activity.ComponentActivity(){
             STORAGE_PERMISSION_CODE
         )
     }
-    fun isUsageAccessGranted(context: Context): Boolean {
-        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOpsManager.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            android.os.Process.myUid(),
-            context.packageName
-        )
-        return mode == AppOpsManager.MODE_ALLOWED
-        return false
-    }
     private fun hasUsageStatsPermission(): Boolean {
         val appOps = getSystemService(APP_OPS_SERVICE) as AppOpsManager
         val mode = appOps.checkOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
             Process.myUid(), packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
+    private fun areAnyPermissionsMissing1(): Boolean {
+        // Check storage permission
+        val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val isStorageGranted = ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED
+
+        // Check overlay permission
+        val isOverlayGranted = Settings.canDrawOverlays(this)
+
+        // Check usage stats permission
+        val isUsageAccessGranted = isUsageAccessGranted(this)
+
+        // Return true if any permission is missing
+        return !isStorageGranted || !isOverlayGranted || !isUsageAccessGranted
+    }
+
+    // Helper function (already in your code)
+    private fun isUsageAccessGranted(context: Context): Boolean {
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOpsManager.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            context.packageName
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }

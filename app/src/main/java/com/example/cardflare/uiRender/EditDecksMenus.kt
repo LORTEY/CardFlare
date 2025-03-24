@@ -68,33 +68,3 @@ fun AddDeckScreen(context: Context, navController: NavController){
         Text("Add", Modifier.clickable { addDeck(context, DeckName); navController.popBackStack()})
     }
 }
-
-@Preview
-@Composable
-fun previewing(){
-    renderMainMenu = true
-
-        // Apply Material 3 Theme with Dynamic Colors
-        Material3AppTheme {
-            val navController = rememberNavController()
-            val colorScheme = MaterialTheme.colorScheme
-            Log.d("ThemeDebug", MaterialTheme.colorScheme.primary.toString())
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = colorScheme.background
-            ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = "main_menu"
-                ) {
-                    composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
-                    composable("main_menu") { MainMenuRender(navController, context = LocalContext.current) }
-                    //composable("card_menu") { CardMenu(navController) }
-                    composable("learn_screen") { LearnScreen(navController,context = LocalContext.current) }
-                    composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
-                    composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
-                    composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
-                    composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }}
-            }
-        }
-}

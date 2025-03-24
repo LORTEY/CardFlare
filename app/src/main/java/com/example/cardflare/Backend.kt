@@ -211,8 +211,6 @@ fun addDeck(context: Context, fileName: String) {
     }
 }
 
-
-
 public fun sortDecks(searchQuery: String, decks: Array<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
         // Enumerating tags
         var tagsRequired = mutableListOf<String>()
