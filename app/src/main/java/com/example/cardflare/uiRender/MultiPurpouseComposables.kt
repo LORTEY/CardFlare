@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,12 +27,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cardflare.R
@@ -58,9 +63,10 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
         ) {
             // Here are all buttons for the menu
             entries.forEach() { entry ->
+
                 Row(
                     modifier = Modifier
-                        .clickable { entry.Action},
+                        .clickable (onClick = {entry.Action()}),
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ) {
@@ -111,6 +117,75 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
             .size(128.dp)
             .padding(15.dp)
             .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-            .clickable { changeVisibility()})
+            .clickable { changeVisibility() })
 }
 
+
+@Composable
+fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:Boolean, secondButton:(@Composable () -> Unit)? = null){
+
+        Popup(
+
+            properties = PopupProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
+    ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(20.dp)
+                    .clickable(onClick = { closeAction() }),
+                contentAlignment = Alignment.Center
+            ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            //.align(Alignment.Center)
+                            .background(
+                                shape = MaterialTheme.shapes.medium,
+                                color = MaterialTheme.colorScheme.background
+                            )
+                            .clickable {}
+                    ) {
+                        if (title.length > 1) {
+                            androidx.compose.material.Text(
+                                text = title,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(3.dp),
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        }
+                        androidx.compose.material.Text(
+                            text = text,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(5.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .fillMaxWidth()
+                        ) {
+                            androidx.compose.material.Text(
+                                "Close",
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .padding(5.dp)
+                                    .clickable(onClick = { closeAction() }),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            if(secondButton != null){
+                                secondButton()
+                            }
+                        }
+                    }
+                }
+
+        }
+}

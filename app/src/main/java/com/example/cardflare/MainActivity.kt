@@ -60,8 +60,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-
+        /*
         listenToKillYourselfBroadcast()
         if (!hasUsageStatsPermission()) {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
@@ -75,9 +74,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
-
-        copyAssetsToFilesDir(getApplicationContext())
-
+        */
         startMainMenu()
     }
 
@@ -113,6 +110,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
         setContent {
             // Apply Material 3 Theme with Dynamic Colors
+            //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)
             Material3AppTheme {
                 val navController = rememberNavController()
                 val colorScheme = MaterialTheme.colorScheme
@@ -157,6 +155,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
             // Permission is not granted
             requestStoragePermission()
         }
+
         if (!Settings.canDrawOverlays(getApplicationContext())) {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"))
             startActivity(intent)
@@ -195,7 +194,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val isUsageAccessGranted = isUsageAccessGranted(this)
 
         // Return true if any permission is missing
-        return !isStorageGranted || !isOverlayGranted || !isUsageAccessGranted
+        return /*!isStorageGranted ||*/ !isOverlayGranted || !isUsageAccessGranted
     }
 
     // Helper function (already in your code)

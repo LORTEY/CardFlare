@@ -94,7 +94,10 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
 fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>, context: Context) {
     var openPopup by remember { mutableStateOf(false) }
     if (openPopup) {
-        Popup(
+        if(!setting.description.isNullOrEmpty()) {
+            PopUp(setting.name, setting.description, { openPopup = !openPopup }, openPopup)
+        }
+        /*Popup(
             alignment = Alignment.TopStart,
         ) {
             Box(
@@ -118,7 +121,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     }
                 }
             }
-        }
+        }*/
     }
     if ((setting.type == SettingsType.BOOLEAN && setting.customChooser == Chooser.NonSpecified) || setting.customChooser == Chooser.Switch) {
         Row(

@@ -26,11 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 
 @Composable
 fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing:() -> Boolean){
-    if (arePermissionsMissing()) {
+    if(arePermissionsMissing()) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -41,10 +42,13 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth().align(Alignment.Center).background(
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.background
-                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+                    .background(
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.background
+                    )
             ) {
                 Text(
                     text = "Welcome",
@@ -53,7 +57,7 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = "Thank you for downloading Cardflare. Before we begin you will need to give this app permissions to do a couple things. To learn more about why we need this permissions or if you would like to learn how to use the app please click the 'Learn More' button below. If you don't have any further questions please click the 'Grant Permissions' button below.",
+                    text = "Thank you for downloading Cardflare. Before we begin you will need to give those app permissions to do a couple things. To learn more about why we need this permissions or if you would like to learn how to use the app please click the 'Learn More' button below. If you don't have any further questions please click the 'Grant Permissions' button below.",
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(5.dp),
                     textAlign = TextAlign.Center,
@@ -61,25 +65,30 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
                 )
                 Row(
                     horizontalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier.padding(4.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         "Learn More",
-                        modifier = Modifier.background(MaterialTheme.colorScheme.primary)
-                            .padding(5.dp).clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
-                            context.startActivity(intent)
-                        },
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(5.dp)
+                            .clickable {
+                                val intent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
+                                context.startActivity(intent)
+                            },
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.bodyLarge
                     )
 
                     Text(
                         "Grant Permissions",
-                        modifier = Modifier.background(MaterialTheme.colorScheme.primary)
-                            .padding(5.dp).clickable {
-                            permissionGrant()
-                        },
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(5.dp)
+                            .clickable(onClick = { permissionGrant() }),
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.bodyLarge
                     )

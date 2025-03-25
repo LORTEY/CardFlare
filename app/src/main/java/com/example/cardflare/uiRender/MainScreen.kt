@@ -75,9 +75,9 @@ import com.example.cardflare.ui.theme.Material3AppTheme
 
 @Composable
 fun MainMenuRender(navController: NavHostController, context: Context, permissionGranter:() -> Unit, arePermissionsMissing:()->Boolean) {
-    if(arePermissionsMissing()) {
-        Greeter(context, permissionGranter, arePermissionsMissing)
-    }
+    Log.d("cardflare2", arePermissionsMissing().toString())
+
+
     decks = loadData("", context = context)
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
@@ -298,6 +298,9 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                         SlideMenuContent(navController)
                     }
                 }
+            }
+            if(arePermissionsMissing()) {
+                Greeter(context, permissionGranter, arePermissionsMissing)
             }
         }
     }

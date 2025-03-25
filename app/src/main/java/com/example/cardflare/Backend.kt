@@ -111,8 +111,8 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
     }
     return decks.toTypedArray()
 }
-
-/*fun editFlashcard(fileName: String, id: Int){
+/*
+fun editFlashcard(context: Context, fileName: String, id: Int){
     val flashcardDirectory = File(context.filesDir, "FlashcardDirectory")
     val file = File(flashcardDirectory, fileName) // File inside the directory
     var readData = readFileToArray(fileName, context).toMutableList()
@@ -120,25 +120,25 @@ fun loadData(fileName: String = "", context: Context): Array<Deck> {
     readData.add("\n${flashcardContent.id},${flashcardContent.SideA},${flashcardContent.SideB}")
 }*/
 
-fun addFlashcard(fileName: String, flashcardContent: Flashcard, context: Context) {
-    var readData = readFileToArray(fileName, context)
+fun addFlashcard(fileName: String, flashcardContent: Flashcard, context: Context, folderName:String="FlashcardDirectory") {
+    var readData = readFileToArray(fileName, context,folderName)
     readData[0] = updateModifiedTime(readData.get(0))
     Log.d("CardFlareLine", readData.toString())
     var minimalIdResult = getMinimalFlashcardId(readData.get(0))
     readData[0] = minimalIdResult.first
     readData.add("${minimalIdResult.second},${sanitizeString(flashcardContent.SideA)},${sanitizeString(flashcardContent.SideB)}")
     Log.d("CardFlareLine",readData.joinToString("\n"))
-    writeToFile(fileName, context = context, readData.joinToString("\n"))
+    writeToFile(fileName, context = context, readData.joinToString("\n"), folderName)
 }
-private fun writeToFile(fileName:String, context: Context, content: String){
-    val flashcardDirectory = File(context.getExternalFilesDir(null), "FlashcardDirectory") // Use getExternalFilesDir() here
+private fun writeToFile(fileName:String, context: Context, content: String, folderName:String){
+    val flashcardDirectory = File(context.getExternalFilesDir(null), folderName)
     val file = File(flashcardDirectory, fileName) // File inside the directory
     file.bufferedWriter().use { writer ->
         writer.write(content)
     }
 }
-private fun readFileToArray(fileName: String, context: Context): MutableList<String> {
-    val flashcardDirectory = File(context.getExternalFilesDir(null), "FlashcardDirectory") // Use getExternalFilesDir() here
+private fun readFileToArray(fileName: String, context: Context, folderName:String): MutableList<String> {
+    val flashcardDirectory = File(context.getExternalFilesDir(null), folderName)
     val file = File(flashcardDirectory, fileName) // File inside the directory
     if (file.exists()) {
         val contens = file.bufferedReader().use { it.readText() }
@@ -185,9 +185,9 @@ private fun deSanitizeString(text:String):String{
     return returnedText.joinToString("")
 }
 private fun getMinimalFlashcardId(firstLine:String):Pair<String,Int>{
-    var newLine = firstLine.split(",")
+    var newLine = firstLine.split(",").toMutableList()
     Log.d("CardFlareLine",firstLine.toString())
-    //newLine[2] = (newLine[2].toInt()+1).toString()
+    newLine[2] = (newLine[2].toInt()+1).toString()
     return Pair(newLine.joinToString ( "," ), newLine[2].toInt())
 }
 fun addDeck(context: Context, fileName: String) {
@@ -250,6 +250,51 @@ public fun sortDecks(searchQuery: String, decks: Array<Deck>, sortType: SortType
 
         return decksQualified
     }
+
+
+fun MoveCardToBin(context: Context, fileName: String, card: Flashcard) {
+    val BinDir = File(
+        context.getExternalFilesDir(null),
+        "BinDirectory"
+    ) // Use getExternalFilesDir() here
+    if (!BinDir.exists()) {
+        BinDir.mkdirs() // Create folder if it doesn't exist
+    }
+    val file = File(BinDir, "$fileName") // File inside the directory
+    if (!file.exists()) {
+        file.createNewFile() // Create new file
+        val currentTimeMillis = System.currentTimeMillis()
+        val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
+        file.writeText("$currentTimeTenSec,$currentTimeTenSec,0,") // Write initial content
+        reloadDecks(context)
+    }
+    addFlashcard(fileName = fileName, flashcardContent = card, context = context, folderName = "BinDirectory")
+    removeFlashcard(context = context, fileName = fileName, card = card)
+}
+fun removeFlashcard(context: Context, fileName: String, card: Flashcard) {
+    val fileData = readFileToArray(fileName, context, "FlashcardDirectory").toMutableList()
+
+    val iterator = fileData.listIterator(1)
+    while (iterator.hasNext()) {
+        try {
+            val element = iterator.next()
+            if (element.split(",")[0].toInt() == card.id) {
+                iterator.remove()
+            }
+        } catch (e: Exception) {
+            Log.d("cardflare", "Error Reading id of card ${iterator.previous()}")
+            iterator.next()
+        }
+    }
+
+    writeToFile(fileName, context, fileData.joinToString("\n"), "FlashcardDirectory")
+}
+
+fun removeMultiple(context: Context,fileName: String, cards:List<Flashcard>){
+    cards.forEach(){element ->
+        MoveCardToBin(context = context, fileName = fileName, card = element)
+    }
+}
 
 
 public enum class SortType{

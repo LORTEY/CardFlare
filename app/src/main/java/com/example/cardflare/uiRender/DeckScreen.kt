@@ -33,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,13 +52,18 @@ import androidx.navigation.NavController
 import com.example.cardflare.Deck
 import com.example.cardflare.Flashcard
 import com.example.cardflare.R
+import com.example.cardflare.loadData
+import com.example.cardflare.removeMultiple
 
+
+//:fun adjustSelected(cardsSelected:)
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())
-    val cards = openedTarget.cards
+    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())) }
+    var cards by remember{mutableStateOf(openedTarget.cards)}
     var selectMode by remember{ mutableStateOf(false) }
+
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
     cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 }) }
 
@@ -176,7 +182,21 @@ fun deckScreen(context: Context, navController: NavController){
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
                                 R.drawable.settings,
-                                {navController.navigate("add_flashcard")})
+                                {navController.navigate("add_flashcard")}),
+                            AddMenuEntry("Remove Flashcards",
+                            Icon = R.drawable.nav_arrow_down,
+                                Action = {
+                                    CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
+                                    if(value == 1) CardsToLearn.add(
+                                        currentOpenedDeck!!.cards[index])};
+                                    /*if (CardsToLearn.size == 0)
+                                        CardsToLearn = currentOpenedDeck!!.cards.toMutableList()};*/
+                                    if (CardsToLearn.size > 0) removeMultiple(context = context, fileName = currentOpenedDeck!!.name, cards = CardsToLearn);
+                                    openedTarget = loadData(currentOpenedDeck!!.name, context = context)[0] ;
+                                    cards = openedTarget.cards;
+
+                                    }
+                            )
 
                     ))
                 }
