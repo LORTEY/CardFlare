@@ -46,22 +46,22 @@
 22-->/home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:12:22-75
 23
 24    <permission
-24-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:22:5-24:47
+24-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:22:5-24:47
 25        android:name="com.example.cardflare.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-25-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:23:9-81
+25-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:23:9-81
 26        android:protectionLevel="signature" />
-26-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:24:9-44
+26-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:24:9-44
 27
 28    <uses-permission android:name="com.example.cardflare.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-28-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:26:5-97
-28-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:26:22-94
+28-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:26:5-97
+28-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:26:22-94
 29
 30    <application
 30-->/home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:18:5-58:19
 31        android:allowBackup="true"
 31-->/home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:9-35
 32        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-32-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
+32-->[androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
 33        android:dataExtractionRules="@xml/data_extraction_rules"
 33-->/home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:20:9-65
 34        android:debuggable="true"
@@ -144,159 +144,159 @@
 76        </receiver>
 77
 78        <service
-78-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:11:9-17:19
+78-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:11:9-17:19
 79            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
-79-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:12:13-91
+79-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:12:13-91
 80            android:directBootAware="true"
-80-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:17:13-43
+80-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:17:13-43
 81            android:exported="false" >
-81-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:13:13-37
+81-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:13:13-37
 82            <meta-data
-82-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:14:13-16:85
+82-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:14:13-16:85
 83                android:name="com.google.firebase.components:com.google.mlkit.nl.translate.NaturalLanguageTranslateRegistrar"
-83-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:15:17-126
+83-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:15:17-126
 84                android:value="com.google.firebase.components.ComponentRegistrar" />
-84-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d98dabefdf17ce465b452292a94b0022/transformed/translate-17.0.2/AndroidManifest.xml:16:17-82
+84-->[com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/d6a044a5fe0504e200f24c8ada6e9dcc/transformed/translate-17.0.2/AndroidManifest.xml:16:17-82
 85            <meta-data
-85-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:20:13-22:85
+85-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:20:13-22:85
 86                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
-86-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:21:17-120
+86-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:21:17-120
 87                android:value="com.google.firebase.components.ComponentRegistrar" />
-87-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:22:17-82
+87-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:22:17-82
 88        </service>
 89
 90        <provider
-90-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:9:9-13:38
+90-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:9:9-13:38
 91            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
-91-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:10:13-78
+91-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:10:13-78
 92            android:authorities="com.example.cardflare.mlkitinitprovider"
-92-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:11:13-69
+92-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:11:13-69
 93            android:exported="false"
-93-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:12:13-37
+93-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:12:13-37
 94            android:initOrder="99" />
-94-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/bca0291fd544058100452b768b382fbb/transformed/common-18.10.0/AndroidManifest.xml:13:13-35
+94-->[com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/09c2e0a2d9b0ff49e2c9db8fdfa2be3a/transformed/common-18.10.0/AndroidManifest.xml:13:13-35
 95
 96        <activity
-96-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/ea1aed3f2ac56c6dd4b299f06e59c6da/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+96-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4eff7daa665f13ee3fe144a794a44e86/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
 97            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-97-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/ea1aed3f2ac56c6dd4b299f06e59c6da/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+97-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4eff7daa665f13ee3fe144a794a44e86/transformed/play-services-base-18.1.0/AndroidManifest.xml:20:19-85
 98            android:exported="false"
-98-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/ea1aed3f2ac56c6dd4b299f06e59c6da/transformed/play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+98-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4eff7daa665f13ee3fe144a794a44e86/transformed/play-services-base-18.1.0/AndroidManifest.xml:22:19-43
 99            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-99-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/ea1aed3f2ac56c6dd4b299f06e59c6da/transformed/play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+99-->[com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4eff7daa665f13ee3fe144a794a44e86/transformed/play-services-base-18.1.0/AndroidManifest.xml:21:19-78
 100
 101        <meta-data
-101-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/bf2b8f67e80b9ac0655c6b5cccf09d96/transformed/play-services-basement-18.1.0/AndroidManifest.xml:21:9-23:69
+101-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/6603bdf030f93349ec04fbe1d7b79f2d/transformed/play-services-basement-18.1.0/AndroidManifest.xml:21:9-23:69
 102            android:name="com.google.android.gms.version"
-102-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/bf2b8f67e80b9ac0655c6b5cccf09d96/transformed/play-services-basement-18.1.0/AndroidManifest.xml:22:13-58
+102-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/6603bdf030f93349ec04fbe1d7b79f2d/transformed/play-services-basement-18.1.0/AndroidManifest.xml:22:13-58
 103            android:value="@integer/google_play_services_version" />
-103-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/bf2b8f67e80b9ac0655c6b5cccf09d96/transformed/play-services-basement-18.1.0/AndroidManifest.xml:23:13-66
+103-->[com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/6603bdf030f93349ec04fbe1d7b79f2d/transformed/play-services-basement-18.1.0/AndroidManifest.xml:23:13-66
 104
 105        <activity
-105-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/da6e789000076e69e748a5f1821cbd37/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+105-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/948c17bd550b19c5221584914b32631f/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
 106            android:name="androidx.compose.ui.tooling.PreviewActivity"
-106-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/da6e789000076e69e748a5f1821cbd37/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+106-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/948c17bd550b19c5221584914b32631f/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
 107            android:exported="true" />
-107-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/da6e789000076e69e748a5f1821cbd37/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+107-->[androidx.compose.ui:ui-tooling-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/948c17bd550b19c5221584914b32631f/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
 108        <activity
-108-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/2ad266de8a8d36e5a82f87f3fc129684/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:23:9-25:39
+108-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/0c47faacfd915e4c7bec7d5cd21cc98a/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:23:9-25:39
 109            android:name="androidx.activity.ComponentActivity"
-109-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/2ad266de8a8d36e5a82f87f3fc129684/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:24:13-63
+109-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/0c47faacfd915e4c7bec7d5cd21cc98a/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:24:13-63
 110            android:exported="true" />
-110-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/2ad266de8a8d36e5a82f87f3fc129684/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:25:13-36
+110-->[androidx.compose.ui:ui-test-manifest:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/0c47faacfd915e4c7bec7d5cd21cc98a/transformed/ui-test-manifest-1.7.2/AndroidManifest.xml:25:13-36
 111
 112        <provider
-112-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:24:9-32:20
+112-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:24:9-32:20
 113            android:name="androidx.startup.InitializationProvider"
-113-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:25:13-67
+113-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:25:13-67
 114            android:authorities="com.example.cardflare.androidx-startup"
-114-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:26:13-68
+114-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:26:13-68
 115            android:exported="false" >
-115-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:27:13-37
+115-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:27:13-37
 116            <meta-data
-116-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:29:13-31:52
+116-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:29:13-31:52
 117                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-117-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:30:17-78
+117-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:30:17-78
 118                android:value="androidx.startup" />
-118-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/f8873cf5d97a29ed865a8aff1b86a159/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:31:17-49
+118-->[androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/4e45fb11364b50b2f9be9e1db9099237/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:31:17-49
 119            <meta-data
-119-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3069ac28a5a3b45654f669d1fe63b76f/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+119-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3018aadbe52c072ca27faa4e64b029e4/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
 120                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-120-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3069ac28a5a3b45654f669d1fe63b76f/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+120-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3018aadbe52c072ca27faa4e64b029e4/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
 121                android:value="androidx.startup" />
-121-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3069ac28a5a3b45654f669d1fe63b76f/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+121-->[androidx.emoji2:emoji2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/3018aadbe52c072ca27faa4e64b029e4/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
 122            <meta-data
-122-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+122-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
 123                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-123-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+123-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
 124                android:value="androidx.startup" />
-124-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
 125        </provider>
 126
 127        <service
-127-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:29:9-35:19
+127-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:29:9-35:19
 128            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-128-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:30:13-103
+128-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:30:13-103
 129            android:exported="false" >
-129-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:31:13-37
+129-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:31:13-37
 130            <meta-data
-130-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:32:13-34:39
+130-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:32:13-34:39
 131                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-131-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:33:17-94
+131-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:33:17-94
 132                android:value="cct" />
-132-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/276b64e79658db837409279a50bb5380/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:34:17-36
+132-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/61d15668faa60602f7810c0d5a32e8c1/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:34:17-36
 133        </service>
 134        <service
-134-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:26:9-30:19
+134-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:26:9-30:19
 135            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-135-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:27:13-117
+135-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:27:13-117
 136            android:exported="false"
-136-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:28:13-37
+136-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:28:13-37
 137            android:permission="android.permission.BIND_JOB_SERVICE" >
-137-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:29:13-69
+137-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:29:13-69
 138        </service>
 139
 140        <receiver
-140-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:32:9-34:40
+140-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:32:9-34:40
 141            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-141-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:33:13-132
+141-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:33:13-132
 142            android:exported="false" />
-142-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/068b71fcf78606b4fc40ca84fd47cd5e/transformed/transport-runtime-2.2.6/AndroidManifest.xml:34:13-37
+142-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/bb972e930558ea6861b2f0461696daf7/transformed/transport-runtime-2.2.6/AndroidManifest.xml:34:13-37
 143        <receiver
-143-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+143-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
 144            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-144-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+144-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
 145            android:directBootAware="false"
-145-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+145-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
 146            android:enabled="true"
-146-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+146-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
 147            android:exported="true"
-147-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+147-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
 148            android:permission="android.permission.DUMP" >
-148-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+148-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
 149            <intent-filter>
-149-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+149-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
 150                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-150-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-150-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+150-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+150-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
 151            </intent-filter>
 152            <intent-filter>
-152-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+152-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
 153                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-153-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-153-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+153-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+153-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
 154            </intent-filter>
 155            <intent-filter>
-155-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+155-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
 156                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-156-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-156-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+156-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+156-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
 157            </intent-filter>
 158            <intent-filter>
-158-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+158-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
 159                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-159-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-159-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/d258e748cbee3cdd7cf53acdd18a70d4/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+159-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+159-->[androidx.profileinstaller:profileinstaller:1.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/15aba5a6d36a8371c1b0cce8ab5ffb2c/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
 160            </intent-filter>
 161        </receiver>
 162    </application>

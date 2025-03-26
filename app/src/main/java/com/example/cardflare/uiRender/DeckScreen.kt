@@ -52,6 +52,7 @@ import androidx.navigation.NavController
 import com.example.cardflare.Deck
 import com.example.cardflare.Flashcard
 import com.example.cardflare.R
+import com.example.cardflare.getDeck
 import com.example.cardflare.loadData
 import com.example.cardflare.removeMultiple
 
@@ -60,7 +61,7 @@ import com.example.cardflare.removeMultiple
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())) }
+    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck ?: getDeck()) }
     var cards by remember{mutableStateOf(openedTarget.cards)}
     var selectMode by remember{ mutableStateOf(false) }
 
@@ -192,7 +193,7 @@ fun deckScreen(context: Context, navController: NavController){
                                     /*if (CardsToLearn.size == 0)
                                         CardsToLearn = currentOpenedDeck!!.cards.toMutableList()};*/
                                     if (CardsToLearn.size > 0) removeMultiple(context = context, fileName = currentOpenedDeck!!.name, cards = CardsToLearn);
-                                    openedTarget = loadData(currentOpenedDeck!!.name, context = context)[0] ;
+                                    openedTarget = loadData(context = context,currentOpenedDeck!!.name)[0] ;
                                     cards = openedTarget.cards;
 
                                     }

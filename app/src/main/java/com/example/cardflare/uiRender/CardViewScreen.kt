@@ -42,6 +42,7 @@ import androidx.navigation.NavController
 import com.example.cardflare.Deck
 import com.example.cardflare.Flashcard
 import com.example.cardflare.R
+import com.example.cardflare.getDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlinx.coroutines.launch
@@ -49,7 +50,7 @@ import kotlinx.coroutines.launch
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
-    val openedTarget: Deck = currentOpenedDeck ?: Deck("",0,0, listOf<String>(), listOf<Flashcard>())
+    val openedTarget: Deck = currentOpenedDeck ?: getDeck()
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()

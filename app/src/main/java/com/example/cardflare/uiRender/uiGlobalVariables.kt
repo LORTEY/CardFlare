@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import com.example.cardflare.Deck
 import com.example.cardflare.Flashcard
 import com.example.cardflare.SortType
+import com.example.cardflare.getDeck
 import com.example.cardflare.loadData
 
 //All variables used by ui
@@ -22,8 +23,8 @@ public var cardsSelected = mutableStateListOf( *Array(0) { 0 })
 public var deckAddMenu by mutableStateOf(false)
 public var CardsToLearn: MutableList<Flashcard> = mutableListOf()
 public var renderMainMenu by mutableStateOf(true)
-public var decks : Array<Deck> =  arrayOf<Deck>(Deck("",0,0, listOf<String>(), listOf<Flashcard>()))
+public var decks : Array<Deck> =  arrayOf<Deck>(getDeck())
 public var translatedFlashcardSide:String = ""
 public fun reloadDecks(context: Context){
-    decks = loadData("", context = context)
+    decks = loadData(filename = "", context = context)
 }

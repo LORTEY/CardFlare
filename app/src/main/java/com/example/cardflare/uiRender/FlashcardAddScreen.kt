@@ -109,7 +109,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                             ), context = context
                         )
                         currentOpenedDeck =
-                            loadData(fileName = currentOpenedDeck!!.name, context = context)[0]
+                            loadData(filename = currentOpenedDeck!!.name, context = context)[0]
                         defaultStateA = ""
                         defaultStateB = ""
                         textStateA = ""

@@ -78,7 +78,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
     Log.d("cardflare2", arePermissionsMissing().toString())
 
 
-    decks = loadData("", context = context)
+    decks = remember{loadData(filename = "", context = context)}
     var searchQuery by remember { mutableStateOf("") }
     var appear by remember { mutableStateOf(false) }
     qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
