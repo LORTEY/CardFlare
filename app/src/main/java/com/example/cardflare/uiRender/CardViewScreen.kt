@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
-    val openedTarget: Deck = currentOpenedDeck ?: getDeck()
+    val openedTarget: Deck = currentOpenedDeck.value ?: getDeck()
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -61,7 +61,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
     LaunchedEffect(Unit) {
-        listState.scrollToItem(currentOpenFlashCard)
+        listState.scrollToItem(currentOpenFlashCard.value)
     }
 
     Column(

@@ -61,7 +61,7 @@ import com.example.cardflare.removeMultiple
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck ?: getDeck()) }
+    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck.value) }
     var cards by remember{mutableStateOf(openedTarget.cards)}
     var selectMode by remember{ mutableStateOf(false) }
 
@@ -126,7 +126,7 @@ fun deckScreen(context: Context, navController: NavController){
                                             selectMode = false
                                         }
                                     } else {
-                                        currentOpenFlashCard = index
+                                        currentOpenFlashCard = IndexTracker(index)
                                         navController.navigate("card_menu")
                                     }
                                 }
@@ -154,6 +154,7 @@ fun deckScreen(context: Context, navController: NavController){
                     }
                 }
             }
+            //UniversalGrid(selectMode,{selectMode = true}, { selectMode = false}, navController, cards.map { it.SideA }, cards.map { it.SideB }, onClickAction = {navController.navigate("card_menu")}, indexTracker = currentOpenFlashCard, TrackIndex = true)
             if(deckAddMenu){
                 Box(
                     modifier = Modifier
@@ -175,11 +176,11 @@ fun deckScreen(context: Context, navController: NavController){
                         listOf(
                             AddMenuEntry("Learn",
                                 R.drawable.addempty,
-                                { CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
-                                    if(value == 1) CardsToLearn.add(
-                                    currentOpenedDeck!!.cards[index])};
+                                { CardsToLearn.clear(); UniversalSelected.forEachIndexed { index, value->
+                                    if(value) CardsToLearn.add(
+                                    currentOpenedDeck.value.cards[index])};
                                     if (CardsToLearn.size == 0)
-                                        CardsToLearn = currentOpenedDeck!!.cards.toMutableList();
+                                        CardsToLearn = currentOpenedDeck.value.cards.toMutableList();
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
                                 R.drawable.settings,
@@ -187,13 +188,13 @@ fun deckScreen(context: Context, navController: NavController){
                             AddMenuEntry("Remove Flashcards",
                             Icon = R.drawable.nav_arrow_down,
                                 Action = {
-                                    CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
-                                    if(value == 1) CardsToLearn.add(
-                                        currentOpenedDeck!!.cards[index])};
+                                    CardsToLearn.clear(); UniversalSelected.forEachIndexed { index, value->
+                                    if(value) CardsToLearn.add(
+                                        currentOpenedDeck.value.cards[index])};
                                     /*if (CardsToLearn.size == 0)
                                         CardsToLearn = currentOpenedDeck!!.cards.toMutableList()};*/
-                                    if (CardsToLearn.size > 0) removeMultiple(context = context, fileName = currentOpenedDeck!!.name, cards = CardsToLearn);
-                                    openedTarget = loadData(context = context,currentOpenedDeck!!.name)[0] ;
+                                    if (CardsToLearn.size > 0) removeMultiple(context = context, filename = currentOpenedDeck.value.name, cards = CardsToLearn);
+                                    openedTarget = loadData(context = context,currentOpenedDeck.value.name)[0] ;
                                     cards = openedTarget.cards;
 
                                     }

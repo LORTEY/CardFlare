@@ -60,7 +60,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        /*
+
         listenToKillYourselfBroadcast()
         if (!hasUsageStatsPermission()) {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
@@ -74,7 +74,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
-        */
+
         startMainMenu()
     }
 

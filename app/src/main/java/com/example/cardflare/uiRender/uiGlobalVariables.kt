@@ -12,13 +12,13 @@ import com.example.cardflare.getDeck
 import com.example.cardflare.loadData
 
 //All variables used by ui
-public var currentOpenedDeck : Deck? by mutableStateOf(null)
+public var currentOpenedDeck by mutableStateOf(IndexTracker(getDeck()))
 public var appearAddMenu by mutableStateOf(false)
 public var isAscending by  mutableStateOf(true)
 public var appearSortMenu by mutableStateOf(false)
 public var sortType by mutableStateOf(SortType.ByName)
 public var qualifiedDecks = listOf<Deck>()
-public var currentOpenFlashCard by mutableStateOf(0)
+public var currentOpenFlashCard by mutableStateOf(IndexTracker(0))
 public var cardsSelected = mutableStateListOf( *Array(0) { 0 })
 public var deckAddMenu by mutableStateOf(false)
 public var CardsToLearn: MutableList<Flashcard> = mutableListOf()

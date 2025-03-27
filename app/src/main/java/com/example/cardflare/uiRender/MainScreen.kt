@@ -110,6 +110,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             .fillMaxSize()
                             .weight(1.0f)
                     ) {
+
                         LazyVerticalGrid(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -137,7 +138,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                         .height(100.dp)
                                         .padding(10.dp)
                                         .clickable {
-                                            currentOpenedDeck = qualifiedDecks[index];
+                                            currentOpenedDeck = IndexTracker(qualifiedDecks[index]);
                                             navController.navigate("deck_menu")
                                         },
                                     maxLines = 3,
@@ -147,6 +148,11 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
 
                             }
                         }
+                        //var selectMode by remember { mutableStateOf(false) }
+                        Log.d("cardflare2", qualifiedDecks.toString())
+                        //UniversalGrid(selectMode,{selectMode = true}, {selectMode = false}, navController, qualifiedDecks.map {it.name},
+                        //    TrackIndex = false, deckTracker = currentOpenedDeck,
+                        //    decks = qualifiedDecks, onClickAction = {navController.navigate("deck_menu")})
 
                         // Add menu
                         if (appearAddMenu || appear) {
