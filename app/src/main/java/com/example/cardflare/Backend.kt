@@ -65,7 +65,11 @@ fun listFilesInFilesDir(context: Context, folderName: String = "FlashcardDirecto
 fun readFileFromFilesDir(filename: String, context: Context,folderName:String = "FlashcardDirectory"): String {
     return try {
         val file = File(context.getExternalFilesDir(null), "$folderName/$filename") // Use getExternalFilesDir() here
-        file.bufferedReader().use { it.readText() }
+        if(file.exists()) {
+            file.bufferedReader().use { it.readText() }
+        }else{
+           ""
+        }
     } catch (e: Exception) {
         Log.e("FilesDir", "Error reading file $filename: ${e.message}")
         ""
@@ -81,7 +85,7 @@ fun saveDeck(context: Context, deck: Deck, filename: String, folderName: String 
 }
 
 // Load deck from file
-fun loadData(context: Context, filename: String, folderName: String = "FlashcardDirectory"): Array<Deck> {
+fun loadData(context: Context, filename: String, folderName: String = "FlashcardDirectory"): List<Deck> {
     var filenames: Array<String> = arrayOf()
     if(filename.isBlank()) {
         filenames = listFilesInFilesDir(context)
@@ -90,14 +94,25 @@ fun loadData(context: Context, filename: String, folderName: String = "Flashcard
     }
     val decks = mutableListOf<Deck>()
     filenames.forEach { name ->
-            val jsonString = readFileFromFilesDir(name, context, folderName)
-            Log.d("cardflare2",jsonString)
+        val jsonString = readFileFromFilesDir(name, context, folderName)
+        if(!jsonString.isBlank()) {
+            Log.d("cardflare2", jsonString)
             decks.add(jsonFormat.decodeFromString<Deck>(jsonString))
-
+        }
     }
-    return decks.toTypedArray()
+    return decks.toList()
 }
+fun fileExists(context: Context, fileName: String, folderName: String = ""): Boolean {
+    val directory = if (folderName.isBlank()) {
+        context.filesDir
+    } else {
+        File(context.filesDir, folderName).apply {
+            if (!exists()) return false
+        }
+    }
 
+    return File(directory, fileName).exists()
+}
 fun addFlashcard(filename: String, flashcardContent: Flashcard, context: Context, folderName:String="FlashcardDirectory", reassignID: Boolean = true) {
     var readData = loadData(filename = filename, context = context, folderName =  folderName)
     readData[0].cards.add(if(reassignID) flashcardContent.copy(id = readData[0].minimalID + 1) else flashcardContent) //assigns an id to flashcard if specified to do so and adds it
@@ -131,7 +146,7 @@ fun addDeck(context: Context, filename: String, deck:Deck? = null, folderName: S
     }
 }
 
-public fun sortDecks(searchQuery: String, decks: Array<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
+public fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
         // Enumerating tags
         var tagsRequired = mutableListOf<String>()
         if ('#' in searchQuery){
@@ -208,9 +223,15 @@ fun removeMultiple(context: Context,filename: String, cards:List<Flashcard>){
 fun getDeck(filename: String ="", date_made:Int = 0, last_edited:Int = 0, tags: MutableList<String> = mutableListOf(),cards: MutableList<Flashcard> = mutableListOf() ):Deck{
     return Deck(filename,date_made,last_edited, tags,cards)
 }
-
+fun multipleDeckMoveToBin(decks:List<Deck>, selected:MutableList<Boolean>,context: Context){
+    selected.forEachIndexed{ index, isSelected->
+        if (isSelected){
+            moveDeckToBin(context = context, filename = decks[index].name)
+        }
+    }
+}
 fun moveDeckToBin(filename: String, context: Context){
-    val previousBinContent = loadData(context = context, filename = filename, folderName = "BinDirectory")[0]
+    val previousBinContent = loadData(context = context, filename = filename, folderName = "BinDirectory")
     val sourceDir = File(context.getExternalFilesDir(null), "FlashcardDirectory")
     val destDir = File(context.getExternalFilesDir(null), "BinDirectory")
 
@@ -227,9 +248,17 @@ fun moveDeckToBin(filename: String, context: Context){
        }
        sourceFile.copyTo(destFile) // Copy with overwrite
        sourceFile.delete() // Delete original
-       previousBinContent.cards.forEach{card ->
-            addFlashcard(filename = filename, flashcardContent = card, context = context, folderName = "BinDirectory", reassignID = false)
-        }
+       if(previousBinContent.size > 0) {
+           previousBinContent[0].cards.forEach { card ->
+               addFlashcard(
+                   filename = filename,
+                   flashcardContent = card,
+                   context = context,
+                   folderName = "BinDirectory",
+                   reassignID = false
+               )
+           }
+       }
     } catch (e: Exception) {
         e.printStackTrace()
     }

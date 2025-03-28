@@ -43,6 +43,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,6 +70,8 @@ import com.example.cardflare.Deck
 import com.example.cardflare.R
 import com.example.cardflare.SortType
 import com.example.cardflare.loadData
+import com.example.cardflare.multipleDeckMoveToBin
+import com.example.cardflare.removeMultiple
 import com.example.cardflare.sortDecks
 import com.example.cardflare.ui.theme.Material3AppTheme
 
@@ -76,13 +79,19 @@ import com.example.cardflare.ui.theme.Material3AppTheme
 @Composable
 fun MainMenuRender(navController: NavHostController, context: Context, permissionGranter:() -> Unit, arePermissionsMissing:()->Boolean) {
     Log.d("cardflare2", arePermissionsMissing().toString())
-
-
-    decks = remember{loadData(filename = "", context = context)}
+    //var decks by remember { mutableStateOf(loadData(filename = "", context = context)) }
     var searchQuery by remember { mutableStateOf("") }
+    var isAscending by remember { mutableStateOf(true) }
+    var selectMode by remember { mutableStateOf(false) }
+    decks = loadData(filename = "", context = context)
+    var decksImage by remember { mutableStateOf(decks) }
     var appear by remember { mutableStateOf(false) }
-    qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, isAscending)
-
+    qualifiedDecks = sortDecks(searchQuery, decksImage, sortType = sortType, isAscending)
+    decksSelected = remember(Unit) {  // Runs only once
+        mutableStateListOf<Boolean>().apply {
+            addAll(List(qualifiedDecks.size) { false })
+        }
+    }
     BackHandler { // Handle the back button press
         if (appear || appearAddMenu){
             appearAddMenu = false
@@ -124,7 +133,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             items(qualifiedDecks.size) { index ->
                                 Text(
                                     text = qualifiedDecks[index].name,
-                                    color = MaterialTheme.colorScheme.onBackground,
+                                    color = if (decksSelected[index]) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier
                                         .shadow(
                                             elevation = 10.dp,
@@ -132,14 +141,31 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                             clip = false
                                         )
                                         .background(
-                                            MaterialTheme.colorScheme.inverseOnSurface
+                                            if (decksSelected[index]) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inverseOnSurface
                                         )
                                         .fillMaxWidth(0.5f)
                                         .height(100.dp)
                                         .padding(10.dp)
-                                        .clickable {
-                                            currentOpenedDeck = IndexTracker(qualifiedDecks[index]);
-                                            navController.navigate("deck_menu")
+                                        .pointerInput(Unit) {
+                                            detectTapGestures(
+                                                onLongPress = {
+                                                    decksSelected[index] = true
+                                                    selectMode = true
+                                                },
+                                                onTap = {
+                                                    if (selectMode) {
+                                                        decksSelected[index] =
+                                                            !decksSelected[index] //flips ones to zeroes and vice versa
+                                                        if (decksSelected.count { it } == 0) {
+                                                            // if no more selected cards left stop select mode
+                                                            selectMode = false
+                                                        }
+                                                    } else {
+                                                        currentOpenedDeck = IndexTracker(qualifiedDecks[index]);
+                                                        navController.navigate("deck_menu")
+                                                    }
+                                                }
+                                            )
                                         },
                                     maxLines = 3,
                                     overflow = TextOverflow.Ellipsis
@@ -177,7 +203,20 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                 modifier = Modifier
                                     //.width(128.dp)
                                     .align(Alignment.End)) {
-                                UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu}, listOf(AddMenuEntry("Add Deck", R.drawable.addempty, Action = { navController.navigate("deck_add_screen") })))
+                                UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
+                                    listOf(AddMenuEntry("Add Deck", R.drawable.addempty, Action = { navController.navigate("deck_add_screen") }),
+                                        AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.nav_arrow_down,
+                                            Action = {
+                                                multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected);
+                                                decks = loadData(filename = "", context = context);
+                                                decksImage = decks
+                                                decksSelected.fill(false)
+                                                qualifiedDecks = sortDecks(searchQuery, decksImage, sortType = sortType,
+                                                    com.example.cardflare.uiRender.isAscending
+                                                )
+                                                selectMode = false;
+                                        })
+                                    ))
                             }
                         }
                     }
@@ -231,7 +270,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             // Text field for searching card decks
                             BasicTextField(
                                 value = searchQuery,
-                                onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decks, sortType = sortType, true) },
+                                onValueChange = { searchQuery = it; qualifiedDecks = sortDecks(searchQuery, decksImage, sortType = sortType, true) },
                                 textStyle = TextStyle(
                                     color = MaterialTheme.colorScheme.primary,
                                     fontSize = 16.sp
@@ -266,7 +305,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                     .background(MaterialTheme.colorScheme.inverseOnSurface)
                                     .padding(start = 16.dp)
                             ) {
-                                SortMenuContent(decks = decks, searchQuery = searchQuery)
+                                SortMenuContent(decks = decksImage, searchQuery = searchQuery)
                             }
                         }
                     }
@@ -311,6 +350,9 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
         }
     }
 }
+fun decksRefresh(context: Context,searchQuery:String){
+
+}
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
 fun SlideMenuContent(navController: NavController){
@@ -354,7 +396,7 @@ fun SlideMenuContent(navController: NavController){
 
 // Menu that appears when sort icon is pressed
 @Composable
-fun SortMenuContent(decks: Array<Deck>, searchQuery:String){
+fun SortMenuContent(decks: List<Deck>, searchQuery:String){
 
     Text("Sort By", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
 
