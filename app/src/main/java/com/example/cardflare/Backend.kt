@@ -14,11 +14,11 @@ import kotlinx.serialization.json.Json
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
     val assetManager = context.assets
-    val flashcardDirectory = File(context.getExternalFilesDir(null), "FlashcardDirectory") // Use getExternalFilesDir() here
+    val FlashcardDirectory = File(context.getExternalFilesDir(null), "FlashcardDirectory") // Use getExternalFilesDir() here
 
     // Create the directory if it doesn't exist
-    if (!flashcardDirectory.exists()) {
-        flashcardDirectory.mkdirs()
+    if (!FlashcardDirectory.exists()) {
+        FlashcardDirectory.mkdirs()
         Log.d("FilesDir", "FlashcardDirectory created.")
     }
 
@@ -29,7 +29,7 @@ fun copyAssetsToFilesDir(context: Context) {
         // If there are files inside this folder, copy them to external filesDir
         assetFiles?.forEach { filename ->
             val inputStream: InputStream = assetManager.open("FlashcardDirectory/$filename")
-            val outputFile = File(flashcardDirectory, filename)
+            val outputFile = File(FlashcardDirectory, filename)
             val outputStream: OutputStream = FileOutputStream(outputFile)
 
             // Copy data from assets to external filesDir
@@ -37,7 +37,7 @@ fun copyAssetsToFilesDir(context: Context) {
             inputStream.close()
             outputStream.close()
 
-            Log.d("FilesDir", "Copied file: $filename to $flashcardDirectory")
+            Log.d("FilesDir", "Copied file: $filename to $FlashcardDirectory")
         }
     } catch (e: Exception) {
         Log.e("FilesDir", "Error copying assets: ${e.message}")
@@ -47,9 +47,9 @@ fun copyAssetsToFilesDir(context: Context) {
 // lists all files in FlashcardDirectory
 fun listFilesInFilesDir(context: Context, folderName: String = "FlashcardDirectory"): Array<String> {
     try {
-        val flashcardDirectory = File(context.getExternalFilesDir(null), folderName) // Use getExternalFilesDir() here
-        if (flashcardDirectory.exists()) {
-            val filenames = flashcardDirectory.list()
+        val FlashcardDirectory = File(context.getExternalFilesDir(null), folderName) // Use getExternalFilesDir() here
+        if (FlashcardDirectory.exists()) {
+            val filenames = FlashcardDirectory.list()
             if (filenames != null) {
                 return filenames
             }
@@ -88,7 +88,7 @@ fun saveDeck(context: Context, deck: Deck, filename: String, folderName: String 
 fun loadData(context: Context, filename: String, folderName: String = "FlashcardDirectory"): List<Deck> {
     var filenames: Array<String> = arrayOf()
     if(filename.isBlank()) {
-        filenames = listFilesInFilesDir(context)
+        filenames = listFilesInFilesDir(context,folderName =  folderName)
     }else{
         filenames = arrayOf(filename)
     }
@@ -115,6 +115,9 @@ fun fileExists(context: Context, fileName: String, folderName: String = ""): Boo
 }
 fun addFlashcard(filename: String, flashcardContent: Flashcard, context: Context, folderName:String="FlashcardDirectory", reassignID: Boolean = true) {
     var readData = loadData(filename = filename, context = context, folderName =  folderName)
+    if(readData.size<=0){
+        readData = listOf(getDeck(filename = filename))
+    }
     readData[0].cards.add(if(reassignID) flashcardContent.copy(id = readData[0].minimalID + 1) else flashcardContent) //assigns an id to flashcard if specified to do so and adds it
     readData[0].minimalID += 1
     saveDeck(context, readData[0], filename,folderName)
@@ -122,12 +125,12 @@ fun addFlashcard(filename: String, flashcardContent: Flashcard, context: Context
 
 fun addDeck(context: Context, filename: String, deck:Deck? = null, folderName: String = "FlashcardDirectory") {
     Log.d("CardFlareLine", context.getExternalFilesDir(null)?.absolutePath ?: "No Path")
-    val flashcardDirectory = File(context.getExternalFilesDir(null), folderName) // Use getExternalFilesDir() here
-    if (!flashcardDirectory.exists()) {
-        flashcardDirectory.mkdirs() // Create folder if it doesn't exist
+    val FlashcardDirectory = File(context.getExternalFilesDir(null), folderName) // Use getExternalFilesDir() here
+    if (!FlashcardDirectory.exists()) {
+        FlashcardDirectory.mkdirs() // Create folder if it doesn't exist
     }
 
-    val file = File(flashcardDirectory, filename) // File inside the directory
+    val file = File(FlashcardDirectory, filename) // File inside the directory
     if (!file.exists()) {
         file.createNewFile() // Create new file
         val currentTimeMillis = System.currentTimeMillis()
@@ -142,7 +145,7 @@ fun addDeck(context: Context, filename: String, deck:Deck? = null, folderName: S
         file.writeText(jsonString)
         reloadDecks(context)
     } else {
-        Log.d("FilesDir", flashcardDirectory.list().toList().toString())
+        Log.d("FilesDir", FlashcardDirectory.list().toList().toString())
     }
 }
 
@@ -264,6 +267,19 @@ fun moveDeckToBin(filename: String, context: Context){
     }
 }
 
+fun removeMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, listOfDecks:List<Deck>){
+    val binDir = File(context.getExternalFilesDir(null), "BinDirectory")
+    decksSelected.forEachIndexed{index , element->
+        if(element) {
+
+            val destFile = File(binDir, listOfDecks[index].name)
+            if (destFile.exists()) {
+                destFile.delete() // Delete existing file first
+            }
+        }
+    }
+
+}
 public enum class SortType{
     ByName,
     ByCreationDate,

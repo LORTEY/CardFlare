@@ -42,6 +42,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -197,7 +198,6 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             )
                         }
 
-
                         Column(modifier = Modifier.align(Alignment.BottomEnd)) {
                             Column(horizontalAlignment = Alignment.End,
                                 modifier = Modifier
@@ -344,14 +344,12 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                     }
                 }
             }
-            if(arePermissionsMissing()) {
-                Greeter(context, permissionGranter, arePermissionsMissing)
-            }
+
+            Greeter(context, permissionGranter, arePermissionsMissing)
+
+
         }
     }
-}
-fun decksRefresh(context: Context,searchQuery:String){
-
 }
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
@@ -391,6 +389,17 @@ fun SlideMenuContent(navController: NavController){
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(text = "Launch On Options", color = MaterialTheme.colorScheme.primary)
+    }
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clickable { navController.navigate("bin_screen")}){
+        Icon(
+            painter = painterResource(id = R.drawable.home),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(text = "Bin", color = MaterialTheme.colorScheme.primary)
     }
 }
 

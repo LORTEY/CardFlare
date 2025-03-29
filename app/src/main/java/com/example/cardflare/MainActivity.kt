@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -36,23 +37,10 @@ import com.example.cardflare.uiRender.Greeter
 import com.example.cardflare.uiRender.SettingsMenu
 import com.example.cardflare.uiRender.deckScreen
 import com.example.cardflare.uiRender.renderMainMenu
+import com.example.cardflare.uiRender.BinRender
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
 
-data class ColorPaletteData(
-    val pa0: String,
-    val pa10: String,
-    val pa20: String,
-    val pa30: String,
-    val pa40: String,
-    val pa50: String,
-    val sa0: String,
-    val sa10: String,
-    val sa20: String,
-    val sa30: String,
-    val sa40: String,
-    val sa50: String
-)
 private const val STORAGE_PERMISSION_CODE = 101
 class MainActivity : androidx.activity.ComponentActivity(){
     private var receiver: BroadcastReceiver? = null
@@ -62,15 +50,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         listenToKillYourselfBroadcast()
-        if (!hasUsageStatsPermission()) {
-            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-            startActivity(intent)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
-            }
-        }
+
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
@@ -130,7 +110,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
-                        composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }}
+                        composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }
+                        composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}}
                 }
             }
         }
@@ -165,7 +146,15 @@ class MainActivity : androidx.activity.ComponentActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             getApplicationContext().startActivity(intent)
         }
-
+        if (!hasUsageStatsPermission()) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            startActivity(intent)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
     }
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
@@ -207,4 +196,5 @@ class MainActivity : androidx.activity.ComponentActivity(){
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }
+
 }

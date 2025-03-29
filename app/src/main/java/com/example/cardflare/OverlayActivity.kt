@@ -17,7 +17,7 @@ import com.example.cardflare.uiRender.MyOverlayComposable
 
 class OverlayActivity : ComponentActivity() {
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,7 +34,6 @@ class OverlayActivity : ComponentActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun showOverlay() {
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val params = WindowManager.LayoutParams(

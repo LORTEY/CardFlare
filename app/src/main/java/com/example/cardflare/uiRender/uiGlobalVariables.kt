@@ -19,13 +19,14 @@ public var appearSortMenu by mutableStateOf(false)
 public var sortType by mutableStateOf(SortType.ByName)
 public var qualifiedDecks by mutableStateOf(listOf<Deck>())
 public var currentOpenFlashCard by mutableStateOf(IndexTracker(0))
-public var cardsSelected = mutableStateListOf( *Array(0) { 0 })
+public var cardsSelected:MutableList<Boolean> = mutableListOf()
 public var deckAddMenu by mutableStateOf(false)
 public var CardsToLearn: MutableList<Flashcard> = mutableListOf()
 public var renderMainMenu by mutableStateOf(true)
 public var decks by mutableStateOf(listOf<Deck>())
 public var translatedFlashcardSide:String = ""
 public var decksSelected:MutableList<Boolean> = mutableListOf()
+public var currentOpenedBinDeck:Deck = getDeck()
 public fun reloadDecks(context: Context){
     decks = loadData(filename = "", context = context)
 }

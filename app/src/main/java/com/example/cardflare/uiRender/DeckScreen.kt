@@ -66,14 +66,14 @@ fun deckScreen(context: Context, navController: NavController){
     var selectMode by remember{ mutableStateOf(false) }
 
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { 0 }) }
+    cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { false }) }
 
     BackHandler { // Handle the back button press
         if (deckAddMenu){
             deckAddMenu = false
         } else if (selectMode){
             selectMode = false
-            cardsSelected.fill(0)
+            cardsSelected.fill(false)
         }else{
             navController.popBackStack()
         }
@@ -109,19 +109,19 @@ fun deckScreen(context: Context, navController: NavController){
                             clip = false
                         )
                         .background(
-                            if (cardsSelected[index] == 0) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
+                            if (!cardsSelected[index]) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onLongPress = {
-                                    cardsSelected[index] = 1
+                                    cardsSelected[index] = true
                                     selectMode = true
                                 },
                                 onTap = {
                                     if (selectMode) {
                                         cardsSelected[index] =
-                                            1 - cardsSelected[index] //flips ones to zeroes and vice versa
-                                        if (cardsSelected.count { it == 1 } == 0) {
+                                            !cardsSelected[index] //flips ones to zeroes and vice versa
+                                        if (cardsSelected.count { it } == 0) {
                                             // if no more selected cards left stop select mode
                                             selectMode = false
                                         }
@@ -139,14 +139,14 @@ fun deckScreen(context: Context, navController: NavController){
                         Log.d("Cards2", cardsSelected[index].toString())
                         Text(
                             text = cards[index].SideA,
-                            color =  if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary,
+                            color =  if (!cardsSelected[index])  MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = cards[index].SideB,
-                            color = if (cardsSelected[index] == 0)  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.inverseOnSurface,
+                            color = if (!cardsSelected[index])  MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.inverseOnSurface,
                             modifier = Modifier.padding(vertical = 4.dp),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -188,7 +188,7 @@ fun deckScreen(context: Context, navController: NavController){
                             AddMenuEntry("Remove Flashcards",
                             Icon = R.drawable.nav_arrow_down,
                                 Action = {
-                                    CardsToLearn.clear(); UniversalSelected.forEachIndexed { index, value->
+                                    CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
                                     if(value) CardsToLearn.add(
                                         currentOpenedDeck.value.cards[index])};
                                     /*if (CardsToLearn.size == 0)

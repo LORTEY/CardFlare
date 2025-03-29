@@ -24,7 +24,6 @@ drawable settings
 drawable sort_ascending
 mipmap ic_launcher
 mipmap ic_launcher_round
-raw colorstouse
 string app_name
 style Theme.CardFlare
 xml backup_rules

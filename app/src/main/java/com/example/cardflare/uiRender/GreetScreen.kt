@@ -26,12 +26,32 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Row
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.window.Popup
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.cardflare.MainActivity
+import kotlinx.coroutines.delay
+
 
 @Composable
 fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing:() -> Boolean){
-    if(arePermissionsMissing()) {
+    var refresh by remember{ mutableStateOf(true) }
+    var permissionsMissing by remember { mutableStateOf(arePermissionsMissing()) }
+
+    // Auto-refreshing coroutine
+    LaunchedEffect(Unit) {
+        while (permissionsMissing) {
+            permissionsMissing = arePermissionsMissing()
+            delay(300) // refresh
+        }
+    }
+    if(permissionsMissing) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,7 +108,7 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primary)
                             .padding(5.dp)
-                            .clickable(onClick = { permissionGrant() }),
+                            .clickable(onClick = { permissionGrant()}),
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.bodyLarge
                     )
