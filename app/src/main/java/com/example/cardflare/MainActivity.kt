@@ -23,9 +23,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.cardflare.uiRender.AddDeckScreen
 import com.example.cardflare.uiRender.AddFlashcardScreen
 import com.example.cardflare.uiRender.CardMenu
@@ -38,7 +40,12 @@ import com.example.cardflare.uiRender.SettingsMenu
 import com.example.cardflare.uiRender.deckScreen
 import com.example.cardflare.uiRender.renderMainMenu
 import com.example.cardflare.uiRender.BinRender
+import com.example.cardflare.uiRender.BinCards
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 private const val STORAGE_PERMISSION_CODE = 101
@@ -111,12 +118,29 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
                         composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }
-                        composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}}
+                        composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
+                        composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }}
                 }
             }
         }
     }
-
+    object NavRoutes {
+        const val BIN_CARDS_VIEW = "bin_cards_view/{deck}"
+        fun binCardsViewData(deck: Deck): String {
+            val jsonFormat = Json { prettyPrint = true }
+            val json = jsonFormat.encodeToString(deck)
+            return "detail_screen/${URLEncoder.encode(json, "UTF-8")}"
+        }
+        const val MAIN_MENU = "main_menu"
+        const val CARD_MENU = "card_menu"
+        const val LEARN_SCREEN = "learn_screen/{deckId}"
+        const val DECK_MENU = "deck_menu"
+        const val SETTINGS = "settings"
+        const val DECK_ADD_SCREEN = "deck_add_screen"
+        const val ADD_FLASHCARD = "add_flashcard/{deckId}"
+        const val BIN_SCREEN = "bin_screen"
+        const val LAUNCH_ON_MANAGER = "launch_on_manager"
+    }
     /*
     @Preview(showBackground = true)
         @Composable

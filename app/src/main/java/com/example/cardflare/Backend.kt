@@ -278,7 +278,20 @@ fun removeMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, li
             }
         }
     }
+}
 
+fun RemoveMultipleFlashcardsFromBin(cardsSelected:List<Boolean>,context: Context, listOfCards: List<Flashcard>,deck: Deck){
+    val fileData = loadData(context = context, filename = deck.name,"BinDirectory")
+    val IDsOfFlashcardsToRemove = listOfCards.zip(cardsSelected)
+        .filter { (_, flag) -> flag }
+        .map { (value, _) -> value.id }
+    val iterator = fileData[0].cards.iterator()
+    while (iterator.hasNext()) {
+        if (iterator.next().id in IDsOfFlashcardsToRemove) {
+            iterator.remove()
+        }
+    }
+    saveDeck(context = context,fileData[0], filename = deck.name,"BinDirectory")
 }
 public enum class SortType{
     ByName,

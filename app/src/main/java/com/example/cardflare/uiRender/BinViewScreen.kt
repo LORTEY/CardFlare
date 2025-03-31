@@ -32,10 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cardflare.Deck
 import com.example.cardflare.R
+import com.example.cardflare.RemoveMultipleFlashcardsFromBin
 import com.example.cardflare.loadData
 import com.example.cardflare.removeMultipleDecksFromBin
 
@@ -108,7 +111,7 @@ fun BinRender(context: Context, navController: NavController){
                                         }
                                     } else {
                                         currentOpenedBinDeck = decksInBin[index];
-                                        /*                           */navController.navigate("bin_deck_view")
+                                        navController.navigate("bin_cards_view")
                                     }
                                 }
                             )
@@ -136,6 +139,122 @@ fun BinRender(context: Context, navController: NavController){
                                     listOfDecks = decksInBin
                                 );
                                 decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
+                            })
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BinCards(context: Context, navController: NavController){
+    var cardsInBin by remember{ mutableStateOf(currentOpenedBinDeck.cards)}
+    var selectMode by remember{ mutableStateOf(false) }
+    var showAddMenu by remember { mutableStateOf(false) }
+
+    //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
+    var binSelected = remember(Unit) {  // Runs only once
+        mutableStateListOf<Boolean>().apply {
+            addAll(List(cardsInBin.size) { false })
+        }
+    }
+
+    BackHandler { // Handle the back button press
+        if (selectMode){
+            selectMode = false
+            binSelected.fill(false)
+        }else{
+            navController.popBackStack()
+        }
+    }
+    Box(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(WindowInsets.systemBars.asPaddingValues())
+    ) {
+        LazyVerticalGrid(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        )
+        {
+            //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu")
+            items(cardsInBin.size) { index ->
+                Column(modifier = Modifier
+                    .shadow(
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(10.dp),
+                        clip = false
+                    )
+                    .background(
+                        if (!binSelected[index]) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary
+                    )
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onLongPress = {
+                                binSelected[index] = true
+                                selectMode = true
+                            },
+                            onTap = {
+                                if (selectMode) {
+                                    binSelected[index] =
+                                        !binSelected[index] //flips ones to zeroes and vice versa
+                                    if (binSelected.count { it } == 0) {
+                                        // if no more selected cards left stop select mode
+                                        selectMode = false
+                                    }
+                                } /*else {
+                                    currentOpenFlashCard = IndexTracker(index)
+                                    navController.navigate("card_menu")
+                                }*/
+                            }
+                        )
+                    }
+                    .fillMaxWidth(1f / 2f)
+                    .height((250 / 3f).dp)
+                    .padding(10.dp)
+                ) {
+                    Text(
+                        text = cardsInBin[index].SideA,
+                        color = if (!binSelected[index]) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = cardsInBin[index].SideB,
+                        color = if (!binSelected[index]) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.inverseOnSurface,
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+
+            }
+        }
+        Column(modifier = Modifier.align(Alignment.BottomEnd)) {
+            Column(horizontalAlignment = Alignment.End,
+                modifier = Modifier
+                    //.width(128.dp)
+                    .align(Alignment.End)) {
+                UniversalAddMenu(
+                    showAddMenu, { showAddMenu = !showAddMenu }, listOf(
+                        AddMenuEntry(
+                            Name = "Remove Card", Icon = R.drawable.nav_arrow_down,
+                            Action = {
+                                RemoveMultipleFlashcardsFromBin(
+                                    context = context,
+                                    cardsSelected = binSelected,
+                                    listOfCards = cardsInBin,
+                                    deck = currentOpenedBinDeck
+                                );
+                                currentOpenedBinDeck = loadData(context = context, currentOpenedBinDeck.name, "BinDirectory")[0]
+                                cardsInBin = currentOpenedBinDeck.cards
                             })
                     )
                 )
