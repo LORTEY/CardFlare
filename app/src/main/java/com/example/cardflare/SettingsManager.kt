@@ -1,7 +1,10 @@
 package com.example.cardflare
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateMapOf
+import com.example.cardflare.uiRender.AddMenuEntry
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
@@ -12,6 +15,7 @@ import java.io.File
 fun updateSetting(key: String, newState: Any) {//the settings map is rebuilt in order to force jetpack compose to update on change
     val currentEntry = AppSettings[key] ?: return // ✅ Prevents modifying a non-existent key
     AppSettings[key] = currentEntry.copy(state = newState) // ✅ Triggers recomposition
+    Log.d("cardflare", AppSettings.toString())
 }
 
 fun saveSettings(context: Context){
@@ -37,7 +41,7 @@ fun loadSettings(context: Context) {
 private fun decodeSettings(map: Map<String,String>){
     map.forEach{(key, value) ->
         if(AppSettings[key]?.type != null) {
-            val loadedState = settingTypeToType(value, AppSettings[key]!!.type)
+            val loadedState = settingTypeToType(value, AppSettings[key]!!.type, AppSettings[key])
             AppSettings[key]!!.state = loadedState
         }
     }
@@ -46,16 +50,28 @@ private fun decodeSettings(map: Map<String,String>){
 private fun encodeSettings():Map<String,String> {
     val mappedSettings: MutableMap<String, String> = mutableMapOf()
 
-    AppSettings.forEach { (key, value) ->
-        mappedSettings[key] = value.state.toString()
+    AppSettings.forEach { (key, valueOfSetting) ->
+        if (AppSettings.get(key)?.type != SettingsType.CHOOSE ) {
+            mappedSettings[key] = valueOfSetting.state.toString()
+        }else{
+            val stringOfEntry = valueOfSetting.dropDownMenuEntries!!.entries.firstOrNull { it.value == valueOfSetting.state }?.key
+            mappedSettings[key] = stringOfEntry.toString()
+        }
     }
     return mappedSettings
 }
-private fun settingTypeToType(input:String, type:SettingsType):Any{
+private fun settingTypeToType(input:String, type:SettingsType, settingEntry:SettingEntry? = null):Any{
     when (type){
         SettingsType.BOOLEAN -> {
             try{
                 return input.toBoolean()
+            }catch (e: Exception){
+                return ""
+            }
+        }
+        SettingsType.CHOOSE -> {
+            try{
+                return settingEntry!!.dropDownMenuEntries!!.get(input)!!
             }catch (e: Exception){
                 return ""
             }
@@ -78,6 +94,14 @@ private fun settingTypeToType(input:String, type:SettingsType):Any{
     }
 }
 val AppSettings = mutableStateMapOf(
+    "Choose Theme" to SettingEntry(
+        category = Category.Appearance,
+        name = "Choose Theme",
+        description = "Choose what theme should app be in Light, Dark or automatically use current system theme.",
+        type = SettingsType.CHOOSE,
+        state = Themes.AUTO,
+        dropDownMenuEntries = mapOf("Light Mode" to Themes.LIGHT, "Dark Mode" to Themes.DARK, "Auto" to Themes.AUTO)
+    ),
     "Use Dynamic Color" to SettingEntry(
         category = Category.Appearance,
         name = "Use Dynamic Color",
@@ -90,7 +114,8 @@ val AppSettings = mutableStateMapOf(
         name = "Flashcard Swipe Threshold",
         description = "The distance a flashcard needs to be swiped to be count as a wrong or right answer",
         type = SettingsType.SLIDER,
-        state = 300f
+        state = 300f,
+        sliderData = mapOf("from" to 0f, "to" to 800f, "steps" to 15f)
     ),
     "Flip Flashcard Right Wrong Answer" to SettingEntry(
         category = Category.Preferences,
@@ -106,7 +131,10 @@ public data class SettingEntry(
     val description: String?,
     val type: SettingsType,
     var state: Any,
-    val customChooser: Chooser? = Chooser.NonSpecified
+    val customChooser: Chooser? = Chooser.NonSpecified,
+    val sliderData: Map<String,Float>? = null,
+    val grayedOutWhen: Boolean = false,
+    val dropDownMenuEntries: Map<String,Any>? = null
 ){
     /*init {
         when (type) {
@@ -116,9 +144,12 @@ public data class SettingEntry(
         }
     }*/
 }
+public enum class Themes{
+    DARK, LIGHT, AUTO
+}
 
 public enum class SettingsType {
-    BOOLEAN, SLIDER, COLOR_PICKER
+    BOOLEAN, SLIDER, COLOR_PICKER, CHOOSE
 }
 
 public enum class Category {

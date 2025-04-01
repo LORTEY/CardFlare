@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.cardflare.AppSettings
+import com.example.cardflare.Themes
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue80,
@@ -89,9 +90,9 @@ fun Material3AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
     require(appSettings["Use Dynamic Color"]?.state is Boolean)
     val useDynamicColors = (appSettings["Use Dynamic Color"]?.state ?: false) as Boolean && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
     val colors = when{
-        useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
-        darkTheme -> DarkColorScheme
+        useDynamicColors && ((darkTheme && appSettings["Choose Theme"]?.state == Themes.AUTO) || appSettings["Choose Theme"]?.state == Themes.DARK )-> dynamicDarkColorScheme(LocalContext.current)
+        useDynamicColors && ((!darkTheme && appSettings["Choose Theme"]?.state == Themes.AUTO) || appSettings["Choose Theme"]?.state == Themes.LIGHT ) -> dynamicLightColorScheme(LocalContext.current)
+        ((darkTheme && appSettings["Choose Theme"]?.state == Themes.AUTO) || appSettings["Choose Theme"]?.state == Themes.DARK ) -> DarkColorScheme
         else -> LightColorScheme
     }
     Log.d("ThemeDebug", "Using dynamic colors: ${MaterialTheme.colorScheme.primary}")

@@ -17,15 +17,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -178,16 +183,67 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     )
                 }
             }
-            Slider(
-                value = state.value,
-                onValueChange = { newValue ->
-                    state.value = newValue
-                    updateSetting(setting.name, newValue)
-                },
-                valueRange = 0f..800f,
-                steps = 15,
-                modifier = Modifier.fillMaxWidth()
-            )
+                Slider(
+                    value = state.value,
+                    onValueChange = { newValue ->
+                        state.value = newValue
+                        updateSetting(setting.name, newValue)
+                    },
+                    valueRange = (setting.sliderData?.get("from") ?: 0f)..(setting.sliderData?.get("to") ?: 100f),
+                    steps = (setting.sliderData?.get("steps") ?: 100).toInt(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+        }
+    }else if ((setting.type == SettingsType.CHOOSE && setting.customChooser == Chooser.NonSpecified) /*|| setting.customChooser == Chooser.Slider*/ ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 10.dp)) {
+            val state = remember { mutableStateOf(setting.state) }
+            var expanded by remember { mutableStateOf(false) }
+            var selectedText by remember { mutableStateOf("Select Option") }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = "info",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable { openPopup = true }
+                        .padding(vertical = 10.dp)
+                )
+                Text(setting.name, modifier = Modifier.padding(vertical = 10.dp))
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .background(MaterialTheme.colorScheme.inverseOnSurface),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    val keyValue = setting.dropDownMenuEntries!!.entries.firstOrNull { it.value == setting.state }?.key
+                    Text(
+                        text = keyValue ?: "",
+                        modifier = Modifier.clickable { expanded = !expanded }
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.width(200.dp).background(MaterialTheme.colorScheme.inverseOnSurface)
+                    ) {
+                        setting.dropDownMenuEntries!!.forEach { (key, value) ->
+                            DropdownMenuItem(
+                                text = { Text(key) },
+                                onClick = {
+                                    updateSetting(setting.name, value)
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
