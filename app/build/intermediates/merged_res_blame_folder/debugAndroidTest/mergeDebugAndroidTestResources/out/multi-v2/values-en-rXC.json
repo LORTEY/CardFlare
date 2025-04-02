@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.lortey.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/a1018a280fd777e551e298a1ec69fc9c/transformed/ui-release/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/28a703a5ee6c9dd94c80e0280fbb0193/transformed/ui-release/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/4195ee21c945243907bcfe4259309ee2/transformed/core-1.15.0/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/0226ad566658ec82bd9c9ad56da02e52/transformed/core-1.15.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

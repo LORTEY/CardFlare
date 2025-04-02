@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-v18/values-v18.xml",
+            "outputFile": "com.lortey.cardflare.test.app-mergeDebugAndroidTestResources-35:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/9a8cc93de02585b46dfe87c8efbe3ae9/transformed/core-1.6.1/res/values-v18/values.xml",
+                    "source": "/home/lortey/.gradle/caches/8.10.2/transforms/af5c0f041ca58bc91c072930c6418596/transformed/core-1.6.1/res/values-v18/values.xml",
                     "from": {
                         "startLines": "4,12",
                         "startColumns": "0,0",

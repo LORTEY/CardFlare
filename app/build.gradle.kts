@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cardflare"
+    namespace = "com.lortey.cardflare"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.cardflare"
+        applicationId = "com.lortey.cardflare"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
