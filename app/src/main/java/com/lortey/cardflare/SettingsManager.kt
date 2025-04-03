@@ -126,8 +126,8 @@ val AppSettings = mutableStateMapOf(
         name = "Bin Auto Empty Time",
         description = "The Time it takes the been to remove a flashcard added to it.",
         type = SettingsType.CHOOSE,
-        state = Time.SECOND,
-        dropDownMenuEntries = mapOf("1 Second" to Time.SECOND)
+        state = Time.DEBUG,
+        dropDownMenuEntries = mapOf("1 Day" to Time.DAY, "debud" to Time.DEBUG,"One Week" to Time.WEEK, "Two Weeks" to Time.TWO_WEEKS,"One Month" to Time.MONTH, "Two Months" to Time.TWO_MONTHS)
     )
 )
 public data class SettingEntry(
@@ -154,7 +154,7 @@ public enum class Themes{
 }
 
 public enum class Time{
-    SECOND
+    DAY, WEEK, TWO_WEEKS, MONTH, TWO_MONTHS, DEBUG
 }
 
 public enum class SettingsType {

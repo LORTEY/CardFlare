@@ -38,7 +38,7 @@ import androidx.navigation.NavController
 import com.lortey.cardflare.R
 import com.lortey.cardflare.RemoveMultipleFlashcardsFromBin
 import com.lortey.cardflare.loadData
-import com.lortey.cardflare.removeMultipleDecksFromBin
+import com.lortey.cardflare.RemoveMultipleDecksFromBin
 
 @Composable
 fun BinRender(context: Context, navController: NavController){
@@ -131,7 +131,7 @@ fun BinRender(context: Context, navController: NavController){
                         AddMenuEntry(
                             Name = "Remove Deck", Icon = R.drawable.nav_arrow_down,
                             Action = {
-                                removeMultipleDecksFromBin(
+                                RemoveMultipleDecksFromBin(
                                     context = context,
                                     decksSelected = binSelected,
                                     listOfDecks = decksInBin

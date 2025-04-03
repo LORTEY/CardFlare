@@ -13,6 +13,7 @@ import kotlinx.serialization.json.Json
 import java.io.IOException
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.time.temporal.Temporal
 
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
@@ -129,7 +130,7 @@ fun addFlashcard(filename: String, flashcardContent: Flashcard, context: Context
     saveDeck(context, readData[0], filename,folderName)
     if(folderName == "BinDirectory"){
         val binDescriptor = loadBinDescriptor(context = context)
-        binDescriptor.add(BinEntry( filename = filename, id = flashcardToSave.id ))
+        binDescriptor.add(BinEntry( filename = filename, id = flashcardToSave.id , dateAddedToBin = Instant.now().toEpochMilli()))
         saveBinDescriptor(context = context, binDescriptorContent = binDescriptor.toList())
     }
 }
@@ -292,7 +293,7 @@ private fun moveDeckToBin(filename: String, context: Context){
     }
 }
 
-fun removeMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, listOfDecks:List<Deck>){
+fun RemoveMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, listOfDecks:List<Deck>){
     val binDir = File(context.getExternalFilesDir(null), "BinDirectory")
     decksSelected.forEachIndexed{index , element->
         if(element) {
@@ -317,21 +318,59 @@ fun RemoveMultipleFlashcardsFromBin(cardsSelected:List<Boolean>,context: Context
     }
     saveDeck(context = context,fileData[0], filename = deck.name,"BinDirectory")
 }
+fun addDaysToEpochMillis(epochMillis: Long): Long {
+    val settingState = AppSettings["Bin Auto Empty Time"]?.state
+    return when (settingState) {
+        Time.DAY -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.DAYS).toEpochMilli()
+        Time.DEBUG -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MINUTES).toEpochMilli()
+        Time.WEEK -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.WEEKS).toEpochMilli()
+        Time.TWO_WEEKS -> Instant.ofEpochMilli(epochMillis).plus(2, ChronoUnit.WEEKS).toEpochMilli()
+        Time.MONTH -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MONTHS).toEpochMilli()
+        Time.TWO_MONTHS -> Instant.ofEpochMilli(epochMillis).plus(2, ChronoUnit.MONTHS).toEpochMilli()
+        else -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MONTHS).toEpochMilli()
+    }
 
+}
 fun BinAutoEmpty(context:Context){
     var binDescriptorContent = loadBinDescriptor(context = context)
     var lastNotRemovedIndex = 0
-    for(entry in binDescriptorContent){
-        if(Instant.ofEpochMilli(entry.dateAddedToBin).plus(1, ChronoUnit.SECONDS) > Instant.now()){
-            lastNotRemovedIndex++
-            removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", ""), folderName = "BinDirectory")
-            val deck = loadData(context = context, filename = entry.filename, folderName = "BinDirectory")
-            if(deck[0].cards.isEmpty()){
-                removeMultipleDecksFromBin(listOf(true), context, deck)
-            }
+    val settingState = AppSettings["Bin Auto Empty Time"]?.state
+    val addTime: (Instant) -> Instant = { temporal ->
+        when (settingState) {
+            Time.DAY -> temporal.plus(1, ChronoUnit.DAYS)
+            Time.DEBUG -> temporal.plus(1, ChronoUnit.MINUTES)
+            Time.WEEK -> temporal.plus(1, ChronoUnit.WEEKS)
+            Time.TWO_WEEKS -> temporal.plus(2, ChronoUnit.WEEKS)
+            Time.MONTH -> temporal.plus(1, ChronoUnit.MONTHS)
+            Time.TWO_MONTHS -> temporal.plus(2, ChronoUnit.MONTHS)
+            else -> temporal.plus(1, ChronoUnit.MONTHS)
         }
     }
-    binDescriptorContent = binDescriptorContent.subList(if(lastNotRemovedIndex>0)   lastNotRemovedIndex + 1 else 0, binDescriptorContent.size)
+    for(entry in binDescriptorContent){
+        if(addDaysToEpochMillis(entry.dateAddedToBin) < Instant.now().toEpochMilli()){
+            Log.d("cardflare3",Instant.ofEpochMilli(entry.dateAddedToBin).toString())
+            Log.d("cardflare3",Instant.ofEpochMilli(entry.dateAddedToBin).plus(1, ChronoUnit.SECONDS).toString())
+            Log.d("cardflare3",Instant.now().toString())
+            lastNotRemovedIndex += 1
+            try{
+                removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", ""), folderName = "BinDirectory")
+                val deck = loadData(context = context, filename = entry.filename, folderName = "BinDirectory")
+                if(deck[0].cards.isEmpty()){
+                    RemoveMultipleDecksFromBin(listOf(true), context, deck)
+                }
+            }catch (e:Exception){
+                Log.d("cardflare3",entry.filename)
+            }
+        }else{
+            break
+        }
+    }
+    if(lastNotRemovedIndex+1 > binDescriptorContent.size){
+        binDescriptorContent = mutableListOf<BinEntry>()
+    }else{
+        binDescriptorContent = binDescriptorContent.subList(lastNotRemovedIndex + 1, binDescriptorContent.size)
+    }
+
     val descriptorToSave = binDescriptorContent.sortedBy { it.dateAddedToBin }
     saveBinDescriptor(context, descriptorToSave)
 }
@@ -347,15 +386,15 @@ fun EnsureDirectoryStructure(context: Context){
     val file = File(directory, ".binDescriptor")
     if (!file.exists()) {
         try {
-            file.createNewFile()
+            saveBinDescriptor(context, listOf<BinEntry>())
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
     val flashcardDir = File(context.getExternalFilesDir(null), "FlashcardDirectory")
-    if (!directory.exists()) {
-        directory.mkdirs() // Creates parent directories if needed
+    if (!flashcardDir.exists()) {
+        flashcardDir.mkdirs() // Creates parent directories if needed
     }
 }
 public enum class SortType{
@@ -381,7 +420,7 @@ public data class Deck(
 
 @Serializable
 public data class BinEntry(
-    val dateAddedToBin: Long = Instant.now().toEpochMilli(),
+    val dateAddedToBin: Long,
     val filename: String,
     val id: Int
 )
