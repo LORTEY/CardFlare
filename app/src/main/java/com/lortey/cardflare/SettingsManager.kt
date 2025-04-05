@@ -10,8 +10,8 @@ import java.io.File
 
 // This file handles settings of the app
 fun updateSetting(key: String, newState: Any) {//the settings map is rebuilt in order to force jetpack compose to update on change
-    val currentEntry = AppSettings[key] ?: return // ✅ Prevents modifying a non-existent key
-    AppSettings[key] = currentEntry.copy(state = newState) // ✅ Triggers recomposition
+    val currentEntry = AppSettings[key] ?: return // Prevents modifying a non-existent key
+    AppSettings[key] = currentEntry.copy(state = newState) // Triggers recomposition
     Log.d("cardflare", AppSettings.toString())
 }
 
