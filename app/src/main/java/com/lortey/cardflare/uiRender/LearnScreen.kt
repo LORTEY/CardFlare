@@ -1,6 +1,8 @@
 package com.lortey.cardflare.uiRender
 
 import android.content.Context
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -23,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,12 +34,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.lortey.cardflare.AppSettings
 import com.lortey.cardflare.Flashcard
@@ -53,25 +59,41 @@ fun LearnScreen(navController: NavController, context: Context) {
         throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
         navController.popBackStack()
     }
-    CardsToLearn.reverse()// a flip is needed because the last cards in list will; appear first in the foreach loop
+    var isReversed by remember { mutableStateOf(false) }
 
-    CardsToLearn.forEachIndexed() { cardIndex, card->
-        SwipeableFlashcard(
-            flashcard = CardsToLearn[cardIndex],
-            onSwipeWrong = {
-                currentCardIndex += 1
-                //flashcards = flashcards.drop(1).toMutableList()
-            },
-            onSwipeRight = {
-                currentCardIndex += 1
-                //flashcards = flashcards.drop(1).toMutableList()
-            },
-            modifierParsed = Modifier.background(
-                MaterialTheme.colorScheme.inverseOnSurface,
-                shape = RoundedCornerShape(20.dp)
-            ),
-            onTop = CardsToLearn.size - cardIndex - 1 == currentCardIndex
-        )
+    // Reverse only once when the screen first loads
+    /*LaunchedEffect(Unit) {
+        if (!isReversed && CardsToLearn != null) {
+            CardsToLearn.reverse()
+            isReversed = true
+        }
+    }*/
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .graphicsLayer {
+                // Enable depth buffering for the container
+                compositingStrategy = CompositingStrategy.Offscreen
+            }
+    ) {
+        CardsToLearn.reversed().forEachIndexed() { cardIndex, card ->
+            SwipeableFlashcard(
+                flashcard = CardsToLearn[cardIndex],
+                onSwipeWrong = {
+                    currentCardIndex += 1
+                    //flashcards = flashcards.drop(1).toMutableList()
+                },
+                onSwipeRight = {
+                    currentCardIndex += 1
+                    //flashcards = flashcards.drop(1).toMutableList()
+                },
+                modifierParsed = Modifier.background(
+                    MaterialTheme.colorScheme.inverseOnSurface,
+                    shape = RoundedCornerShape(20.dp)
+                ),
+                onTop = CardsToLearn.size - cardIndex - 1 == currentCardIndex
+            )
+        }
     }
     BackHandler {
         navController.popBackStack()
@@ -104,8 +126,8 @@ fun SwipeableFlashcard(
     )
 
     // Animate padding change using animateDpAsState
-    val paddingValue by animateDpAsState(
-        targetValue = if (onTop) 0.dp else 32.dp, // Toggle between two padding values
+    val closeness by animateFloatAsState(
+        targetValue = if (onTop) 1f else 0.7f, // Toggle between two padding values
         animationSpec = androidx.compose.animation.core.tween(durationMillis = 250)
     )
     val darknessValue by animateFloatAsState(
@@ -119,7 +141,7 @@ fun SwipeableFlashcard(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValue)
+                //.padding(paddingValue)
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
                         onDragEnd = {
@@ -167,9 +189,18 @@ fun SwipeableFlashcard(
                     .fillMaxHeight()
                     .width(LocalConfiguration.current.screenWidthDp.dp)
                     .graphicsLayer {
-                        rotationY = rotationYy
-                        cameraDistance = 8 * density // prevents distortion
+                        if(onTop) {
+                            rotationY = rotationYy
+                            cameraDistance = 8 * density
+                            // Add these critical properties:
+                            shape = RectangleShape // Ensures clean edges during rotation
+                            clip = true // Prevents content from bleeding through
+                        }
+                        scaleX = closeness
+                        scaleY = closeness
                     }
+                    // Add zIndex to ensure proper stacking
+                    .zIndex(if (onTop) 1f else 0f)
                     .clickable { isFlipped = !isFlipped }
                     .padding(20.dp)
                     .border(
@@ -203,11 +234,10 @@ fun SwipeableFlashcard(
                     modifier = Modifier
                         .fillMaxSize()
                         .graphicsLayer {
-                            if (rotationYy > 90f) rotationY = 180f
-                        } //prevents the text from rendering right to left
+                            rotationY = if (rotationYy > 90f) 180f else 0f
+                        }
                         .padding(20.dp),
                     contentAlignment = Alignment.Center
-
                 ) {
                     Text(
                         text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,

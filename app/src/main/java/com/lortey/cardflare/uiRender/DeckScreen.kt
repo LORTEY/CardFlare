@@ -22,10 +22,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,13 +47,21 @@ import com.lortey.cardflare.removeMultiple
 // loads the screen when you click certain deck
 @Composable
 fun deckScreen(context: Context, navController: NavController){
-    var openedTarget: Deck by remember{ mutableStateOf(currentOpenedDeck.value) }
-    var cards by remember{mutableStateOf(openedTarget.cards)}
-    var selectMode by remember{ mutableStateOf(false) }
+    val currentDeck by rememberUpdatedState(currentOpenedDeck.value)
+    var openedTarget by remember { mutableStateOf(currentDeck) }
+    var cards by remember { mutableStateOf(openedTarget.cards) }
+    var selectMode by remember { mutableStateOf(false) }
 
-    //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    cardsSelected = remember {  mutableStateListOf( *Array(cards.size) { false }) }
+    // Initialize selection state based on current cards
+    val cardsSelected = remember { mutableStateListOf<Boolean>().apply {
+        addAll(List(cards.size) { false })
+    } }
 
+    // Reset selection when cards change
+    LaunchedEffect(cards) {
+        cardsSelected.clear()
+        cardsSelected.addAll(List(cards.size) { false })
+    }
     BackHandler { // Handle the back button press
         if (deckAddMenu){
             deckAddMenu = false
@@ -160,29 +170,30 @@ fun deckScreen(context: Context, navController: NavController){
                         listOf(
                             AddMenuEntry("Learn",
                                 R.drawable.addempty,
-                                { CardsToLearn.clear(); UniversalSelected.forEachIndexed { index, value->
+                                { CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
                                     if(value) CardsToLearn.add(
-                                    currentOpenedDeck.value.cards[index])};
+                                    cards[index])};
                                     if (CardsToLearn.size == 0)
-                                        CardsToLearn = currentOpenedDeck.value.cards.toMutableList();
+                                        CardsToLearn = cards.toMutableList();
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
                                 R.drawable.settings,
                                 {navController.navigate("add_flashcard")}),
-                            AddMenuEntry("Remove Flashcards",
-                            Icon = R.drawable.nav_arrow_down,
-                                Action = {
-                                    CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
-                                    if(value) CardsToLearn.add(
-                                        currentOpenedDeck.value.cards[index])};
-                                    /*if (CardsToLearn.size == 0)
-                                        CardsToLearn = currentOpenedDeck!!.cards.toMutableList()};*/
-                                    if (CardsToLearn.size > 0) removeMultiple(context = context, filename = currentOpenedDeck.value.name, cards = CardsToLearn);
-                                    openedTarget = loadData(context = context,currentOpenedDeck.value.name)[0] ;
-                                    cards = openedTarget.cards;
+                            AddMenuEntry("Remove Flashcards", R.drawable.nav_arrow_down) {
+                                val toRemove = cards.filterIndexed { index, _ -> cardsSelected[index] }
+                                if (toRemove.isNotEmpty()) {
+                                    removeMultiple(context, openedTarget.name, toRemove)
 
-                                    }
-                            )
+                                    // Proper state update
+                                    openedTarget = loadData(context, openedTarget.name)[0]
+                                    cards = openedTarget.cards
+
+                                    // Clear selection
+                                    selectMode = false
+                                    CardsToLearn.clear()
+                                }
+                            }
+
 
                     ))
                 }

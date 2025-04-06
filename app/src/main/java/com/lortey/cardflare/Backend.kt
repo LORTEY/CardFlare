@@ -322,7 +322,7 @@ fun addDaysToEpochMillis(epochMillis: Long): Long {
     val settingState = AppSettings["Bin Auto Empty Time"]?.state
     return when (settingState) {
         Time.DAY -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.DAYS).toEpochMilli()
-        Time.DEBUG -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MINUTES).toEpochMilli()
+        Time.DEBUG -> Instant.ofEpochMilli(epochMillis).plus(30, ChronoUnit.SECONDS).toEpochMilli()
         Time.WEEK -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.WEEKS).toEpochMilli()
         Time.TWO_WEEKS -> Instant.ofEpochMilli(epochMillis).plus(2, ChronoUnit.WEEKS).toEpochMilli()
         Time.MONTH -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MONTHS).toEpochMilli()
@@ -334,18 +334,6 @@ fun addDaysToEpochMillis(epochMillis: Long): Long {
 fun BinAutoEmpty(context:Context){
     var binDescriptorContent = loadBinDescriptor(context = context)
     var lastNotRemovedIndex = 0
-    val settingState = AppSettings["Bin Auto Empty Time"]?.state
-    val addTime: (Instant) -> Instant = { temporal ->
-        when (settingState) {
-            Time.DAY -> temporal.plus(1, ChronoUnit.DAYS)
-            Time.DEBUG -> temporal.plus(1, ChronoUnit.MINUTES)
-            Time.WEEK -> temporal.plus(1, ChronoUnit.WEEKS)
-            Time.TWO_WEEKS -> temporal.plus(2, ChronoUnit.WEEKS)
-            Time.MONTH -> temporal.plus(1, ChronoUnit.MONTHS)
-            Time.TWO_MONTHS -> temporal.plus(2, ChronoUnit.MONTHS)
-            else -> temporal.plus(1, ChronoUnit.MONTHS)
-        }
-    }
     for(entry in binDescriptorContent){
         if(addDaysToEpochMillis(entry.dateAddedToBin) < Instant.now().toEpochMilli()){
             Log.d("cardflare3",Instant.ofEpochMilli(entry.dateAddedToBin).toString())
@@ -365,10 +353,10 @@ fun BinAutoEmpty(context:Context){
             break
         }
     }
-    if(lastNotRemovedIndex+1 > binDescriptorContent.size){
+    if(lastNotRemovedIndex > binDescriptorContent.size){
         binDescriptorContent = mutableListOf<BinEntry>()
     }else{
-        binDescriptorContent = binDescriptorContent.subList(lastNotRemovedIndex + 1, binDescriptorContent.size)
+        binDescriptorContent = binDescriptorContent.subList(lastNotRemovedIndex, binDescriptorContent.size)
     }
 
     val descriptorToSave = binDescriptorContent.sortedBy { it.dateAddedToBin }
