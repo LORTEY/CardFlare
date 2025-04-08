@@ -33,7 +33,11 @@ import com.lortey.cardflare.GetListOfApps
 
 @Composable
 fun LaunchOnMenu(context: Context, navController: NavController){
-    val apps = remember { GetListOfApps(context) }
+    val apps = remember { getListOfApps(context) }
+    viewModelScope.launch {
+        val apps = getListOfApps(context)
+        // Update UI with the apps list
+    }
     Log.d("cardflareSS", apps.toString())
     LazyColumn(
         modifier = Modifier

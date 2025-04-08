@@ -36,9 +36,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.R
+import com.lortey.cardflare.RecoverMultipleFlashcards
 import com.lortey.cardflare.RemoveMultipleFlashcardsFromBin
 import com.lortey.cardflare.loadData
 import com.lortey.cardflare.RemoveMultipleDecksFromBin
+import java.util.jar.Attributes.Name
 
 @Composable
 fun BinRender(context: Context, navController: NavController){
@@ -137,6 +139,15 @@ fun BinRender(context: Context, navController: NavController){
                                     listOfDecks = decksInBin
                                 );
                                 decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
+                            }),
+                        AddMenuEntry(Name = "Recover Decks", Icon = R.drawable.redo,
+                            Action = {
+                                    RemoveMultipleDecksFromBin(
+                                        context = context,
+                                        decksSelected = binSelected,
+                                        listOfDecks = decksInBin,
+                                    );
+                                    decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
                             })
                     )
                 )
@@ -251,9 +262,17 @@ fun BinCards(context: Context, navController: NavController){
                                     listOfCards = cardsInBin,
                                     deck = currentOpenedBinDeck
                                 );
-                                currentOpenedBinDeck = loadData(context = context, currentOpenedBinDeck.name, "BinDirectory")[0]
+                                currentOpenedBinDeck = loadData(context = context, filename = currentOpenedBinDeck.filename, "BinDirectory")[0]
                                 cardsInBin = currentOpenedBinDeck.cards
-                            })
+                            }),
+                        AddMenuEntry(
+                            Name = "Recover Flashcards", Icon = R.drawable.redo,
+                            Action = {
+                                RecoverMultipleFlashcards(context, listSelected = binSelected, listOfFlashcards = cardsInBin, deckFrom = currentOpenedBinDeck)
+                                currentOpenedBinDeck = loadData(context = context, currentOpenedBinDeck.filename, "BinDirectory")[0]
+                                cardsInBin = currentOpenedBinDeck.cards
+                            }
+                        )
                     )
                 )
             }

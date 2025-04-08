@@ -101,7 +101,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 .clickable {
                     if (ableToAdd) {
                         addFlashcard(
-                            currentOpenedDeck.value.name,
+                            currentOpenedDeck.value.filename,
                             Flashcard(
                                 0,
                                 SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
@@ -109,7 +109,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                             ), context = context
                         )
                         currentOpenedDeck =IndexTracker(
-                            loadData(filename = currentOpenedDeck.value.name, context = context)[0])
+                            loadData(filename = currentOpenedDeck.value.filename, context = context)[0])
                         defaultStateA = ""
                         defaultStateB = ""
                         textStateA = ""

@@ -11,9 +11,12 @@ import java.io.OutputStream
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.IOException
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.time.temporal.Temporal
+import kotlin.io.encoding.Base64
 
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
@@ -119,10 +122,10 @@ fun fileExists(context: Context, fileName: String, folderName: String = ""): Boo
 
     return File(directory, fileName).exists()
 }
-fun addFlashcard(filename: String, flashcardContent: Flashcard, context: Context, folderName:String="FlashcardDirectory", reassignID: Boolean = true) {
+fun addFlashcard(filename: String, flashcardContent: Flashcard, name: String = "", context: Context, folderName:String="FlashcardDirectory", reassignID: Boolean = true) {
     var readData = loadData(filename = filename, context = context, folderName =  folderName)
     if(readData.size<=0){
-        readData = listOf(getDeck(filename = filename))
+        readData = listOf(getDeck(filename = filename, name = name))
     }
     val flashcardToSave = if(reassignID) flashcardContent.copy(id = readData[0].minimalID + 1) else flashcardContent
     readData[0].cards.add(flashcardToSave) //assigns an id to flashcard if specified to do so and adds it
@@ -149,21 +152,34 @@ fun saveBinDescriptor(context: Context, binDescriptorContent: List<BinEntry>, fi
     file.writeText(jsonString)
 }
 
-fun addDeck(context: Context, filename: String, deck:Deck? = null, folderName: String = "FlashcardDirectory") {
+fun addDeck(context: Context, name:String="", filename: String = "", deck:Deck? = null, folderName: String = "FlashcardDirectory") {
+    var nameCopy = ""
+    var filenameCopy = ""
+    if(name.isBlank()){
+        nameCopy = URLDecoder.decode(filename, StandardCharsets.UTF_8.toString())
+    }else{
+        nameCopy = name
+    }
+
+    if(filename.isBlank()){
+        filenameCopy = URLEncoder.encode(name, StandardCharsets.UTF_8.toString())
+    }else{
+        filenameCopy = filename
+    }
     Log.d("CardFlareLine", context.getExternalFilesDir(null)?.absolutePath ?: "No Path")
     val FlashcardDirectory = File(context.getExternalFilesDir(null), folderName) // Use getExternalFilesDir() here
     if (!FlashcardDirectory.exists()) {
         FlashcardDirectory.mkdirs() // Create folder if it doesn't exist
     }
 
-    val file = File(FlashcardDirectory, filename) // File inside the directory
+    val file = File(FlashcardDirectory, filenameCopy) // File inside the directory
     if (!file.exists()) {
         file.createNewFile() // Create new file
         val currentTimeMillis = System.currentTimeMillis()
         val currentTimeTenSec = ((currentTimeMillis / 1000) / 10).toInt() * 10
         var jsonString: String
         if(deck == null){
-             jsonString = jsonFormat.encodeToString(getDeck(filename = filename, date_made = currentTimeTenSec, last_edited = currentTimeTenSec))
+             jsonString = jsonFormat.encodeToString(getDeck(name = nameCopy, filename = filenameCopy, date_made = currentTimeTenSec, last_edited = currentTimeTenSec))
         }else{
              jsonString = jsonFormat.encodeToString(deck)
         }
@@ -215,22 +231,24 @@ public fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType,
         return decksQualified
     }
 
-fun MoveCardToBin(context: Context, filename: String, card: Flashcard) {
+fun MoveCardToBin(context: Context, deckFrom: Deck, card: Flashcard, moveToBin:Boolean = true) {
+    val to = if(moveToBin) "BinDirectory" else "FlashcardDirectory"
+    val from = if(moveToBin) "FlashcardDirectory" else "BinDirectory"
     val BinDir = File(
         context.getExternalFilesDir(null),
-        "BinDirectory"
+        to
     ) // Use getExternalFilesDir() here
     if (!BinDir.exists()) {
         BinDir.mkdirs() // Create folder if it doesn't exist
     }
-    val file = File(BinDir, "$filename") // File inside the directory
+    val file = File(BinDir, "${deckFrom.filename}") // File inside the directory
     if (!file.exists()) {
         file.createNewFile() // Create new file
-        addDeck(context = context, filename = filename, folderName = "BinDirectory")
+        addDeck(context = context, filename = deckFrom.filename, folderName = to)
         reloadDecks(context)
     }
-    addFlashcard(filename = filename, flashcardContent = card, context = context, folderName = "BinDirectory", reassignID = false)
-    removeFlashcard(context = context, filename = filename, card = card)
+    addFlashcard(filename = deckFrom.filename, name = deckFrom.name, flashcardContent = card, context = context, folderName = to, reassignID = false)
+    removeFlashcard(context = context, filename = deckFrom.filename, card = card, folderName = from)
 }
 
 private fun removeFlashcard(context: Context, filename: String, card: Flashcard, folderName: String = "FlashcardDirectory") {
@@ -244,18 +262,18 @@ private fun removeFlashcard(context: Context, filename: String, card: Flashcard,
     saveDeck(context = context,fileData[0], filename = filename, folderName = folderName)
 }
 
-fun removeMultiple(context: Context,filename: String, cards:List<Flashcard>){
+fun removeMultiple(context: Context, cards:List<Flashcard>, deckFrom: Deck){
     cards.forEach(){element ->
-        MoveCardToBin(context = context, filename = filename, card = element)
+        MoveCardToBin(context = context, deckFrom = deckFrom, card = element)
     }
 }
-fun getDeck(filename: String ="", date_made:Int = 0, last_edited:Int = 0, tags: MutableList<String> = mutableListOf(),cards: MutableList<Flashcard> = mutableListOf() ):Deck{
-    return Deck(filename,date_made,last_edited, tags,cards)
+fun getDeck(name: String ="",filename: String="",date_made:Int = 0, last_edited:Int = 0, tags: MutableList<String> = mutableListOf(), cards: MutableList<Flashcard> = mutableListOf() ):Deck{
+    return Deck(if(filename.isBlank()) URLEncoder.encode(name, StandardCharsets.UTF_8.toString()) else filename,name,date_made,last_edited, tags,cards)
 }
 fun multipleDeckMoveToBin(decks:List<Deck>, selected:MutableList<Boolean>,context: Context){
     selected.forEachIndexed{ index, isSelected->
         if (isSelected){
-            moveDeckToBin(context = context, filename = decks[index].name)
+            moveDeckToBin(context = context, filename = decks[index].filename)
         }
     }
 }
@@ -297,7 +315,7 @@ fun RemoveMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, li
     val binDir = File(context.getExternalFilesDir(null), "BinDirectory")
     decksSelected.forEachIndexed{index , element->
         if(element) {
-            val destFile = File(binDir, listOfDecks[index].name)
+            val destFile = File(binDir, listOfDecks[index].filename)
             if (destFile.exists()) {
                 destFile.delete() // Delete existing file first
             }
@@ -306,7 +324,7 @@ fun RemoveMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, li
 }
 
 fun RemoveMultipleFlashcardsFromBin(cardsSelected:List<Boolean>,context: Context, listOfCards: List<Flashcard>,deck: Deck){
-    val fileData = loadData(context = context, filename = deck.name,"BinDirectory")
+    val fileData = loadData(context = context, filename = deck.filename,"BinDirectory")
     val IDsOfFlashcardsToRemove = listOfCards.zip(cardsSelected)
         .filter { (_, flag) -> flag }
         .map { (value, _) -> value.id }
@@ -316,7 +334,7 @@ fun RemoveMultipleFlashcardsFromBin(cardsSelected:List<Boolean>,context: Context
             iterator.remove()
         }
     }
-    saveDeck(context = context,fileData[0], filename = deck.name,"BinDirectory")
+    saveDeck(context = context,fileData[0], filename = deck.filename,"BinDirectory")
 }
 fun addDaysToEpochMillis(epochMillis: Long): Long {
     val settingState = AppSettings["Bin Auto Empty Time"]?.state
@@ -385,6 +403,65 @@ fun EnsureDirectoryStructure(context: Context){
         flashcardDir.mkdirs() // Creates parent directories if needed
     }
 }
+
+fun RecoverMultipleFlashcards(context:Context,listSelected:List<Boolean>, listOfFlashcards:List<Flashcard>, deckFrom:Deck){
+    listOfFlashcards.forEachIndexed{index, card->
+        if(listSelected[index]){
+            MoveCardToBin(context = context, deckFrom = deckFrom, card = card, moveToBin = false)
+        }
+    }
+    try{
+        val deck = loadData(context = context, filename = deckFrom.filename, folderName = "BinDirectory")
+        if(deck[0].cards.isEmpty()){
+            RemoveMultipleDecksFromBin(listOf(true), context, deck)
+        }
+    }catch (e:Exception){
+        Log.d("cardflare3",deckFrom.filename)
+    }
+}
+
+fun RecoverMultipleDecks(context:Context,listSelected:List<Boolean>, listOfDecks:List<Deck>, filename: String){
+    listOfDecks.forEachIndexed { index, deck ->
+        if (fileExists(
+                context = context,
+                fileName = deck.filename,
+                folderName = "FlashcardDirectory"
+            )
+        ) {
+            val sourceFile =
+                File(context.getExternalFilesDir(null), "BinDirectory/${deck.filename}")
+            val destFile =
+                File(context.getExternalFilesDir(null), "FlashcardDirectory/${deck.filename}")
+            destFile.parentFile?.mkdirs()
+            try {
+                sourceFile.copyTo(destFile, overwrite = false)
+                sourceFile.delete()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            try {
+                val deck =
+                    loadData(context = context, filename = filename, folderName = "BinDirectory")
+                if (deck[0].cards.isEmpty()) {
+                    RemoveMultipleDecksFromBin(listOf(true), context, deck)
+                }
+            } catch (e: Exception) {
+                Log.d("cardflare3", filename)
+            }
+        } else {
+            deck.cards.forEach { card ->
+                MoveCardToBin(
+                    context = context,
+                    deckFrom = deck,
+                    card = card,
+                    moveToBin = false
+                )
+            }
+        }
+    }
+}
+
+
 public enum class SortType{
     ByName,
     ByCreationDate,
@@ -399,6 +476,7 @@ public data class Flashcard(
 
 @Serializable
 public data class Deck(
+    val filename: String,
     val name: String,
     val date_made: Int,
     val last_edited: Int,

@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.addDeck
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 // The menu that appears when you press pluss button on the deck view screen
 @Composable
@@ -52,6 +54,6 @@ fun AddDeckScreen(context: Context, navController: NavController){
             maxLines = 5,
             minLines = 1
         )
-        Text("Add", Modifier.clickable { addDeck(context, DeckName); navController.popBackStack()})
+        Text("Add", Modifier.clickable { addDeck(context, name = DeckName, filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())); navController.popBackStack()})
     }
 }

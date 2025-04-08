@@ -36,6 +36,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
@@ -45,17 +47,24 @@ import com.lortey.cardflare.removeMultiple
 
 //:fun adjustSelected(cardsSelected:)
 // loads the screen when you click certain deck
+
 @Composable
 fun deckScreen(context: Context, navController: NavController){
+    //val backStackEntry = remember { navController.currentBackStackEntry }
+
+    //var data by remember { mutableStateOf(loadData()) }
+
+
     val currentDeck by rememberUpdatedState(currentOpenedDeck.value)
     var openedTarget by remember { mutableStateOf(currentDeck) }
-    var cards by remember { mutableStateOf(openedTarget.cards) }
+    var cards by remember(openedTarget) { mutableStateOf(openedTarget.cards) }
     var selectMode by remember { mutableStateOf(false) }
-
+    Log.d("cardflare3", cards.toString())
     // Initialize selection state based on current cards
-    val cardsSelected = remember { mutableStateListOf<Boolean>().apply {
+    val cardsSelected = remember(navController)  { mutableStateListOf<Boolean>().apply {
         addAll(List(cards.size) { false })
     } }
+
 
     // Reset selection when cards change
     LaunchedEffect(cards) {
@@ -164,7 +173,6 @@ fun deckScreen(context: Context, navController: NavController){
             Column(modifier = Modifier.align(Alignment.BottomEnd)) {
                 Column(horizontalAlignment = Alignment.End,
                     modifier = Modifier
-                        //.width(128.dp)
                         .align(Alignment.End)) {
                     UniversalAddMenu(deckAddMenu, changeVisibility = { deckAddMenu = !deckAddMenu},
                         listOf(
@@ -182,13 +190,12 @@ fun deckScreen(context: Context, navController: NavController){
                             AddMenuEntry("Remove Flashcards", R.drawable.nav_arrow_down) {
                                 val toRemove = cards.filterIndexed { index, _ -> cardsSelected[index] }
                                 if (toRemove.isNotEmpty()) {
-                                    removeMultiple(context, openedTarget.name, toRemove)
+                                    removeMultiple(context = context, deckFrom = openedTarget, cards = toRemove)
 
-                                    // Proper state update
-                                    openedTarget = loadData(context, openedTarget.name)[0]
+                                    currentOpenedDeck.value = loadData(context, openedTarget.filename)[0] // I spent an hour trying to fix this. I did not update the global but copy of global to local variable. I might be stupid.
+                                    openedTarget = currentOpenedDeck.value
                                     cards = openedTarget.cards
 
-                                    // Clear selection
                                     selectMode = false
                                     CardsToLearn.clear()
                                 }

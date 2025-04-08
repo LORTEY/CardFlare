@@ -3,6 +3,7 @@ package com.lortey.cardflare.uiRender
 import android.content.Context
 import android.graphics.RenderEffect
 import android.graphics.Shader
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -30,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +57,7 @@ import kotlin.math.roundToInt
 fun LearnScreen(navController: NavController, context: Context) {
     var currentCardIndex by remember { mutableStateOf(0) }
     //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
+
     if (CardsToLearn == null) {
         throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
         navController.popBackStack()

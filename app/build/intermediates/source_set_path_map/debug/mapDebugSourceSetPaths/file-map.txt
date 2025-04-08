@@ -63,10 +63,10 @@ com.lortey.cardflare.app-lifecycle-livedata-core-2.8.7-61 /home/lortey/.gradle/c
 com.lortey.cardflare.app-lifecycle-viewmodel-savedstate-2.8.7-62 /home/lortey/.gradle/caches/8.10.2/transforms/e911f5fa55a410834ffc03be33dfa2c3/transformed/lifecycle-viewmodel-savedstate-2.8.7/res
 com.lortey.cardflare.app-core-ktx-1.15.0-63 /home/lortey/.gradle/caches/8.10.2/transforms/f32cc1e16dfcec08e77dababf22357e6/transformed/core-ktx-1.15.0/res
 com.lortey.cardflare.app-material-ripple-release-64 /home/lortey/.gradle/caches/8.10.2/transforms/fba57f27f2ac3a120ea33e9653b268eb/transformed/material-ripple-release/res
-com.lortey.cardflare.app-pngs-65 /home/lortey/AndroidStudioProjects/CardFlare/app/build/generated/res/pngs/debug
-com.lortey.cardflare.app-resValues-66 /home/lortey/AndroidStudioProjects/CardFlare/app/build/generated/res/resValues/debug
-com.lortey.cardflare.app-packageDebugResources-67 /home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
-com.lortey.cardflare.app-packageDebugResources-68 /home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
-com.lortey.cardflare.app-debug-69 /home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/merged_res/debug/mergeDebugResources
-com.lortey.cardflare.app-debug-70 /home/lortey/AndroidStudioProjects/CardFlare/app/src/debug/res
-com.lortey.cardflare.app-main-71 /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/res
+com.lortey.cardflare.app-pngs-65 /home/lortey/StudioProjects/CardFlare/app/build/generated/res/pngs/debug
+com.lortey.cardflare.app-resValues-66 /home/lortey/StudioProjects/CardFlare/app/build/generated/res/resValues/debug
+com.lortey.cardflare.app-packageDebugResources-67 /home/lortey/StudioProjects/CardFlare/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.lortey.cardflare.app-packageDebugResources-68 /home/lortey/StudioProjects/CardFlare/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.lortey.cardflare.app-debug-69 /home/lortey/StudioProjects/CardFlare/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.lortey.cardflare.app-debug-70 /home/lortey/StudioProjects/CardFlare/app/src/debug/res
+com.lortey.cardflare.app-main-71 /home/lortey/StudioProjects/CardFlare/app/src/main/res
