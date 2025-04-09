@@ -144,7 +144,7 @@ fun BinRender(context: Context, navController: NavController){
                             }),
                         AddMenuEntry(Name = "Recover Decks", Icon = R.drawable.redo,
                             Action = {
-                                    RemoveMultipleDecksFromBin(
+                                    RecoverMultipleDecks(
                                         context = context,
                                         decksSelected = binSelected,
                                         listOfDecks = decksInBin,
