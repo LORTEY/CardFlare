@@ -126,7 +126,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
     }
 }
 fun translateText(text: String, translator: Translator, onResult: (String) -> Unit) {
-    Log.d("CardflareTranslator","hii");
+    Log.d("CardflareTranslator","hii")
     translator.translate(text)
         .addOnSuccessListener { translatedText -> onResult(translatedText) }
         .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }

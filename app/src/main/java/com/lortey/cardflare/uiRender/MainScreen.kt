@@ -147,7 +147,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                                             selectMode = false
                                                         }
                                                     } else {
-                                                        currentOpenedDeck = IndexTracker(qualifiedDecks[index]);
+                                                        currentOpenedDeck = IndexTracker(qualifiedDecks[index])
                                                         navController.navigate("deck_menu")
                                                     }
                                                 }
@@ -192,15 +192,15 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                     listOf(AddMenuEntry("Add Deck", R.drawable.addempty, Action = { navController.navigate("deck_add_screen") }),
                                         AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.nav_arrow_down,
                                             Action = {
-                                                multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected);
-                                                decks = loadData(filename = "", context = context);
+                                                multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected)
+                                                decks = loadData(filename = "", context = context)
                                                 decksImage = decks
                                                 decksSelected.fill(false)
                                                 qualifiedDecks = sortDecks(searchQuery, decksImage, sortType = sortType,
                                                     com.lortey.cardflare.uiRender.isAscending
                                                 )
-                                                selectMode = false;
-                                        })
+                                                selectMode = false
+                                            })
                                     ))
                             }
                         }
@@ -272,7 +272,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                         }
 
                         // "Sort" Menu button
-                        Column(){
+                        Column {
                             Icon(
                                 painter = painterResource(id = R.drawable.sort_ascending),
                                 contentDescription = "chart",

@@ -36,10 +36,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
 import com.lortey.cardflare.loadData
 import com.lortey.cardflare.removeMultiple
@@ -180,9 +177,9 @@ fun deckScreen(context: Context, navController: NavController){
                                 R.drawable.addempty,
                                 { CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
                                     if(value) CardsToLearn.add(
-                                    cards[index])};
+                                    cards[index])}
                                     if (CardsToLearn.size == 0)
-                                        CardsToLearn = cards.toMutableList();
+                                        CardsToLearn = cards.toMutableList()
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
                                 R.drawable.settings,

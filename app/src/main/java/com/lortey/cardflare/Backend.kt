@@ -4,19 +4,18 @@ import android.content.Context
 import android.util.Log
 import com.lortey.cardflare.uiRender.reloadDecks
 import kotlinx.serialization.Serializable
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import kotlin.io.encoding.Base64
 
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
@@ -143,7 +142,7 @@ fun loadBinDescriptor(context: Context, filename: String = ".binDescriptor", fol
     if(jsonString.isNotBlank()) {
         return jsonFormat.decodeFromString<List<BinEntry>>(jsonString).toMutableList()
     }
-    return mutableListOf<BinEntry>()
+    return mutableListOf()
 }
 
 fun saveBinDescriptor(context: Context, binDescriptorContent: List<BinEntry>, filename: String = ".binDescriptor", folderName: String = "BinDirectory") {
@@ -191,11 +190,11 @@ fun addDeck(context: Context, name:String="", filename: String = "", deck:Deck? 
     }
 }
 
-public fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
+fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
         // Enumerating tags
         var tagsRequired = mutableListOf<String>()
         if ('#' in searchQuery){
-            searchQuery.split(' ').forEach(){ word ->
+            searchQuery.split(' ').forEach { word ->
                 if (word.length > 0){
                     if(word[0] == '#'){
                         tagsRequired.add(word)
@@ -212,7 +211,7 @@ public fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType,
 
         var decksQualified = mutableListOf<Deck>()
 
-        decks.forEach() { currentDeck->
+        decks.forEach { currentDeck->
             if ((tagsRequired.any { it in currentDeck.tags } || tagsRequired.size == 0) and (searchTerm in currentDeck.name || searchTerm.length == 0)){
                 decksQualified.add(currentDeck)
             }
@@ -263,7 +262,7 @@ private fun removeFlashcard(context: Context, filename: String, card: Flashcard,
 }
 
 fun removeMultiple(context: Context, cards:List<Flashcard>, deckFrom: Deck){
-    cards.forEach(){element ->
+    cards.forEach { element ->
         MoveCardToBin(context = context, deckFrom = deckFrom, card = element)
     }
 }
@@ -372,7 +371,7 @@ fun BinAutoEmpty(context:Context){
         }
     }
     if(lastNotRemovedIndex > binDescriptorContent.size){
-        binDescriptorContent = mutableListOf<BinEntry>()
+        binDescriptorContent = mutableListOf()
     }else{
         binDescriptorContent = binDescriptorContent.subList(lastNotRemovedIndex, binDescriptorContent.size)
     }
@@ -392,7 +391,7 @@ fun EnsureDirectoryStructure(context: Context){
     val file = File(directory, ".binDescriptor")
     if (!file.exists()) {
         try {
-            saveBinDescriptor(context, listOf<BinEntry>())
+            saveBinDescriptor(context, listOf())
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -460,22 +459,44 @@ fun RecoverMultipleDecks(context:Context,listSelected:List<Boolean>, listOfDecks
         }
     }
 }
+fun calculateSimilarity(query: String, target: String): Double {
+    val maxLength = maxOf(query.length, target.length)
+    return if (maxLength == 0) 1.0 else {
+        1.0 - (levenshteinDistance(query, target) / maxLength.toDouble())
+    }
+}
 
+// Levenshtein distance implementation
+fun levenshteinDistance(a: String, b: String): Int {
+    val dp = Array(a.length + 1) { IntArray(b.length + 1) }
+    for (i in 0..a.length) dp[i][0] = i
+    for (j in 0..b.length) dp[0][j] = j
+    for (i in 1..a.length) {
+        for (j in 1..b.length) {
+            dp[i][j] = minOf(
+                dp[i-1][j] + 1,
+                dp[i][j-1] + 1,
+                dp[i-1][j-1] + if (a[i-1] == b[j-1]) 0 else 1
+            )
+        }
+    }
+    return dp[a.length][b.length]
+}
 
-public enum class SortType{
+enum class SortType{
     ByName,
     ByCreationDate,
     ByLastEdited
 }
 
 @Serializable
-public data class Flashcard(
+data class Flashcard(
     val id: Int,
     val SideA: String,
     val SideB: String)
 
 @Serializable
-public data class Deck(
+data class Deck(
     val filename: String,
     val name: String,
     val date_made: Int,
@@ -485,7 +506,7 @@ public data class Deck(
     var minimalID: Int = 0)
 
 @Serializable
-public data class BinEntry(
+data class BinEntry(
     val dateAddedToBin: Long,
     val filename: String,
     val id: Int

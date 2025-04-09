@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
-    val openedTarget: Deck = currentOpenedDeck.value ?: getDeck()
+    val openedTarget: Deck = currentOpenedDeck.value
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()

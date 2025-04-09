@@ -45,7 +45,7 @@ import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
 import com.lortey.cardflare.getDeck
 
-public data class AddMenuEntry(
+data class AddMenuEntry(
     val Name:String,
     val Icon: Int,
     val Action :() -> Unit
@@ -67,7 +67,7 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
             horizontalAlignment = Alignment.End
         ) {
             // Here are all buttons for the menu
-            entries.forEach() { entry ->
+            entries.forEach { entry ->
 
                 Row(
                     modifier = Modifier
@@ -130,7 +130,6 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
 fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:Boolean, secondButton:(@Composable () -> Unit)? = null){
 
         Popup(
-
             properties = PopupProperties(
                 dismissOnBackPress = true,
                 dismissOnClickOutside = true
@@ -140,8 +139,8 @@ fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.5f))
-                    .padding(20.dp)
-                    .clickable(onClick = { closeAction() }),
+                    .clickable(onClick = { closeAction() })
+                    .padding(20.dp),
                 contentAlignment = Alignment.Center
             ) {
                     Column(
@@ -199,7 +198,7 @@ var UniversalSelected: MutableList<Boolean> = mutableListOf()
 @Composable
 fun UniversalGrid(selectMode:Boolean, changeSelectModeTrue:() -> Unit, changeSelectModeFalse:() -> Unit, navController: NavController,items1:List<String>,
                   items2:List<String>? = null, onClickAction:() -> Unit, indexTracker: IndexTracker<Int> = IndexTracker(0), TrackIndex:Boolean = false,
-                  deckTracker: IndexTracker<Deck> = IndexTracker(getDeck()), decks: List<Deck> = listOf<Deck>()) {
+                  deckTracker: IndexTracker<Deck> = IndexTracker(getDeck()), decks: List<Deck> = listOf()) {
     UniversalSelected = remember(items1.size) {
         MutableList(items1.size) { false }
     }

@@ -37,10 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.R
 import com.lortey.cardflare.RecoverMultipleFlashcards
+import com.lortey.cardflare.RemoveMultipleDecksFromBin
 import com.lortey.cardflare.RemoveMultipleFlashcardsFromBin
 import com.lortey.cardflare.loadData
-import com.lortey.cardflare.RemoveMultipleDecksFromBin
-import java.util.jar.Attributes.Name
 
 @Composable
 fun BinRender(context: Context, navController: NavController){
@@ -50,7 +49,7 @@ fun BinRender(context: Context, navController: NavController){
     var showAddMenu by remember { mutableStateOf(false) }
 
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    var binSelected = remember(Unit) {  // Runs only once
+    var binSelected = remember {
         mutableStateListOf<Boolean>().apply {
             addAll(List(decksInBin.size) { false })
         }
@@ -110,7 +109,7 @@ fun BinRender(context: Context, navController: NavController){
                                             selectMode = false
                                         }
                                     } else {
-                                        currentOpenedBinDeck = decksInBin[index];
+                                        currentOpenedBinDeck = decksInBin[index]
                                         navController.navigate("bin_cards_view")
                                     }
                                 }
@@ -137,8 +136,11 @@ fun BinRender(context: Context, navController: NavController){
                                     context = context,
                                     decksSelected = binSelected,
                                     listOfDecks = decksInBin
-                                );
+                                )
                                 decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
+                                binSelected.clear()
+                                selectMode = false
+                                binSelected.addAll(List(decksInBin.size) { false })
                             }),
                         AddMenuEntry(Name = "Recover Decks", Icon = R.drawable.redo,
                             Action = {
@@ -146,8 +148,12 @@ fun BinRender(context: Context, navController: NavController){
                                         context = context,
                                         decksSelected = binSelected,
                                         listOfDecks = decksInBin,
-                                    );
-                                    decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
+                                    )
+                                decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")
+                                binSelected.clear()
+                                selectMode = false
+                                binSelected.addAll(List(decksInBin.size) { false })
+
                             })
                     )
                 )
@@ -163,7 +169,7 @@ fun BinCards(context: Context, navController: NavController){
     var showAddMenu by remember { mutableStateOf(false) }
 
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    var binSelected = remember(Unit) {  // Runs only once
+    var binSelected = remember {  // Runs only once
         mutableStateListOf<Boolean>().apply {
             addAll(List(cardsInBin.size) { false })
         }
@@ -261,15 +267,25 @@ fun BinCards(context: Context, navController: NavController){
                                     cardsSelected = binSelected,
                                     listOfCards = cardsInBin,
                                     deck = currentOpenedBinDeck
-                                );
+                                )
                                 currentOpenedBinDeck = loadData(context = context, filename = currentOpenedBinDeck.filename, "BinDirectory")[0]
+                                selectMode = false
                                 cardsInBin = currentOpenedBinDeck.cards
                             }),
                         AddMenuEntry(
                             Name = "Recover Flashcards", Icon = R.drawable.redo,
                             Action = {
                                 RecoverMultipleFlashcards(context, listSelected = binSelected, listOfFlashcards = cardsInBin, deckFrom = currentOpenedBinDeck)
-                                currentOpenedBinDeck = loadData(context = context, currentOpenedBinDeck.filename, "BinDirectory")[0]
+                                try {
+                                    currentOpenedBinDeck = loadData(
+                                        context = context,
+                                        currentOpenedBinDeck.filename,
+                                        "BinDirectory"
+                                    )[0]
+                                }catch(e: java.lang.IndexOutOfBoundsException){
+                                    navController.popBackStack()
+                                }
+                                selectMode = false
                                 cardsInBin = currentOpenedBinDeck.cards
                             }
                         )

@@ -220,7 +220,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         onDismissRequest = { expanded = false },
                         modifier = Modifier.width(200.dp).background(MaterialTheme.colorScheme.inverseOnSurface)
                     ) {
-                        setting.dropDownMenuEntries!!.forEach { (key, value) ->
+                        setting.dropDownMenuEntries.forEach { (key, value) ->
                             DropdownMenuItem(
                                 text = { Text(key) },
                                 onClick = {

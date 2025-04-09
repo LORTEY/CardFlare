@@ -175,6 +175,16 @@ class MainActivity : androidx.activity.ComponentActivity(){
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(getApplicationContext())) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:${getApplicationContext().packageName}")
+                )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                getApplicationContext().startActivity(intent)
+            }
+        }
     }
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
@@ -211,7 +221,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = appOpsManager.checkOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
-            android.os.Process.myUid(),
+            Process.myUid(),
             context.packageName
         )
         return mode == AppOpsManager.MODE_ALLOWED

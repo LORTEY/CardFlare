@@ -97,7 +97,7 @@ val AppSettings = mutableStateMapOf(
         description = "Choose what theme should app be in Light, Dark or automatically use current system theme.",
         type = SettingsType.CHOOSE,
         state = Themes.AUTO,
-        dropDownMenuEntries = mapOf("Light Mode" to Themes.LIGHT, "Dark Mode" to Themes.DARK, "Auto" to Themes.AUTO)
+        dropDownMenuEntries = mapOf("Light Theme" to Themes.LIGHT, "Dark Theme" to Themes.DARK, "Auto" to Themes.AUTO)
     ),
     "Use Dynamic Color" to SettingEntry(
         category = Category.Appearance,
@@ -121,16 +121,23 @@ val AppSettings = mutableStateMapOf(
         type = SettingsType.BOOLEAN,
         state = false
     ),
+    "Do Not Show System Apps" to SettingEntry(
+        category = Category.Other,
+        name = "Do Not Show System Apps",
+        description = "If enabled, You will not be able to find apps flagged as system apps when setting a LaunchOn rule.",
+        type = SettingsType.BOOLEAN,
+        state = true
+    ),
     "Bin Auto Empty Time" to SettingEntry(
-        category = Category.Appearance,
+        category = Category.Bin,
         name = "Bin Auto Empty Time",
         description = "The Time it takes the been to remove a flashcard added to it.",
         type = SettingsType.CHOOSE,
-        state = Time.DEBUG,
-        dropDownMenuEntries = mapOf("1 Day" to Time.DAY, "debud" to Time.DEBUG,"One Week" to Time.WEEK, "Two Weeks" to Time.TWO_WEEKS,"One Month" to Time.MONTH, "Two Months" to Time.TWO_MONTHS)
+        state = Time.MONTH,
+        dropDownMenuEntries = mapOf("1 Day" to Time.DAY,"One Week" to Time.WEEK, "Two Weeks" to Time.TWO_WEEKS,"One Month" to Time.MONTH, "Two Months" to Time.TWO_MONTHS)
     )
 )
-public data class SettingEntry(
+data class SettingEntry(
     val category: Category,
     val name: String,
     val description: String?,
@@ -149,22 +156,22 @@ public data class SettingEntry(
         }
     }*/
 }
-public enum class Themes{
+enum class Themes{
     DARK, LIGHT, AUTO
 }
 
-public enum class Time{
+enum class Time{
     DAY, WEEK, TWO_WEEKS, MONTH, TWO_MONTHS, DEBUG
 }
 
-public enum class SettingsType {
+enum class SettingsType {
     BOOLEAN, SLIDER, COLOR_PICKER, CHOOSE
 }
 
-public enum class Category {
-    Appearance, Preferences, Other
+enum class Category {
+    Appearance, Preferences, Bin, Other
 }
 
-public enum class Chooser{
+enum class Chooser{
     NonSpecified, Switch, Slider
 }

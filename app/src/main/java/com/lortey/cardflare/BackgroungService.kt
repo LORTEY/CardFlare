@@ -24,7 +24,7 @@ class AppMonitorService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        startForeground(1, createNotification());
+        startForeground(1, createNotification())
         //Starts monitoring
         startMonitoring()
     }
@@ -61,7 +61,7 @@ class AppMonitorService : Service() {
         return NotificationCompat.Builder(this, channelId)
             .setContentTitle("Service Running")
             .setContentText("This service runs in the background")
-            .setSmallIcon(com.lortey.cardflare.R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
     }
     //returns the name of currently used app
@@ -81,7 +81,7 @@ class AppMonitorService : Service() {
             // if result empty return null
             return null
         }
-        usageStats?.let {
+        usageStats.let {
             //sorts usage stats data by most recently used
             val sortedStats = it.sortedByDescending { stats -> stats.lastTimeUsed }
             // returns the most recently used app name

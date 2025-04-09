@@ -1,14 +1,10 @@
 package com.lortey.cardflare.uiRender
 
 import android.content.Context
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
@@ -26,12 +22,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +73,7 @@ fun LearnScreen(navController: NavController, context: Context) {
                 compositingStrategy = CompositingStrategy.Offscreen
             }
     ) {
-        CardsToLearn.reversed().forEachIndexed() { cardIndex, card ->
+        CardsToLearn.reversed().forEachIndexed { cardIndex, card ->
             SwipeableFlashcard(
                 flashcard = CardsToLearn[cardIndex],
                 onSwipeWrong = {
@@ -131,11 +125,11 @@ fun SwipeableFlashcard(
     // Animate padding change using animateDpAsState
     val closeness by animateFloatAsState(
         targetValue = if (onTop) 1f else 0.7f, // Toggle between two padding values
-        animationSpec = androidx.compose.animation.core.tween(durationMillis = 250)
+        animationSpec = tween(durationMillis = 250)
     )
     val darknessValue by animateFloatAsState(
         targetValue = if (onTop) 1f else 0.7f,
-        animationSpec = androidx.compose.animation.core.tween(durationMillis = 250)
+        animationSpec = tween(durationMillis = 250)
     )
     AnimatedVisibility(
         visible = !fadeOut,
