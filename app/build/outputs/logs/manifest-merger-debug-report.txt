@@ -95,6 +95,7 @@ MERGED from [androidx.compose.runtime:runtime-android:1.7.2] /home/lortey/.gradl
 MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/406463dc75d8adf576177b40e970c163/transformed/runtime-saveable-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/34943ec3903e3e00b80ab2f0b872e6ef/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/2235dc4defb152dde313bc5f02df27e5/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:2:1-7:12
+MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/b63fb257bbf0a08fc229d51d7bfc0d29/transformed/threetenabp-1.4.6/AndroidManifest.xml:2:1-9:12
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/c5a4e117ab3f81cecefcc0e043b9bc3f/transformed/androidsvg-aar-1.4/AndroidManifest.xml:2:1-11:12
 	package
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:4:5-35
@@ -186,6 +187,8 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /home/lortey/.gradle/caches
 MERGED from [androidx.startup:startup-runtime:1.1.1] /home/lortey/.gradle/caches/8.10.2/transforms/65ef4e7652571009b9332debbfc7d3da/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/lortey/.gradle/caches/8.10.2/transforms/450a9c6cfd39de02198a17d90fe0472b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/lortey/.gradle/caches/8.10.2/transforms/450a9c6cfd39de02198a17d90fe0472b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/b63fb257bbf0a08fc229d51d7bfc0d29/transformed/threetenabp-1.4.6/AndroidManifest.xml:7:5-20
+MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/b63fb257bbf0a08fc229d51d7bfc0d29/transformed/threetenabp-1.4.6/AndroidManifest.xml:7:5-20
 	android:extractNativeLibs
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 	android:appComponentFactory
@@ -464,6 +467,8 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/34943ec3903e3e00b80ab2f0b872e6ef/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/2235dc4defb152dde313bc5f02df27e5/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/2235dc4defb152dde313bc5f02df27e5/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
+MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/b63fb257bbf0a08fc229d51d7bfc0d29/transformed/threetenabp-1.4.6/AndroidManifest.xml:5:5-44
+MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/b63fb257bbf0a08fc229d51d7bfc0d29/transformed/threetenabp-1.4.6/AndroidManifest.xml:5:5-44
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/c5a4e117ab3f81cecefcc0e043b9bc3f/transformed/androidsvg-aar-1.4/AndroidManifest.xml:7:5-9:41
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/c5a4e117ab3f81cecefcc0e043b9bc3f/transformed/androidsvg-aar-1.4/AndroidManifest.xml:7:5-9:41
 	android:targetSdkVersion

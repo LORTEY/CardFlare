@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.R
+import com.lortey.cardflare.RecoverMultipleDecks
 import com.lortey.cardflare.RecoverMultipleFlashcards
 import com.lortey.cardflare.RemoveMultipleDecksFromBin
 import com.lortey.cardflare.RemoveMultipleFlashcardsFromBin
@@ -146,7 +147,7 @@ fun BinRender(context: Context, navController: NavController){
                             Action = {
                                     RecoverMultipleDecks(
                                         context = context,
-                                        decksSelected = binSelected,
+                                        listSelected = binSelected,
                                         listOfDecks = decksInBin,
                                     )
                                 decksInBin = loadData(filename = "", context = context, folderName = "BinDirectory")

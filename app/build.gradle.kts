@@ -71,6 +71,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.compose.runtime:runtime:1.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.compose)

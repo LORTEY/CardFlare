@@ -16,6 +16,8 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.MONTHS
+import java.time.temporal.ChronoUnit.WEEKS
 
 // This file contains all the functions used to load manage and store databases
 fun copyAssetsToFilesDir(context: Context) {
@@ -340,11 +342,11 @@ fun addDaysToEpochMillis(epochMillis: Long): Long {
     return when (settingState) {
         Time.DAY -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.DAYS).toEpochMilli()
         Time.DEBUG -> Instant.ofEpochMilli(epochMillis).plus(30, ChronoUnit.SECONDS).toEpochMilli()
-        Time.WEEK -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.WEEKS).toEpochMilli()
-        Time.TWO_WEEKS -> Instant.ofEpochMilli(epochMillis).plus(2, ChronoUnit.WEEKS).toEpochMilli()
-        Time.MONTH -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MONTHS).toEpochMilli()
-        Time.TWO_MONTHS -> Instant.ofEpochMilli(epochMillis).plus(2, ChronoUnit.MONTHS).toEpochMilli()
-        else -> Instant.ofEpochMilli(epochMillis).plus(1, ChronoUnit.MONTHS).toEpochMilli()
+        Time.WEEK -> Instant.ofEpochMilli(epochMillis).plus(1, WEEKS).toEpochMilli()
+        Time.TWO_WEEKS -> Instant.ofEpochMilli(epochMillis).plus(2, WEEKS).toEpochMilli()
+        Time.MONTH -> Instant.ofEpochMilli(epochMillis).plus(1 * 30, ChronoUnit.DAYS).toEpochMilli()
+        Time.TWO_MONTHS -> Instant.ofEpochMilli(epochMillis).plus(2 * 30, ChronoUnit.DAYS).toEpochMilli()
+        else -> Instant.ofEpochMilli(epochMillis).plus(1 * 30,ChronoUnit.DAYS).toEpochMilli()
     }
 
 }
@@ -419,42 +421,45 @@ fun RecoverMultipleFlashcards(context:Context,listSelected:List<Boolean>, listOf
     }
 }
 
-fun RecoverMultipleDecks(context:Context,listSelected:List<Boolean>, listOfDecks:List<Deck>, filename: String){
+fun RecoverMultipleDecks(context:Context, listSelected:List<Boolean>, listOfDecks:List<Deck>){
+    val flashcardDir = File(context.getExternalFilesDir(null), "FlashcardDirectory")
     listOfDecks.forEachIndexed { index, deck ->
-        if (fileExists(
-                context = context,
-                fileName = deck.filename,
-                folderName = "FlashcardDirectory"
-            )
-        ) {
-            val sourceFile =
-                File(context.getExternalFilesDir(null), "BinDirectory/${deck.filename}")
-            val destFile =
-                File(context.getExternalFilesDir(null), "FlashcardDirectory/${deck.filename}")
-            destFile.parentFile?.mkdirs()
-            try {
-                sourceFile.copyTo(destFile, overwrite = false)
-                sourceFile.delete()
-            } catch (e: IOException) {
-                e.printStackTrace()
+        if(listSelected[index]) {
+            if (!File(flashcardDir, deck.filename).exists()) {
+                val sourceFile =
+                    File(context.getExternalFilesDir(null), "BinDirectory/${deck.filename}")
+                val destFile =
+                    File(context.getExternalFilesDir(null), "FlashcardDirectory/${deck.filename}")
+                destFile.parentFile?.mkdirs()
+                try {
+                    sourceFile.copyTo(destFile, overwrite = false)
+                    sourceFile.delete()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+            } else {
+                deck.cards.forEach { card ->
+                    MoveCardToBin(
+                        context = context,
+                        deckFrom = deck,
+                        card = card,
+                        moveToBin = false
+                    )
+                }
             }
             try {
-                val deck =
-                    loadData(context = context, filename = filename, folderName = "BinDirectory")
-                if (deck[0].cards.isEmpty()) {
-                    RemoveMultipleDecksFromBin(listOf(true), context, deck)
+                val deckInBin =
+                    loadData(
+                        context = context,
+                        filename = deck.filename,
+                        folderName = "BinDirectory"
+                    )
+                if (deckInBin[0].cards.isEmpty()) {
+                    RemoveMultipleDecksFromBin(listOf(true), context, deckInBin)
                 }
             } catch (e: Exception) {
-                Log.d("cardflare3", filename)
-            }
-        } else {
-            deck.cards.forEach { card ->
-                MoveCardToBin(
-                    context = context,
-                    deckFrom = deck,
-                    card = card,
-                    moveToBin = false
-                )
+                Log.d("cardflare3", deck.filename)
             }
         }
     }

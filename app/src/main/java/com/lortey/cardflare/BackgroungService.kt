@@ -59,8 +59,8 @@ class AppMonitorService : Service() {
         manager.createNotificationChannel(channel)
 
         return NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Service Running")
-            .setContentText("This service runs in the background")
+            .setContentTitle("Cardflare Is Ready To Serve You Flashcards")
+            .setContentText("Cardflare's service is running in the background.")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
     }
