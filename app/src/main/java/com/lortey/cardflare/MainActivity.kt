@@ -37,6 +37,7 @@ import com.lortey.cardflare.uiRender.deckScreen
 import com.lortey.cardflare.uiRender.renderMainMenu
 import com.lortey.cardflare.uiRender.BinRender
 import com.lortey.cardflare.uiRender.BinCards
+import com.lortey.cardflare.uiRender.ModifyRule
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -56,6 +57,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
+        launchOnRules = loadLaunchOnRules(applicationContext)
         EnsureDirectoryStructure(context = applicationContext)
         BinAutoEmpty(context = applicationContext)
         startMainMenu()
@@ -115,7 +117,9 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
                         composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
-                        composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }}
+                        composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
+                        composable("modify_rule") { ModifyRule(context = LocalContext.current) }}
+
                 }
             }
         }

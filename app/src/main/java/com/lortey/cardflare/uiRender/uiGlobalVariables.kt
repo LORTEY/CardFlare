@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.Flashcard
+import com.lortey.cardflare.LaunchOnRule
 import com.lortey.cardflare.SortType
 import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.loadData
@@ -26,6 +27,7 @@ var decks by mutableStateOf(listOf<Deck>())
 var translatedFlashcardSide:String = ""
 var decksSelected:MutableList<Boolean> = mutableListOf()
 var currentOpenedBinDeck:Deck = getDeck()
+var launchOnRuleToModify:LaunchOnRule? = null
 fun reloadDecks(context: Context){
     decks = loadData(filename = "", context = context)
 }
