@@ -30,7 +30,7 @@ suspend fun getListOfApps(context: Context): List<AppInfo> = withContext(Dispatc
 
     val appSettings = AppSettings
     require(appSettings["Do Not Show System Apps"]?.state is Boolean)
-
+    installedApps = installedApps.filter { packageInfo -> packageInfo.packageName != "com.lortey.cardflare"}
     if(appSettings["Do Not Show System Apps"]?.state as Boolean){
         installedApps = installedApps.filterNot { packageInfo ->
             // Exclude system apps

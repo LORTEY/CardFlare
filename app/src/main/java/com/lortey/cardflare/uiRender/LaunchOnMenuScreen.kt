@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,8 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.DismissState
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -52,10 +55,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.graphics.createBitmap
 import com.lortey.cardflare.appsSearch
 import com.lortey.cardflare.sortDecks
@@ -192,8 +198,29 @@ fun ModifyRule(context: Context){
                         .clickable { appearAppAddMenu = true })
             }
             if(appearAppAddMenu){
+                    Popup(
+                        properties = PopupProperties(
+                            dismissOnBackPress = true,
+                            dismissOnClickOutside = true,
+                            focusable = true
+                            ),
+                        alignment = Alignment.Center,
+                        onDismissRequest = { appearAppAddMenu = false },
 
-            SearchableAppListLoad(apps,context)
+                        ) {
+                        Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()){
+                            SearchableAppListLoad(apps, context)
+                            Button(onClick = {appearAppAddMenu = false}, modifier = Modifier.padding(6.dp).align(Alignment.BottomCenter)) {
+                                Row(modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.inverseOnSurface)){
+                                    Text(text = "Close", color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.bodyMedium)
+                                }
+
+                            }
+                        }
+
+                    }
+
+
             }
         }
 
@@ -217,59 +244,65 @@ fun SearchableAppListLoad(apps:List<AppInfo>, context: Context){
     LaunchedEffect(apps) {
         appsInfo = apps
     }
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            .height(50.dp)
-            .background(
-                color = MaterialTheme.colorScheme.inverseOnSurface,
-                shape = RoundedCornerShape(10.dp)
-            )
-            .padding(horizontal = 10.dp, vertical = 10.dp),
-    ) {
-        // I have no idea how to use the colors in TextField so to make a place holder I used this box
-        Box(
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.medium)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
-                .weight(1.0f)
+                .height(50.dp)
                 .background(
-                    Color("#00000000".toColorInt()),
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
                     shape = RoundedCornerShape(10.dp)
                 )
-            //.align(Alignment.CenterVertically)
+                .padding(horizontal = 10.dp, vertical = 10.dp),
         ) {
-            // Text field for searching card decks
-            BasicTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it},
-                textStyle = TextStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 16.sp
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (searchQuery.isEmpty()) {
-                Text(
-                    text = "Search Apps...",
-                    color = MaterialTheme.colorScheme.onBackground, // Placeholder text color
-                    modifier = Modifier.align(Alignment.CenterStart)
+            // I have no idea how to use the colors in TextField so to make a place holder I used this box
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .weight(1.0f)
+                    .background(
+                        Color("#00000000".toColorInt()),
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                //.align(Alignment.CenterVertically)
+            ) {
+                // Text field for searching card decks
+                BasicTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.fillMaxWidth()
                 )
+                if (searchQuery.isEmpty()) {
+                    Text(
+                        text = "Search Apps...",
+                        color = MaterialTheme.colorScheme.onBackground, // Placeholder text color
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    )
+                }
             }
         }
-    }
-    val appsFiltered = remember(searchQuery){ appsSearch(searchQuery = searchQuery, appList = apps) }
-    Box(modifier = Modifier.fillMaxSize()){
-        if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.size(64.dp).align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
-        } else {
-            LazyColumn() {
-                items(appsFiltered){app->
-                    Row(){
-                        AppItem(app)
+        val appsFiltered =
+            remember(searchQuery) { appsSearch(searchQuery = searchQuery, appList = apps) }
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp).align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            } else {
+                LazyColumn() {
+                    items(appsFiltered) { app ->
+                        Row() {
+                            AppItem(app)
+                        }
                     }
                 }
             }
