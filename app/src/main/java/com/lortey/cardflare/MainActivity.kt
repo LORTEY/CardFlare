@@ -118,7 +118,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
                         composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
-                        composable("modify_rule") { ModifyRule(context = LocalContext.current) }}
+                        composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }}
 
                 }
             }

@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Color.parseColor
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -55,6 +57,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -66,12 +69,17 @@ import androidx.core.graphics.createBitmap
 import com.lortey.cardflare.appsSearch
 import com.lortey.cardflare.sortDecks
 import androidx.core.graphics.toColorInt
+import androidx.navigation.compose.rememberNavController
 import com.lortey.cardflare.Flashcard
 import com.lortey.cardflare.LaunchOnRule
 import com.lortey.cardflare.R
+import com.lortey.cardflare.addAppToRule
 import com.lortey.cardflare.launchOnRules
 import com.lortey.cardflare.loadData
+import com.lortey.cardflare.loadLaunchOnRules
 import com.lortey.cardflare.multipleDeckMoveToBin
+import com.lortey.cardflare.removeAppFromRule
+import com.lortey.cardflare.saveLaunchOnRules
 
 var appsInfo:List<AppInfo> = listOf()
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,7 +105,10 @@ fun LaunchOnMenu(context: Context, navController: NavController){
         LazyColumn {
             items(launchOnRules){rule ->
                 Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.clickable {  }){
+                    modifier = Modifier.clickable {
+                        launchOnRuleToModify.value = rule
+                        lastOpenedRule = rule.name
+                        navController.navigate("modify_rule")}){
                     Text(text = rule.name,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.inverseOnSurface)
@@ -114,7 +125,8 @@ fun LaunchOnMenu(context: Context, navController: NavController){
                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
                     listOf(AddMenuEntry(Name = "Add Rule", Icon = R.drawable.nav_arrow_down,
                             Action = {
-                                launchOnRuleToModify = null
+                                launchOnRuleToModify.value = LaunchOnRule(name = "NewLaunchOnRule", appList = mutableListOf(), flashcardList = mutableListOf())
+                                lastOpenedRule = null
                                 navController.navigate("modify_rule")
                             })
                     ))
@@ -127,20 +139,22 @@ fun LaunchOnMenu(context: Context, navController: NavController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModifyRule(context: Context){
-    var name by remember { mutableStateOf("NewLaunchOnRule")}
-    var listOfApps = mutableListOf<String>()
+fun ModifyRule(context: Context,navController: NavController){
+    val state by remember { launchOnRuleToModify }
+    var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
+    var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
     var flashcardList = mutableListOf<Flashcard>()
     val apps: List<AppInfo> = appsInfo
-    val appMap: Map<String, AppInfo> = apps.associateBy { it.packageName }
-    var appearAppAddMenu by remember{
-        mutableStateOf(false)}
-
-    LaunchedEffect(Unit) {
-        if (launchOnRuleToModify != null) {
-            name = launchOnRuleToModify!!.name
-            listOfApps = launchOnRuleToModify!!.appList
-            flashcardList = launchOnRuleToModify!!.flashcardList
+    val appMap: Map<String, AppInfo> = remember(apps) { apps.associateBy { it.packageName } }
+    var appearAppAddMenu by remember { mutableStateOf(false) }
+    Log.d("cardflare3", launchOnRuleToModify.toString())
+    LaunchedEffect(Unit) {  // Run once when composable enters composition
+        if (state == null) {
+            launchOnRuleToModify.value = LaunchOnRule(
+                name = name,
+                appList = listOfApps,
+                flashcardList = mutableListOf()
+            )
         }
     }
     Column(modifier = Modifier
@@ -169,19 +183,28 @@ fun ModifyRule(context: Context){
             .padding(10.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.inverseOnSurface)){
-            LazyColumn() {
+            LazyColumn(modifier = Modifier
+                .padding(10.dp)) {
                 items(listOfApps){packageName->
-                    Row {
-                        Text(text = appMap[packageName].let{it?.name ?: packageName })
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            bitmap = drawableToBitmap(appMap[packageName]?.icon).asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Text(text = appMap[packageName].let{it?.name ?: packageName },
+                            modifier = Modifier.weight(1f).padding(horizontal = 5.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,)
                         Icon(
                             painter = painterResource(id = R.drawable.nav_arrow_down),
-                            contentDescription = "chart",
+                            contentDescription = "remove app from rule",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .size(128.dp)
-                                .padding(15.dp)
+                                //.size(128.dp)
+                                .padding(5.dp)
                                 .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-                                .clickable { listOfApps.remove(packageName) })
+                                .clickable { removeAppFromRule(packageName) })
                     }
                 }
             }
@@ -192,7 +215,7 @@ fun ModifyRule(context: Context){
                     contentDescription = "Add App",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        .size(128.dp)
+                        //.size(128.dp)
                         .padding(15.dp)
                         .background(MaterialTheme.colorScheme.background, shape = CircleShape)
                         .clickable { appearAppAddMenu = true })
@@ -210,22 +233,54 @@ fun ModifyRule(context: Context){
                         ) {
                         Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()){
                             SearchableAppListLoad(apps, context)
-                            Button(onClick = {appearAppAddMenu = false}, modifier = Modifier.padding(6.dp).align(Alignment.BottomCenter)) {
-                                Row(modifier = Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.inverseOnSurface)){
-                                    Text(text = "Close", color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.bodyMedium)
-                                }
+                            Row(modifier = Modifier.fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                                .padding(6.dp)
+                                .align(Alignment.BottomCenter)) {
+                                Button(
+                                    onClick = { appearAppAddMenu = false }) {
 
+                                    Text(
+                                        text = "Close",
+                                        color = MaterialTheme.colorScheme.onPrimary,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
                             }
                         }
-
                     }
-
-
             }
         }
+        Button(
 
+            onClick = {
+                if(launchOnRuleToModify.value != null){
+                    var rulesToSave:MutableList<LaunchOnRule> = launchOnRules.toMutableList()
+                    if(lastOpenedRule == name || !rulesToSave.any{it.name == name}){
+                        if(lastOpenedRule != null){
+                            rulesToSave = rulesToSave.filterNot { it.name == lastOpenedRule }.toMutableList()
+                        }
+                        rulesToSave = rulesToSave.apply{add(launchOnRuleToModify.value!!.copy(name = name))}
+                        saveLaunchOnRules(context = context, rulesToSave)
+                        launchOnRules = loadLaunchOnRules(context)
+                        navController.popBackStack()
+                    }else{
+                        Toast.makeText(context, "Rule named: \"${name}\" already exists. Change the name of current edited rule.", Toast.LENGTH_SHORT).show()
+                    }
 
+                }
+
+            }
+
+                ) {
+
+            Text(
+                text = "Save Rule",
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
+    }
 }
 
 @Composable
@@ -319,7 +374,7 @@ fun AppItem(appInfo: AppInfo) {
             modifier = Modifier.size(48.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column (modifier = Modifier.weight(1f)){
             if (appInfo.name == null) {
                 Text(
                     text = appInfo.packageName,
@@ -334,7 +389,7 @@ fun AppItem(appInfo: AppInfo) {
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+                    maxLines = 1,
                 )
                 Text(
                     text = appInfo.packageName,
@@ -345,6 +400,13 @@ fun AppItem(appInfo: AppInfo) {
                 )
             }
         }
+        Icon(
+            painter = painterResource(id = R.drawable.plus_circle),
+            contentDescription = "Add App",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                .clickable { addAppToRule(appInfo)})
     }
 }
 

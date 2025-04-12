@@ -34,7 +34,7 @@ class AppMonitorService : Service() {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
                 //Starts OverlayService if current runing app is instagram
-                if (currentApp == "com.instagram.android") {
+                if (getRuleFromApp(appName = currentApp ?: "") != null) {
                     startOverlay()
                 }
               handler.postDelayed(this, checkInterval) // Adds delay between checks
