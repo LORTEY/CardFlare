@@ -1,1 +1,1 @@
-CardFlare is an opensource flashcard learning app for android that will force you to learn every time you open a certain app or turn on your phone.
+CardFlare is an opensource flashcard learning app for android that will force you to learn every time you open a certain app or turn on your phone. The alfa test versio  should be ready at the start of May.
