@@ -189,8 +189,8 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                     //.width(128.dp)
                                     .align(Alignment.End)) {
                                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
-                                    listOf(AddMenuEntry("Add Deck", R.drawable.addempty, Action = { navController.navigate("deck_add_screen") }),
-                                        AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.nav_arrow_down,
+                                    listOf(AddMenuEntry("Add Deck", R.drawable.create_empty, Action = { navController.navigate("deck_add_screen") }),
+                                        AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.delete,
                                             Action = {
                                                 multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected)
                                                 decks = loadData(filename = "", context = context)
@@ -369,7 +369,7 @@ fun SlideMenuContent(navController: NavController){
         .padding(10.dp)
         .clickable { navController.navigate("launch_on_manager")}){
         Icon(
-            painter = painterResource(id = R.drawable.home),
+            painter = painterResource(id = R.drawable.apps),
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
@@ -380,7 +380,7 @@ fun SlideMenuContent(navController: NavController){
         .padding(10.dp)
         .clickable { navController.navigate("bin_screen")}){
         Icon(
-            painter = painterResource(id = R.drawable.home),
+            painter = painterResource(id = R.drawable.delete),
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )

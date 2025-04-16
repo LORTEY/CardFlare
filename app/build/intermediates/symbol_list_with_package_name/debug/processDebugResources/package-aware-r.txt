@@ -676,8 +676,8 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
-drawable addempty
-drawable bar_chart_2
+drawable apps
+drawable bar_chart
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -705,6 +705,9 @@ drawable common_google_signin_btn_text_light
 drawable common_google_signin_btn_text_light_focused
 drawable common_google_signin_btn_text_light_normal
 drawable common_google_signin_btn_text_light_normal_background
+drawable create_empty
+drawable delete
+drawable edit
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable home
@@ -717,8 +720,9 @@ drawable ic_call_decline_low
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable info
+drawable learn
 drawable menu
-drawable nav_arrow_down
+drawable minus
 drawable nav_arrow_left
 drawable nav_arrow_right
 drawable notification_action_background
@@ -734,10 +738,12 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable plus
 drawable plus_circle
 drawable plus_circle_solid
 drawable redo
 drawable settings
+drawable sort
 drawable sort_ascending
 drawable test_level_drawable
 drawable tooltip_frame_dark

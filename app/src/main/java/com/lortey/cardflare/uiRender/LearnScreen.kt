@@ -48,7 +48,7 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun LearnScreen(navController: NavController, context: Context) {
+fun LearnScreen(navController: NavController, context: Context, atFinnish:(() -> Unit)? = null) {
     var currentCardIndex by remember { mutableStateOf(0) }
     //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
 
@@ -98,6 +98,9 @@ fun LearnScreen(navController: NavController, context: Context) {
     var isPoppingBack by remember { mutableStateOf(false) }
     if (CardsToLearn.size == currentCardIndex && !isPoppingBack){
         isPoppingBack = true
+        if(atFinnish != null){
+            atFinnish()
+        }
         navController.popBackStack()
     }
 }

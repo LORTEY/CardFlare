@@ -174,7 +174,7 @@ fun deckScreen(context: Context, navController: NavController){
                     UniversalAddMenu(deckAddMenu, changeVisibility = { deckAddMenu = !deckAddMenu},
                         listOf(
                             AddMenuEntry("Learn",
-                                R.drawable.addempty,
+                                R.drawable.learn,
                                 { CardsToLearn.clear(); cardsSelected.forEachIndexed { index, value->
                                     if(value) CardsToLearn.add(
                                     cards[index])}
@@ -182,9 +182,9 @@ fun deckScreen(context: Context, navController: NavController){
                                         CardsToLearn = cards.toMutableList()
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
-                                R.drawable.settings,
+                                R.drawable.create_empty,
                                 {navController.navigate("add_flashcard")}),
-                            AddMenuEntry("Remove Flashcards", R.drawable.nav_arrow_down) {
+                            AddMenuEntry("Remove Flashcards", R.drawable.delete) {
                                 val toRemove = cards.filterIndexed { index, _ -> cardsSelected[index] }
                                 if (toRemove.isNotEmpty()) {
                                     removeMultiple(context = context, deckFrom = openedTarget, cards = toRemove)

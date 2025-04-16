@@ -131,7 +131,7 @@ fun BinRender(context: Context, navController: NavController){
                 UniversalAddMenu(
                     showAddMenu, { showAddMenu = !showAddMenu }, listOf(
                         AddMenuEntry(
-                            Name = "Remove Deck", Icon = R.drawable.nav_arrow_down,
+                            Name = "Remove Deck", Icon = R.drawable.delete,
                             Action = {
                                 RemoveMultipleDecksFromBin(
                                     context = context,
@@ -261,7 +261,7 @@ fun BinCards(context: Context, navController: NavController){
                 UniversalAddMenu(
                     showAddMenu, { showAddMenu = !showAddMenu }, listOf(
                         AddMenuEntry(
-                            Name = "Remove Card", Icon = R.drawable.nav_arrow_down,
+                            Name = "Remove Card", Icon = R.drawable.delete,
                             Action = {
                                 RemoveMultipleFlashcardsFromBin(
                                     context = context,

@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_minus.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/minus.xml"
+    },
+    {
         "merged": "com.lortey.cardflare.app-debug-69:/drawable_redo.xml.flat",
         "source": "com.lortey.cardflare.app-main-71:/drawable/redo.xml"
     },
@@ -14,6 +18,10 @@
     {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-hdpi_ic_launcher.webp.flat",
         "source": "com.lortey.cardflare.app-main-71:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_create_empty.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/create_empty.xml"
     },
     {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
@@ -40,10 +48,6 @@
         "source": "com.lortey.cardflare.app-main-71:/drawable/nav_arrow_right.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-69:/drawable_nav_arrow_down.xml.flat",
-        "source": "com.lortey.cardflare.app-main-71:/drawable/nav_arrow_down.xml"
-    },
-    {
         "merged": "com.lortey.cardflare.app-debug-69:/drawable_nav_arrow_left.xml.flat",
         "source": "com.lortey.cardflare.app-main-71:/drawable/nav_arrow_left.xml"
     },
@@ -52,16 +56,28 @@
         "source": "com.lortey.cardflare.app-main-71:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_bar_chart.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/bar_chart.xml"
+    },
+    {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "com.lortey.cardflare.app-main-71:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_apps.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/apps.xml"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_sort.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/sort.xml"
     },
     {
         "merged": "com.lortey.cardflare.app-debug-69:/xml_data_extraction_rules.xml.flat",
         "source": "com.lortey.cardflare.app-main-71:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-69:/drawable_bar_chart_2.xml.flat",
-        "source": "com.lortey.cardflare.app-main-71:/drawable/bar_chart_2.xml"
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_learn.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/learn.xml"
     },
     {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
@@ -72,20 +88,28 @@
         "source": "com.lortey.cardflare.app-main-71:/drawable/plus_circle.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-69:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-71:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_delete.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/delete.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-69:/drawable_addempty.xml.flat",
-        "source": "com.lortey.cardflare.app-main-71:/drawable/addempty.xml"
+        "merged": "com.lortey.cardflare.app-debug-69:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.lortey.cardflare.app-main-71:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-mdpi_ic_launcher.webp.flat",
         "source": "com.lortey.cardflare.app-main-71:/mipmap-mdpi/ic_launcher.webp"
     },
     {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_plus.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/plus.xml"
+    },
+    {
         "merged": "com.lortey.cardflare.app-debug-69:/mipmap-xhdpi_ic_launcher_round.webp.flat",
         "source": "com.lortey.cardflare.app-main-71:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-69:/drawable_edit.xml.flat",
+        "source": "com.lortey.cardflare.app-main-71:/drawable/edit.xml"
     },
     {
         "merged": "com.lortey.cardflare.app-debug-69:/drawable_ic_launcher_background.xml.flat",

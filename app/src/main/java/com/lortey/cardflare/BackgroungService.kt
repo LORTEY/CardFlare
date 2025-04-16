@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.lortey.cardflare.uiRender.CardsToLearn
 
 
 class AppMonitorService : Service() {
@@ -35,7 +36,16 @@ class AppMonitorService : Service() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
                 //Starts OverlayService if current runing app is instagram
                 if (getRuleFromApp(appName = currentApp ?: "") != null) {
-                    startOverlay()
+                    if(getRuleFromApp(appName = currentApp ?: "") != null) {
+                        val randomCards = getFlashcards(
+                            3,
+                            getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()
+                        )
+                        if(randomCards != null) {
+                            CardsToLearn = randomCards.toMutableList()
+                            startOverlay()
+                        }
+                    }
                 }
               handler.postDelayed(this, checkInterval) // Adds delay between checks
             }

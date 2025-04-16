@@ -6,8 +6,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import com.lortey.cardflare.uiRender.launchOnRuleToModify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -96,6 +94,16 @@ fun addAppToRule(app:AppInfo){
     }
 }
 
+fun addDeckToRule(deckList:List<Deck>){
+
+        // The rebuild is necessary or else jetpack compose wont refresh
+        launchOnRuleToModify.value = LaunchOnRule(name = launchOnRuleToModify.value?.name ?: "",
+            appList = launchOnRuleToModify.value?.appList ?: mutableListOf(),
+            flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf(),
+            deckList = deckList.toMutableList())
+        Log.d("cardflare3",launchOnRuleToModify.toString())
+
+}
 fun removeAppFromRule(packageName: String){
     if(launchOnRuleToModify.value != null){
         // The rebuild is necessary or else jetpack compose wont refresh
@@ -116,7 +124,21 @@ fun getCurrentActiveRules():List<LaunchOnRule>{
     return i
 }
 
-fun getFlashcards()
+fun getFlashcards(numberOfFlashcards:Int, decks: List<Deck>):List<Flashcard>?{
+    val randomFlashcards = mutableListOf<Flashcard>()
+    var iterator: Int = 0
+    if(numberOfFlashcards > 0 && decks.size > 0){
+        while(iterator < numberOfFlashcards){
+            val randomFlashcard:Flashcard? = decks.random().cards.randomOrNull()
+            if (randomFlashcard != null){
+                iterator += 1
+                randomFlashcards.add(randomFlashcard)
+            }
+        }
+        return randomFlashcards
+    }
+    return null
+}
 
 fun getRuleFromApp(appName:String):LaunchOnRule?{
     val activeRules = getCurrentActiveRules()
