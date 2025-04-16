@@ -90,7 +90,8 @@ fun addAppToRule(app:AppInfo){
         // The rebuild is necessary or else jetpack compose wont refresh
         launchOnRuleToModify.value = LaunchOnRule(name = launchOnRuleToModify.value?.name ?: "",
             appList = (launchOnRuleToModify.value?.appList ?: mutableListOf()).toMutableList().apply{add(app.packageName)},
-            flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf())
+            flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf(),
+            deckList = launchOnRuleToModify.value?.deckList ?: mutableListOf())
         Log.d("cardflare3",launchOnRuleToModify.toString())
     }
 }
@@ -101,7 +102,8 @@ fun removeAppFromRule(packageName: String){
         val appList:MutableList<String> = (launchOnRuleToModify.value?.appList ?: mutableListOf()).toMutableList().filterNot { it == packageName }.toMutableList()
         launchOnRuleToModify.value = LaunchOnRule(name = launchOnRuleToModify.value?.name ?: "",
             appList = appList,
-            flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf())
+            flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf(),
+            deckList = launchOnRuleToModify.value?.deckList ?: mutableListOf())
         Log.d("cardflare3",launchOnRuleToModify.toString())
     }
 }
@@ -113,6 +115,8 @@ fun getCurrentActiveRules():List<LaunchOnRule>{
     }
     return i
 }
+
+fun getFlashcards()
 
 fun getRuleFromApp(appName:String):LaunchOnRule?{
     val activeRules = getCurrentActiveRules()
@@ -127,5 +131,6 @@ fun getRuleFromApp(appName:String):LaunchOnRule?{
 data class LaunchOnRule(
     var name:String,
     var appList:MutableList<String>,
-    var flashcardList : MutableList<Flashcard>
+    var flashcardList : MutableList<Flashcard>,
+    var deckList : MutableList<Deck>
 )

@@ -1,12 +1,12 @@
-#Sat Apr 12 19:15:38 CEST 2025
-base.0=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.2=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/10/classes.dex
-base.3=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/12/classes.dex
-base.4=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/13/classes.dex
-base.5=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/5/classes.dex
-base.6=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
-base.7=/home/lortey/AndroidStudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
+#Wed Apr 16 12:35:41 GMT 2025
+base.0=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.2=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/10/classes.dex
+base.3=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/12/classes.dex
+base.4=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/13/classes.dex
+base.5=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeProjectDexDebug/5/classes.dex
+base.6=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+base.7=/home/lortey/StudioProjects/CardFlare/app/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=10/classes.dex

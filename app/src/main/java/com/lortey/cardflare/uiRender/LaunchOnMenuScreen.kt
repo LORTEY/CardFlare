@@ -7,13 +7,16 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -42,6 +45,8 @@ import androidx.navigation.NavController
 import com.lortey.cardflare.AppInfo
 import com.lortey.cardflare.getListOfApps
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -51,17 +56,22 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
@@ -69,7 +79,10 @@ import androidx.core.graphics.createBitmap
 import com.lortey.cardflare.appsSearch
 import com.lortey.cardflare.sortDecks
 import androidx.core.graphics.toColorInt
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lortey.cardflare.Deck
 import com.lortey.cardflare.Flashcard
 import com.lortey.cardflare.LaunchOnRule
 import com.lortey.cardflare.R
@@ -80,9 +93,33 @@ import com.lortey.cardflare.loadLaunchOnRules
 import com.lortey.cardflare.multipleDeckMoveToBin
 import com.lortey.cardflare.removeAppFromRule
 import com.lortey.cardflare.saveLaunchOnRules
+import com.lortey.cardflare.ui.theme.Material3AppTheme
 
 var appsInfo:List<AppInfo> = listOf()
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview
+fun preview(){
+
+        // Apply Material 3 Theme with Dynamic Colors
+        //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)
+        Material3AppTheme {
+            val navController = rememberNavController()
+            val colorScheme = MaterialTheme.colorScheme
+            Log.d("ThemeDebug", MaterialTheme.colorScheme.primary.toString())
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = colorScheme.background
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = "modify_rule"
+                ) {
+
+                    composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }}
+
+            }
+        }
+}
 @Composable
 fun LaunchOnMenu(context: Context, navController: NavController){
 
@@ -125,7 +162,7 @@ fun LaunchOnMenu(context: Context, navController: NavController){
                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
                     listOf(AddMenuEntry(Name = "Add Rule", Icon = R.drawable.nav_arrow_down,
                             Action = {
-                                launchOnRuleToModify.value = LaunchOnRule(name = "NewLaunchOnRule", appList = mutableListOf(), flashcardList = mutableListOf())
+                                launchOnRuleToModify.value = LaunchOnRule(name = "NewLaunchOnRule", appList = mutableListOf(), flashcardList = mutableListOf(), deckList = mutableListOf())
                                 lastOpenedRule = null
                                 navController.navigate("modify_rule")
                             })
@@ -143,20 +180,25 @@ fun ModifyRule(context: Context,navController: NavController){
     val state by remember { launchOnRuleToModify }
     var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
     var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
+    var listOfDecks by remember(state){ mutableStateOf(state?.deckList ?: mutableListOf())}
     var flashcardList = mutableListOf<Flashcard>()
     val apps: List<AppInfo> = appsInfo
     val appMap: Map<String, AppInfo> = remember(apps) { apps.associateBy { it.packageName } }
     var appearAppAddMenu by remember { mutableStateOf(false) }
+    var appearAddDeckMenu by remember{ mutableStateOf(false)}
     Log.d("cardflare3", launchOnRuleToModify.toString())
+
     LaunchedEffect(Unit) {  // Run once when composable enters composition
         if (state == null) {
             launchOnRuleToModify.value = LaunchOnRule(
                 name = name,
                 appList = listOfApps,
-                flashcardList = mutableListOf()
+                flashcardList = mutableListOf(),
+                deckList = mutableListOf()
             )
         }
     }
+
     Column(modifier = Modifier
         .padding(WindowInsets.systemBars.asPaddingValues())
         .background(MaterialTheme.colorScheme.background)) {
@@ -220,37 +262,99 @@ fun ModifyRule(context: Context,navController: NavController){
                         .background(MaterialTheme.colorScheme.background, shape = CircleShape)
                         .clickable { appearAppAddMenu = true })
             }
-            if(appearAppAddMenu){
-                    Popup(
-                        properties = PopupProperties(
-                            dismissOnBackPress = true,
-                            dismissOnClickOutside = true,
-                            focusable = true
-                            ),
-                        alignment = Alignment.Center,
-                        onDismissRequest = { appearAppAddMenu = false },
+            if(appearAppAddMenu) {
+                Popup(
+                    properties = PopupProperties(
+                        dismissOnBackPress = true,
+                        dismissOnClickOutside = true,
+                        focusable = true
+                    ),
+                    alignment = Alignment.Center,
+                    onDismissRequest = { appearAppAddMenu = false },
 
-                        ) {
-                        Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()){
-                            SearchableAppListLoad(apps, context)
-                            Row(modifier = Modifier.fillMaxWidth()
+                    ) {
+                    Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()) {
+                        SearchableAppListLoad(apps, context)
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
                                 .background(color = MaterialTheme.colorScheme.inverseOnSurface)
                                 .padding(6.dp)
-                                .align(Alignment.BottomCenter)) {
-                                Button(
-                                    onClick = { appearAppAddMenu = false }) {
+                                .align(Alignment.BottomCenter)
+                        ) {
+                            Button(
+                                onClick = { appearAppAddMenu = false }) {
 
-                                    Text(
-                                        text = "Close",
-                                        color = MaterialTheme.colorScheme.onPrimary,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
+                                Text(
+                                    text = "Close",
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
+                }
             }
+            }
+        Column(modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.inverseOnSurface)){
+            LazyColumn(modifier = Modifier
+                .padding(10.dp)) {
+                items(listOfDecks){deckName->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = deckName.name,
+                            modifier = Modifier.weight(1f).padding(horizontal = 5.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,)
+                    }
+                }
+            }
+            Row(modifier = Modifier.fillMaxWidth()){
+                Text(text = "Add Decks",)
+                Icon(
+                    painter = painterResource(id = R.drawable.plus_circle),
+                    contentDescription = "Add App",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        //.size(128.dp)
+                        .padding(15.dp)
+                        .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                        .clickable { appearAddDeckMenu = true })
+            }
+            if(appearAddDeckMenu){
+                Popup(
+                    properties = PopupProperties(
+                        dismissOnBackPress = true,
+                        dismissOnClickOutside = true,
+                        focusable = true
+                    ),
+                    alignment = Alignment.Center,
+                    onDismissRequest = { appearAddDeckMenu = false },
+
+                    ) {
+                    Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()) {
+                        SelectDecks(context = context,
+                            decksCurrentlySelected = listOfDecks,
+                            SelectedDecks = {decks ->
+                                appearAddDeckMenu = false
+                                listOfDecks = decks
+                            })
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                                .background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                                .padding(6.dp)
+                                .align(Alignment.BottomCenter)
+                        ) {
+
+                        }
+                    }
+                }
+            }
+
         }
+
         Button(
 
             onClick = {
@@ -283,6 +387,85 @@ fun ModifyRule(context: Context,navController: NavController){
     }
 }
 
+@Composable
+fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDecks: (MutableList<Deck>) -> Unit){
+    var selectMode by remember{ mutableStateOf(false)}
+
+    val decksLoaded = loadData( context = context, filename = "")
+    Log.d("cardflare4", decksLoaded.toString())
+    val decksSelected = remember { mutableStateListOf<Boolean>().apply {
+        addAll(List(decksLoaded.size) { false })
+    } }
+    LaunchedEffect(Unit) {
+        decksLoaded.forEachIndexed{index, deckInFunction->
+            decksCurrentlySelected.forEach { deck ->
+                if (deckInFunction.filename == deck.filename) {
+                    decksSelected[index] = true
+                }
+            }
+        }
+    }
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.medium)){
+// Choose Deck to Activate
+        LazyVerticalGrid(
+            modifier = Modifier
+                .fillMaxSize().weight(1f),
+            contentPadding = PaddingValues(16.dp),
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        )
+        {
+            items(decksLoaded.size) { index ->
+                Text(
+                    text = decksLoaded[index].name,
+                    color = if (decksSelected[index]) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .shadow(
+                            elevation = 10.dp,
+                            shape = RoundedCornerShape(10.dp),
+                            clip = false
+                        )
+                        .background(
+                            if (decksSelected[index]) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
+                        )
+                        .fillMaxWidth(0.5f)
+                        .height(100.dp)
+                        .padding(10.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    decksSelected[index] = true
+                                    selectMode = true
+                                },
+                                onTap = {
+                                    decksSelected[index] =
+                                        !decksSelected[index] //flips ones to zeroes and vice versa
+
+                                }
+                            )
+                        },
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+
+            }
+        }
+        Button(onClick = {
+            var decksToSelect = mutableListOf<Deck>()
+            decksLoaded.forEachIndexed{index, deck ->
+                if(decksSelected[index]){
+                    decksToSelect.add(deck)
+                }
+            }
+            SelectedDecks(decksToSelect)}
+        ) {
+            Text("ADD", modifier = Modifier.fillMaxWidth().weight(1f).size(50.dp))
+        }
+    }
+
+}
 @Composable
 fun SearchableAppListLoad(apps:List<AppInfo>, context: Context){
     // I have no idea how to use the colors in TextField so to make a place holder I used this box
