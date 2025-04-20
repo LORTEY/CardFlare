@@ -124,33 +124,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
             }
         }
     }
-    object NavRoutes {
-        const val BIN_CARDS_VIEW = "bin_cards_view/{deck}"
-        fun binCardsViewData(deck: Deck): String {
-            val jsonFormat = Json { prettyPrint = true }
-            val json = jsonFormat.encodeToString(deck)
-            return "detail_screen/${URLEncoder.encode(json, "UTF-8")}"
-        }
-        const val MAIN_MENU = "main_menu"
-        const val CARD_MENU = "card_menu"
-        const val LEARN_SCREEN = "learn_screen/{deckId}"
-        const val DECK_MENU = "deck_menu"
-        const val SETTINGS = "settings"
-        const val DECK_ADD_SCREEN = "deck_add_screen"
-        const val ADD_FLASHCARD = "add_flashcard/{deckId}"
-        const val BIN_SCREEN = "bin_screen"
-        const val LAUNCH_ON_MANAGER = "launch_on_manager"
-    }
-    /*
-    @Preview(showBackground = true)
-        @Composable
-        fun GreetingPreview() {
-            CardFlareTheme {
-                loadColorPalette()
-                MainMenuRender(this)
-            }
-        }*/
-
 
     private fun checkAndRequestPermissions1() {
         // List of permissions to check

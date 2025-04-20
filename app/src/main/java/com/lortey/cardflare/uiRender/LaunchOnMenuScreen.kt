@@ -93,6 +93,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import com.lortey.cardflare.Deck
@@ -188,8 +190,8 @@ fun ModifyRule(context: Context,navController: NavController){
     var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
     var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
     var flashcardList = mutableListOf<Flashcard>()
-    val apps: List<AppInfo> = appsInfo
-    val appMap: Map<String, AppInfo> = remember(apps) { apps.associateBy { it.packageName } }
+    val apps by remember{mutableStateOf(appsInfo.toMutableList())}
+    var appMap by remember(apps) { mutableStateOf( apps.associateBy { it.packageName }) }
     var appearAppAddMenu by remember { mutableStateOf(false) }
     var appearAddDeckMenu by remember{ mutableStateOf(false)}
     var listOfDecks by remember(state){ mutableStateOf(state?.deckList ?: mutableListOf())}
@@ -204,6 +206,21 @@ fun ModifyRule(context: Context,navController: NavController){
             )
         }
     }
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    if(appsInfo.size == 0){
+        LaunchedEffect(Unit) {
+            isLoading = true
+            apps.addAll(getListOfApps(context))
+            isLoading = false
+        }
+        LaunchedEffect(isLoading){ // Reloads icons and app names
+            appMap = apps.associateBy { it.packageName }
+        }
+    }
+
+
     Column(modifier = Modifier
         .padding(WindowInsets.systemBars.asPaddingValues())
         .background(MaterialTheme.colorScheme.background)) {
@@ -317,17 +334,16 @@ fun ModifyRule(context: Context,navController: NavController){
                     }
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth()){
-                Text(text = "Add Decks",)
+            Row(modifier = Modifier.fillMaxWidth().padding(10.dp), verticalAlignment =  Alignment.CenterVertically){
+                Text(text = "Add Deck", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge)
                 Icon(
-                    painter = painterResource(id = R.drawable.plus_circle),
+                    painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add App",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        //.size(128.dp)
-                        .padding(15.dp)
+                        .size(36.dp)
                         .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-                        .clickable { appearAddDeckMenu = true })
+                        .clickable { appearAppAddMenu = true })
             }
             if(appearAddDeckMenu){
                 Popup(

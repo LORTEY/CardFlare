@@ -31,19 +31,25 @@ class AppMonitorService : Service() {
     }
 
     fun startMonitoring() {
+        var previousApp = ""
         handler.post(object : Runnable {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
+
+                //val alreadyPunished = false
                 //Starts OverlayService if current runing app is instagram
-                if (getRuleFromApp(appName = currentApp ?: "") != null) {
-                    if(getRuleFromApp(appName = currentApp ?: "") != null) {
-                        val randomCards = getFlashcards(
-                            3,
-                            getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()
-                        )
-                        if(randomCards != null) {
-                            CardsToLearn = randomCards.toMutableList()
-                            startOverlay()
+                if(previousApp != currentApp && currentApp != "com.lortey.cardflare") {
+                    previousApp = currentApp ?: ""
+                    if (getRuleFromApp(appName = currentApp ?: "") != null) {
+                        if (getRuleFromApp(appName = currentApp ?: "") != null) {
+                            val randomCards = getFlashcards(
+                                3,
+                                getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()
+                            )
+                            if (randomCards != null) {
+                                CardsToLearn = randomCards.toMutableList()
+                                startOverlay()
+                            }
                         }
                     }
                 }

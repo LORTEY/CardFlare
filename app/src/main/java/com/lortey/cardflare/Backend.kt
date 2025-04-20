@@ -128,7 +128,7 @@ fun addFlashcard(filename: String, flashcardContent: Flashcard, name: String = "
     if(readData.size<=0){
         readData = listOf(getDeck(filename = filename, name = name))
     }
-    val flashcardToSave = if(reassignID) flashcardContent.copy(id = readData[0].minimalID + 1) else flashcardContent
+    val flashcardToSave = if(reassignID) flashcardContent.copy(id = readData[0].minimalID + 1, FromDeck = filename) else flashcardContent.copy(FromDeck = filename)
     readData[0].cards.add(flashcardToSave) //assigns an id to flashcard if specified to do so and adds it
     readData[0].minimalID += 1
     saveDeck(context, readData[0], filename,folderName)
@@ -498,7 +498,8 @@ enum class SortType{
 data class Flashcard(
     val id: Int,
     val SideA: String,
-    val SideB: String)
+    val SideB: String,
+    val FromDeck: String)
 
 @Serializable
 data class Deck(
