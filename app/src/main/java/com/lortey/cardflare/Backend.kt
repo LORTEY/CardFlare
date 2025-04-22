@@ -360,7 +360,7 @@ fun BinAutoEmpty(context:Context){
             Log.d("cardflare3",Instant.now().toString())
             lastNotRemovedIndex += 1
             try{
-                removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", ""), folderName = "BinDirectory")
+                removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", "",""), folderName = "BinDirectory")
                 val deck = loadData(context = context, filename = entry.filename, folderName = "BinDirectory")
                 if(deck[0].cards.isEmpty()){
                     RemoveMultipleDecksFromBin(listOf(true), context, deck)

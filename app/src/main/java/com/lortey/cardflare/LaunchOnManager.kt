@@ -154,5 +154,11 @@ data class LaunchOnRule(
     var name:String,
     var appList:MutableList<String>,
     var flashcardList : MutableList<Flashcard>,
-    var deckList : MutableList<Deck>
+    var deckList : MutableList<Deck>,
+    var activeFrom: TimeValue? = null
+)
+@Serializable
+data class TimeValue(
+    val hour: Int,   // 0-23
+    val minute: Int  // 0-59
 )

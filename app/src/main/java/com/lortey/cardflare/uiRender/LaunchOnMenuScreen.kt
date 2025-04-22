@@ -1,5 +1,6 @@
 package com.lortey.cardflare.uiRender
 
+import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color.parseColor
@@ -99,6 +100,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.addDeckToRule
+import java.util.Calendar
 
 var appsInfo:List<AppInfo> = listOf()
 @Composable
@@ -195,6 +197,7 @@ fun ModifyRule(context: Context,navController: NavController){
     var appearAppAddMenu by remember { mutableStateOf(false) }
     var appearAddDeckMenu by remember{ mutableStateOf(false)}
     var listOfDecks by remember(state){ mutableStateOf(state?.deckList ?: mutableListOf())}
+    var appearTimePicker by remember{ mutableStateOf(false)}
     Log.d("cardflare3", launchOnRuleToModify.toString())
     LaunchedEffect(Unit) {  // Run once when composable enters composition
         if (state == null) {
@@ -379,7 +382,47 @@ fun ModifyRule(context: Context,navController: NavController){
 
         }
 
+        Column(modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .clickable { appearTimePicker = true }
+            .background(MaterialTheme.colorScheme.inverseOnSurface)) {
+            Text(
+                text = "Active From",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "Active From",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        if(appearTimePicker){
+            Popup(
+                properties = PopupProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                    focusable = true
+                ),
+                alignment = Alignment.Center,
+                onDismissRequest = { appearAddDeckMenu = false },
 
+                ) {
+                Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()) {
+                    LegacyTimePicker()
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                            .padding(6.dp)
+                            .align(Alignment.BottomCenter)
+                    ) {
+
+                    }
+                }
+            }
+        }
         Row(modifier = Modifier.padding(10.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
             Button(
 
@@ -441,7 +484,28 @@ fun ModifyRule(context: Context,navController: NavController){
         }
     }
 }
+@Composable
+fun LegacyTimePicker() {
+    val context = LocalContext.current
+    var selectedTime by remember { mutableStateOf("") }
 
+    Button(onClick = {
+        val calendar = Calendar.getInstance()
+        TimePickerDialog(
+            context,
+            { _, hour, minute ->
+                selectedTime = "$hour:$minute"
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        ).show()
+    }) {
+        Text("Show Legacy Time Picker")
+    }
+
+    Text("Selected time: $selectedTime")
+}
 @Composable
 fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDecks: (MutableList<Deck>) -> Unit){
     var selectMode by remember{ mutableStateOf(false)}

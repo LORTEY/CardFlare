@@ -105,7 +105,8 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                             Flashcard(
                                 0,
                                 SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
-                                SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB
+                                SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
+                                ""
                             ), context = context
                         )
                         currentOpenedDeck =IndexTracker(
