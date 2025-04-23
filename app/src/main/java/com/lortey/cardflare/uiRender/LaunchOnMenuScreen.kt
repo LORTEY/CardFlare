@@ -99,6 +99,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import com.lortey.cardflare.Deck
+import com.lortey.cardflare.TimeValue
 import com.lortey.cardflare.addDeckToRule
 import java.util.Calendar
 
@@ -188,7 +189,7 @@ fun LaunchOnMenu(context: Context, navController: NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModifyRule(context: Context,navController: NavController){
-    val state by remember { launchOnRuleToModify }
+    val state by remember(launchOnRuleToModify.value) { mutableStateOf(launchOnRuleToModify.value) }
     var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
     var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
     var flashcardList = mutableListOf<Flashcard>()
@@ -278,16 +279,16 @@ fun ModifyRule(context: Context,navController: NavController){
                     }
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth().padding(10.dp), verticalAlignment =  Alignment.CenterVertically){
-                Text(text = "Add App", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge)
+            Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable { appearAppAddMenu = true },
+                verticalAlignment =  Alignment.CenterVertically){
+                Text(text = "Add App", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add App",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
-                        .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-                        .clickable { appearAppAddMenu = true })
+                        .background(MaterialTheme.colorScheme.background, shape = CircleShape))
             }
             if(appearAppAddMenu) {
                 Popup(
@@ -337,16 +338,15 @@ fun ModifyRule(context: Context,navController: NavController){
                     }
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth().padding(10.dp), verticalAlignment =  Alignment.CenterVertically){
-                Text(text = "Add Deck", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge)
+            Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable { appearAddDeckMenu = true }, verticalAlignment =  Alignment.CenterVertically){
+                Text(text = "Add Deck", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add App",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
-                        .background(MaterialTheme.colorScheme.background, shape = CircleShape)
-                        .clickable { appearAppAddMenu = true })
+                        .background(MaterialTheme.colorScheme.background, shape = CircleShape))
             }
             if(appearAddDeckMenu){
                 Popup(
@@ -381,51 +381,114 @@ fun ModifyRule(context: Context,navController: NavController){
             }
 
         }
+Column(modifier = Modifier
+    .padding(10.dp)
+    .fillMaxWidth()
+    .background(MaterialTheme.colorScheme.inverseOnSurface)
+    .padding(10.dp)) {
+    Text(
+        text = "Active",
+        color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.titleLarge
+    )
+    Row(
+        modifier = Modifier
+        .fillMaxWidth()
+        .clickable {
+            val calendar = Calendar.getInstance()
+            TimePickerDialog(
+                context,
+                { _, hour, minute ->
+                    launchOnRuleToModify.value = launchOnRuleToModify.value!!.copy(
+                        activeFrom = TimeValue(
+                            hour = hour,
+                            minute = minute
+                        ),
+                        activeTo = if(launchOnRuleToModify.value?.activeTo == null) TimeValue(
+                            hour = hour,
+                            minute = minute
+                        ) else launchOnRuleToModify.value?.activeTo
 
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .clickable { appearTimePicker = true }
-            .background(MaterialTheme.colorScheme.inverseOnSurface)) {
-            Text(
-                text = "Active From",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "Active From",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium
-            )
+                    )
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
         }
-        if(appearTimePicker){
-            Popup(
-                properties = PopupProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true,
-                    focusable = true
-                ),
-                alignment = Alignment.Center,
-                onDismissRequest = { appearAddDeckMenu = false },
+        .background(MaterialTheme.colorScheme.inverseOnSurface),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = "From",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = if (launchOnRuleToModify.value?.activeFrom == null) "Always" else "${launchOnRuleToModify.value!!.activeFrom!!.hour}:${launchOnRuleToModify.value!!.activeFrom!!.minute}",
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(10.dp).background(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.primaryContainer
+            ),
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
 
-                ) {
-                Box(modifier = Modifier.padding(50.dp).fillMaxSize().focusable()) {
-                    LegacyTimePicker()
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .background(color = MaterialTheme.colorScheme.inverseOnSurface)
-                            .padding(6.dp)
-                            .align(Alignment.BottomCenter)
-                    ) {
-
-                    }
-                }
-            }
+    Row(
+        modifier = Modifier
+        .fillMaxWidth()
+        .clickable {
+            val calendar = Calendar.getInstance()
+            TimePickerDialog(
+                context,
+                { _, hour, minute ->
+                    launchOnRuleToModify.value = launchOnRuleToModify.value!!.copy(
+                        activeTo = TimeValue(
+                            hour = hour,
+                            minute = minute
+                        ),
+                        activeFrom = if(launchOnRuleToModify.value?.activeFrom == null) TimeValue(
+                            hour = hour,
+                            minute = minute
+                        ) else launchOnRuleToModify.value?.activeFrom
+                    )
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
         }
+        .background(MaterialTheme.colorScheme.inverseOnSurface),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = "To",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = if (launchOnRuleToModify.value?.activeTo == null) "Always" else "${launchOnRuleToModify.value!!.activeTo!!.hour}:${launchOnRuleToModify.value!!.activeTo!!.minute}",
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(10.dp).background(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.primaryContainer
+            ),
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
+    Button(onClick = {launchOnRuleToModify.value = launchOnRuleToModify.value?.copy(activeFrom = null, activeTo = null)}) {
+        Text(
+            text = "Always",
+            color = MaterialTheme.colorScheme.onPrimary,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
         Row(modifier = Modifier.padding(10.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
             Button(
-
                 onClick = {
                     if(launchOnRuleToModify.value != null){
                         var rulesToSave:MutableList<LaunchOnRule> = launchOnRules.toMutableList()
@@ -442,11 +505,8 @@ fun ModifyRule(context: Context,navController: NavController){
                         }
 
                     }
-
                 }
-
             ) {
-
                 Text(
                     text = "Save Rule",
                     color = MaterialTheme.colorScheme.onPrimary,

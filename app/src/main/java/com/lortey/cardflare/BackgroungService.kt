@@ -14,6 +14,11 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.lortey.cardflare.uiRender.CardsToLearn
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 
 class AppMonitorService : Service() {
@@ -21,12 +26,19 @@ class AppMonitorService : Service() {
     // I dont know why it does not show a notification but it seems not to be closing automatically so its good
     private val handler = Handler(Looper.getMainLooper())
     private val checkInterval = 2000L // Recheck every 2 seconds
-
+    private var currentlyBlockedApps:HashSet<String> = hashSetOf()
+    private var overwriteDecisionToLearn = false
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
         startForeground(1, createNotification())
         //Starts monitoring
+        val updateApps = CoroutineScope(Dispatchers.Default).launch {
+            while (isActive) {
+                updateBlockedApps()
+                delay(30_000L)
+            }
+        }
         startMonitoring()
     }
 
@@ -36,12 +48,10 @@ class AppMonitorService : Service() {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
 
-                //val alreadyPunished = false
-                //Starts OverlayService if current runing app is instagram
-                if(previousApp != currentApp && currentApp != "com.lortey.cardflare") {
+                if(previousApp != currentApp && currentApp != "com.lortey.cardflare" || overwriteDecisionToLearn) {
                     previousApp = currentApp ?: ""
-                    if (getRuleFromApp(appName = currentApp ?: "") != null) {
-                        if (getRuleFromApp(appName = currentApp ?: "") != null) {
+                    overwriteDecisionToLearn = false
+                    if (currentApp in currentlyBlockedApps) {
                             val randomCards = getFlashcards(
                                 3,
                                 getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()
@@ -50,14 +60,22 @@ class AppMonitorService : Service() {
                                 CardsToLearn = randomCards.toMutableList()
                                 startOverlay()
                             }
-                        }
                     }
                 }
               handler.postDelayed(this, checkInterval) // Adds delay between checks
             }
         })
     }
-
+    private suspend fun updateBlockedApps(){
+        val previousBlockedApps = currentlyBlockedApps
+        Log.d("cardflare4prev",previousBlockedApps.toString())
+        currentlyBlockedApps = generateSetOfBlockedApps()
+        Log.d("cardflare4",currentlyBlockedApps.toString())
+        val currentApp = getForegroundApp(this@AppMonitorService)
+        if(currentApp in currentlyBlockedApps && currentApp !in previousBlockedApps){
+            overwriteDecisionToLearn = true
+        }
+    }
     private fun createNotificationChannel() {
         val channelId = "background_service_channel"
         val channel = NotificationChannel(
