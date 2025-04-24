@@ -25,6 +25,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import com.lortey.cardflare.uiRender.AddDeckScreen
 import com.lortey.cardflare.uiRender.AddFlashcardScreen
 import com.lortey.cardflare.uiRender.CardMenu
@@ -53,6 +55,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         listenToKillYourselfBroadcast()
+
+        fsrsSafeInit(applicationContext)
 
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)

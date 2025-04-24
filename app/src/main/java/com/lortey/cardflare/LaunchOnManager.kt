@@ -72,7 +72,12 @@ fun loadLaunchOnRules(context:Context):MutableList<LaunchOnRule>{
     }
     val jsonString = file.bufferedReader().use { it.readText() }
     if (!jsonString.isBlank()) {
-        return jsonFormat.decodeFromString<MutableList<LaunchOnRule>>(jsonString)
+        try {
+            return jsonFormat.decodeFromString<MutableList<LaunchOnRule>>(jsonString)
+        }catch(e:Exception){
+            Log.d("cardflare", "Error While deserializing launchOnRules")
+        }
+
     }
     return mutableListOf<LaunchOnRule>()
 }

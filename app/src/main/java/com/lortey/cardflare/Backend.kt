@@ -104,10 +104,15 @@ fun loadData(context: Context, filename: String, folderName: String = "Flashcard
     filenames.forEach { name ->
         if(name[0]!='.'){
             val jsonString = readFileFromFilesDir(name, context, folderName)
-            if(!jsonString.isBlank()) {
-                Log.d("cardflare2", jsonString)
-                decks.add(jsonFormat.decodeFromString<Deck>(jsonString))
+            try {
+                if(!jsonString.isBlank()) {
+                    Log.d("cardflare2", jsonString)
+                    decks.add(jsonFormat.decodeFromString<Deck>(jsonString))
+                }
+            }catch(e:Exception){
+                Log.d("cardflare", "Error While deserializing ${name}")
             }
+
         }
     }
     return decks.toList()
@@ -142,7 +147,13 @@ fun addFlashcard(filename: String, flashcardContent: Flashcard, name: String = "
 fun loadBinDescriptor(context: Context, filename: String = ".binDescriptor", folderName: String = "BinDirectory"): MutableList<BinEntry>{
     val jsonString = readFileFromFilesDir(filename, context, folderName)
     if(jsonString.isNotBlank()) {
-        return jsonFormat.decodeFromString<List<BinEntry>>(jsonString).toMutableList()
+        try {
+            return jsonFormat.decodeFromString<List<BinEntry>>(jsonString).toMutableList()
+        }catch(e:Exception){
+            Log.d("cardflare", "Error While deserializing bin descriptor")
+            return mutableListOf()
+        }
+
     }
     return mutableListOf()
 }
