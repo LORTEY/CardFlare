@@ -39,3 +39,20 @@ def saveScheduler():
 def saveCards():
     with open(pathToCards, 'w') as f:
         json.dump([card.to_dict() for card in cards], f)
+
+def reviewCard(card, rating):
+   current_card = Card.from_dict(card)
+   current_card, review_log = scheduler.review_card(current_card,rating_enumerator(rating))
+   return current_card.to_dict()
+
+
+def rating_enumerator(rating): 
+   match rating:
+      case "Again":
+         return Rating.Again
+      case "Good":
+         return Rating.Good
+      case "Hard":
+         return Rating.Hard
+      case "Easy":
+         return Rating.Easy
