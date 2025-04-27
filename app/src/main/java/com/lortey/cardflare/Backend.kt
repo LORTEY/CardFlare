@@ -263,7 +263,7 @@ fun MoveCardToBin(context: Context, deckFrom: Deck, card: Flashcard, moveToBin:B
     removeFlashcard(context = context, filename = deckFrom.filename, card = card, folderName = from)
 }
 
-private fun removeFlashcard(context: Context, filename: String, card: Flashcard, folderName: String = "FlashcardDirectory") {
+public fun removeFlashcard(context: Context, filename: String, card: Flashcard, folderName: String = "FlashcardDirectory") {
     val fileData = loadData(context = context, filename = filename, folderName = folderName)
     val iterator = fileData[0].cards.iterator()
     while (iterator.hasNext()) {
@@ -371,7 +371,7 @@ fun BinAutoEmpty(context:Context){
             Log.d("cardflare3",Instant.now().toString())
             lastNotRemovedIndex += 1
             try{
-                removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", "",""), folderName = "BinDirectory")
+                removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", "","", "", 0), folderName = "BinDirectory")
                 val deck = loadData(context = context, filename = entry.filename, folderName = "BinDirectory")
                 if(deck[0].cards.isEmpty()){
                     RemoveMultipleDecksFromBin(listOf(true), context, deck)
@@ -510,7 +510,9 @@ data class Flashcard(
     val id: Int,
     val SideA: String,
     val SideB: String,
-    val FromDeck: String)
+    val FromDeck: String,
+    var FsrsData: String,
+    var due:Long)
 
 @Serializable
 data class Deck(

@@ -36,7 +36,7 @@ class AppMonitorService : Service() {
         val updateApps = CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
                 updateBlockedApps()
-                delay(30_000L)
+                delay(60_000L)
             }
         }
         startMonitoring()
@@ -52,10 +52,8 @@ class AppMonitorService : Service() {
                     previousApp = currentApp ?: ""
                     overwriteDecisionToLearn = false
                     if (currentApp in currentlyBlockedApps) {
-                            val randomCards = getFlashcards(
-                                3,
-                                getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()
-                            )
+                            val randomCards = rankByDueDate(context = applicationContext, deckList = getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()).take(3)
+                            Log.d("cardflare5", randomCards.toString())
                             if (randomCards != null) {
                                 CardsToLearn = randomCards.toMutableList()
                                 startOverlay()

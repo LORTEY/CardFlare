@@ -1,6 +1,7 @@
 from fsrs import Scheduler, Card, Rating, ReviewLog
 import os
 import json
+import ast
 
 pathToScheduler = os.path.join(os.path.dirname(__file__),"scheduler.json")
 pathToCards = os.path.join(os.path.dirname(__file__),"cards.json")
@@ -41,18 +42,26 @@ def saveCards():
         json.dump([card.to_dict() for card in cards], f)
 
 def reviewCard(card, rating):
-   current_card = Card.from_dict(card)
-   current_card, review_log = scheduler.review_card(current_card,rating_enumerator(rating))
-   return current_card.to_dict()
+        current_card = Card.from_dict(ast.literal_eval(card))
+        current_card, review_log = scheduler.review_card(current_card,rating_enumerator(rating))
+        return current_card.to_dict()
+
+def default_fsrs_value():
+    loadScheduler()
+    return Card().to_dict()
+
+def get_due_date(cardStr):
+    card = Card.from_dict(ast.literal_eval(cardStr))
+    return card.due
 
 
 def rating_enumerator(rating): 
    match rating:
-      case "Again":
+      case "AGAIN":
          return Rating.Again
-      case "Good":
+      case "GOOD":
          return Rating.Good
-      case "Hard":
+      case "HARD":
          return Rating.Hard
-      case "Easy":
+      case "EASY":
          return Rating.Easy

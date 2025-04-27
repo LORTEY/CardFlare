@@ -33,6 +33,8 @@ import com.lortey.cardflare.createTranslator
 import com.lortey.cardflare.loadData
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translator
+import com.lortey.cardflare.getDefaultFSRSValue
+import com.lortey.cardflare.getDueDate
 
 
 @Composable
@@ -100,13 +102,16 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 .height(50.dp)
                 .clickable {
                     if (ableToAdd) {
+                        val fsrsValue = getDefaultFSRSValue(context)
                         addFlashcard(
                             currentOpenedDeck.value.filename,
                             Flashcard(
                                 0,
                                 SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
                                 SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
-                                ""
+                                "",
+                                fsrsValue,
+                                getDueDate(context,fsrsValue)
                             ), context = context
                         )
                         currentOpenedDeck =IndexTracker(

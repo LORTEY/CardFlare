@@ -46,6 +46,8 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.lortey.cardflare.AppSettings
 import com.lortey.cardflare.Flashcard
+import com.lortey.cardflare.Rating
+import com.lortey.cardflare.reviewCard
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -55,7 +57,6 @@ import kotlin.math.roundToInt
 fun LearnScreen(navController: NavController, context: Context, atFinnish:(() -> Unit)? = null) {
     var currentCardIndex by remember { mutableStateOf(0) }
     //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
-
     if (CardsToLearn == null) {
         throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
         navController.popBackStack()
@@ -82,11 +83,12 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
                 flashcard = CardsToLearn[cardIndex],
                 onSwipeWrong = {
                     currentCardIndex += 1
-                    //flashcards = flashcards.drop(1).toMutableList()
+
+                    reviewCard(context = context, CardsToLearn[cardIndex], Rating.EASY)
                 },
                 onSwipeRight = {
                     currentCardIndex += 1
-                    //flashcards = flashcards.drop(1).toMutableList()
+                    reviewCard(context = context, CardsToLearn[cardIndex], Rating.HARD)
                 },
                 modifierParsed = Modifier.background(
                     MaterialTheme.colorScheme.inverseOnSurface,

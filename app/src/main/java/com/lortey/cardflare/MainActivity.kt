@@ -56,13 +56,13 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
         listenToKillYourselfBroadcast()
 
-        fsrsSafeInit(applicationContext)
-
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
         launchOnRules = loadLaunchOnRules(applicationContext)
         EnsureDirectoryStructure(context = applicationContext)
+
+        Log.d("cardflare5", getDueCards(applicationContext).toString())
         BinAutoEmpty(context = applicationContext)
         startMainMenu()
     }
