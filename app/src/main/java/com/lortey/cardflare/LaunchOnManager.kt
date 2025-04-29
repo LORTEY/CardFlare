@@ -106,7 +106,7 @@ fun addDeckToRule(deckList:List<Deck>){
         launchOnRuleToModify.value = LaunchOnRule(name = launchOnRuleToModify.value?.name ?: "",
             appList = launchOnRuleToModify.value?.appList ?: mutableListOf(),
             flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf(),
-            deckList = deckList.toMutableList())
+            deckList = deckList.map{it.name}.toMutableList())
         Log.d("cardflare3",launchOnRuleToModify.toString())
 
 }
@@ -200,12 +200,23 @@ fun getRuleFromApp(appName:String):LaunchOnRule?{
     }
     return null
 }
+
+fun deckNamesToDeckList(deckNames:List<String>,context: Context):List<Deck>{
+    val loadedDecks = mutableListOf<Deck>()
+    deckNames.forEach { filename ->
+        val currentData = loadData(context, filename)
+        if(currentData.size == 1){ //expected length
+            loadedDecks.add(currentData[0])
+        }
+    }
+    return loadedDecks
+}
 @Serializable
 data class LaunchOnRule(
     var name:String,
     var appList:MutableList<String>,
     var flashcardList : MutableList<Flashcard>,
-    var deckList : MutableList<Deck>,
+    var deckList : MutableList<String>,
     var activeFrom: TimeValue? = null,
     var activeTo: TimeValue? = null
 )

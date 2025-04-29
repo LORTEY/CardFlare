@@ -88,11 +88,15 @@ import com.lortey.cardflare.removeAppFromRule
 import com.lortey.cardflare.saveLaunchOnRules
 import com.lortey.cardflare.ui.theme.Material3AppTheme
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateMapOf
@@ -101,13 +105,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.TimeValue
 import com.lortey.cardflare.addDeckToRule
+import com.lortey.cardflare.deckNamesToDeckList
 import java.util.Calendar
 
 var appsInfo:List<AppInfo> = listOf()
 @Composable
 @Preview
 fun preview(){
-
+    launchOnRuleToModify = remember {mutableStateOf(LaunchOnRule(name = "hii", appList = mutableListOf(), flashcardList = mutableListOf(), deckList = mutableListOf()))}
         // Apply Material 3 Theme with Dynamic Colors
         //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)
         Material3AppTheme {
@@ -122,8 +127,6 @@ fun preview(){
                     navController = navController,
                     startDestination = "modify_rule"
                 ) {
-
-                    
                     composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }}
 
             }
@@ -148,7 +151,7 @@ fun LaunchOnMenu(context: Context, navController: NavController){
     Box(modifier = Modifier
         .padding(WindowInsets.systemBars.asPaddingValues())
         .background(MaterialTheme.colorScheme.background)){
-        LazyColumn {
+        LazyColumn() {
             items(launchOnRules){rule ->
                 Row(horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.clickable {
@@ -197,8 +200,8 @@ fun ModifyRule(context: Context,navController: NavController){
     var appMap by remember(apps) { mutableStateOf( apps.associateBy { it.packageName }) }
     var appearAppAddMenu by remember { mutableStateOf(false) }
     var appearAddDeckMenu by remember{ mutableStateOf(false)}
-    var listOfDecks by remember(state){ mutableStateOf(state?.deckList ?: mutableListOf())}
-    var appearTimePicker by remember{ mutableStateOf(false)}
+    var listOfDecks by remember(state){ mutableStateOf(deckNamesToDeckList(state?.deckList ?: mutableListOf(), context = context))}
+
     Log.d("cardflare3", launchOnRuleToModify.toString())
     LaunchedEffect(Unit) {  // Run once when composable enters composition
         if (state == null) {
@@ -227,7 +230,8 @@ fun ModifyRule(context: Context,navController: NavController){
 
     Column(modifier = Modifier
         .padding(WindowInsets.systemBars.asPaddingValues())
-        .background(MaterialTheme.colorScheme.background)) {
+        .background(MaterialTheme.colorScheme.background)
+        .verticalScroll(rememberScrollState())) {
 
         OutlinedTextField(
             value = name,
@@ -252,7 +256,8 @@ fun ModifyRule(context: Context,navController: NavController){
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.inverseOnSurface)){
             LazyColumn(modifier = Modifier
-                .padding(10.dp)) {
+                .padding(10.dp)
+                .height((minOf((listOfApps.size) * 48, 300)).dp) ) {
                 items(listOfApps){packageName->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 5.dp)) {
                         Image(
@@ -307,7 +312,8 @@ fun ModifyRule(context: Context,navController: NavController){
                             modifier = Modifier.fillMaxWidth()
                                 .background(color = MaterialTheme.colorScheme.inverseOnSurface)
                                 .padding(6.dp)
-                                .align(Alignment.BottomCenter)
+                                .align(Alignment.BottomCenter),
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Button(
                                 onClick = { appearAppAddMenu = false }) {
@@ -328,7 +334,8 @@ fun ModifyRule(context: Context,navController: NavController){
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.inverseOnSurface)){
             LazyColumn(modifier = Modifier
-                .padding(10.dp)) {
+                .padding(10.dp)
+                .height((minOf((listOfDecks.size +1) * 10, 300)).dp)) {
                 items(listOfDecks){ deckName->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = deckName.name,
@@ -584,7 +591,7 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
             }
         }
     }
-    Column(modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.medium)){
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface, shape = MaterialTheme.shapes.medium)) {
 // Choose Deck to Activate
         LazyVerticalGrid(
             modifier = Modifier
@@ -631,17 +638,32 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
 
             }
         }
-        Button(onClick = {
-            var decksToSelect = mutableListOf<Deck>()
-            decksLoaded.forEachIndexed{index, deck ->
-                if(decksSelected[index]){
-                    decksToSelect.add(deck)
-                }
-            }
-            SelectedDecks(decksToSelect)}
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                .padding(12.dp)
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Text("ADD", modifier = Modifier.fillMaxWidth().weight(1f).size(50.dp))
+            Button(
+                onClick = {
+                    var decksToSelect = mutableListOf<Deck>()
+                    decksLoaded.forEachIndexed { index, deck ->
+                        if (decksSelected[index]) {
+                            decksToSelect.add(deck)
+                        }
+                    }
+                    SelectedDecks(decksToSelect)
+                }) {
+
+                Text(
+                    text = "Close",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
+
     }
 
 }

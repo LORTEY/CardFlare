@@ -1,16 +1,23 @@
 package com.lortey.cardflare.uiRender
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.icu.text.Transliterator.Position
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntOffsetAsState
+import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -23,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,12 +38,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +53,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.core.view.ViewCompat
 import androidx.navigation.NavController
 import com.lortey.cardflare.AppSettings
 import com.lortey.cardflare.Flashcard
@@ -51,6 +62,8 @@ import com.lortey.cardflare.reviewCard
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
+import androidx.core.graphics.toColorInt
 
 
 @Composable
@@ -94,7 +107,8 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
                     MaterialTheme.colorScheme.inverseOnSurface,
                     shape = RoundedCornerShape(20.dp)
                 ),
-                onTop = CardsToLearn.size - cardIndex - 1 == currentCardIndex
+                onTop = CardsToLearn.size - cardIndex - 1 == currentCardIndex,
+                context = context
             )
         }
     }
@@ -116,9 +130,13 @@ fun SwipeableFlashcard(
     onSwipeWrong: () -> Unit,
     onSwipeRight: () -> Unit,
     modifierParsed: Modifier,
-    onTop: Boolean) {
+    onTop: Boolean,
+    context: Context) {
+    val displayMetrics = context.resources.displayMetrics
+    val screenWidth = displayMetrics.widthPixels
+    val screenHeight = displayMetrics.heightPixels
+    var offset = remember { Animatable(IntOffset(0, 0), IntOffset.VectorConverter) }
 
-    val offsetX = remember { Animatable(0f) }
     val coroutineScope = rememberCoroutineScope()
     val appSettings = AppSettings
     require(appSettings["Flashcard Swipe Threshold"]?.state is Float)
@@ -149,44 +167,32 @@ fun SwipeableFlashcard(
                 .fillMaxSize()
                 //.padding(paddingValue)
                 .pointerInput(Unit) {
-                    detectHorizontalDragGestures(
+                    detectDragGestures(
                         onDragEnd = {
                             // Decide if the card should snap back or swipe away
                             coroutineScope.launch {
-                                when {
-                                    offsetX.value < -swipeThreshold -> {
-                                        offsetX.animateTo(-1000f, tween(300))
-                                        fadeOut = true
-                                        if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean) {
-                                            onSwipeWrong()
-                                        } else {
-                                            onSwipeRight()
-                                        }
-                                    }
 
-                                    offsetX.value > swipeThreshold -> {
-                                        offsetX.animateTo(1000f, tween(300))
-                                        fadeOut = true
-                                        if (appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean) {
-                                            onSwipeRight()
-                                        } else {
-                                            onSwipeWrong()
-                                        }
-                                    }
+                                    when(getClosestCorner(offset.value.x, offset.value.y, context, swipeThreshold)){
+                                        Points.CENTRE ->
+                                            offset.animateTo(IntOffset(screenWidth/2, screenHeight), tween(300))
+                                        Points.TOP_LEFT ->
+                                            offset.animateTo(IntOffset(0, 0), tween(300))
+                                        Points.TOP_RIGHT ->
+                                            offset.animateTo(IntOffset(screenWidth, 0), tween(300))
+                                        Points.BOTTOM_LEFT ->
+                                            offset.animateTo(IntOffset(0, screenHeight), tween(300))
+                                        Points.BOTTOM_RIGHT ->
+                                            offset.animateTo(IntOffset(screenWidth,screenHeight), tween(300))
 
-                                    else -> {
-                                        offsetX.animateTo(0f, tween(300)) // Reset position
                                     }
                                 }
-                            }
                         }
-                    ) { _, dragAmount ->
-                        coroutineScope.launch {
-                            offsetX.snapTo(offsetX.value + dragAmount)  // Move card with finger
-                        }
+                    ) { change, dragAmount ->
+                        change.consume()
+                        offset.value += IntOffset(dragAmount.x.roundToInt(), dragAmount.y.roundToInt()) // Updates both x and y
                     }
                 }
-                .offset { IntOffset(offsetX.value.roundToInt(), 0) },
+                .offset { IntOffset(offset.value.x, offset.value.y) },
             contentAlignment = Alignment.Center
         ) {
 
@@ -198,7 +204,6 @@ fun SwipeableFlashcard(
                         if(onTop) {
                             rotationY = rotationYy
                             cameraDistance = 8 * density
-                            // Add these critical properties:
                             shape = RectangleShape // Ensures clean edges during rotation
                             clip = true // Prevents content from bleeding through
                         }
@@ -206,28 +211,14 @@ fun SwipeableFlashcard(
                         scaleY = closeness
                     }
                     // Add zIndex to ensure proper stacking
-                    .zIndex(if (onTop) 1f else 0f)
+                    .zIndex(if (onTop) 1f else 0.5f)
                     .clickable { isFlipped = !isFlipped }
                     .padding(20.dp)
                     .border(
-                        //Setting Border thickness
-                        if (swipeThreshold < abs(offsetX.value)) {
-                            (abs(offsetX.value) / 100 + 2).dp
-                        } else {
-                            0.dp
-                        },
-                        //Setting Color
-                        if ((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
-                            || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
-                        ) {
-                            Color(0xff00cc99)
-                        } else if ((offsetX.value < 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean)
-                            || (offsetX.value > 0 && appSettings["Flip Flashcard Right Wrong Answer"]?.state as Boolean == false)
-                        ) {
-                            Color(0xffff4d4d)
-                        } else {
-                            Color(0x00000000)
-                        }, RoundedCornerShape(20.dp)
+                        width = 5.dp,
+                        color = actionsAndColors[getClosestCorner(positionX = offset.x.roundToInt(), positionY = offset.y.roundToInt(),
+                            context = context, minimalSwipeThreshold = swipeThreshold)]!!.first
+                        , RoundedCornerShape(20.dp)
                     )
                     .background(
                         color = if (onTop) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.inverseOnSurface.darken(darknessValue),
@@ -245,8 +236,11 @@ fun SwipeableFlashcard(
                         .padding(20.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    AutoSizeText(text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
-                        color = if (onTop) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.darken(darknessValue),
+                    AutoSizeText(
+                        text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
+                        color = if (onTop) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.darken(
+                            darknessValue
+                        ),
                     )
                 }
             }
@@ -261,3 +255,46 @@ inline fun Color.darken(darkenBy: Float = 0.3f): Color {
         alpha = alpha
     )
 }
+//val configuration = LocalConfiguration.current
+fun getClosestCorner(positionX: Int, positionY:Int, context: Context, minimalSwipeThreshold:Float):Points{
+    val displayMetrics = context.resources.displayMetrics
+    val screenWidth = displayMetrics.widthPixels
+    val screenHeight = displayMetrics.heightPixels
+
+    if(distanceFrom(positionX,positionY, screenWidth/2, screenHeight/2) < minimalSwipeThreshold){
+        return Points.CENTRE
+    }
+
+    if(positionY < screenHeight/2){ //So its closest to the top
+        if(positionX < screenWidth/2){
+            return Points.TOP_LEFT
+        }
+        return Points.TOP_RIGHT
+    }
+    if(positionX < screenWidth/2){
+        return Points.BOTTOM_LEFT
+    }
+    return Points.BOTTOM_RIGHT
+}
+
+fun distanceFrom(Ax:Int,Ay:Int,Bx:Int,By:Int):Float{
+    return sqrt(((Ax-Bx) * (Ax-Bx)  + (Ay-By) * (Ay-By)).toFloat())
+}
+
+enum class Points{
+    TOP_RIGHT,
+    TOP_LEFT,
+    CENTRE,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
+}
+
+public val actionsAndColors : Map<Points,Pair<Color, Rating?>> =
+    mapOf(
+        Points.TOP_RIGHT to Pair(Color("#33cc33".toColorInt()), Rating.EASY),
+        Points.TOP_LEFT to Pair(Color("#00ccff".toColorInt()), Rating.GOOD),
+        Points.CENTRE to Pair(Color("#00000000".toColorInt()), null),
+        Points.BOTTOM_RIGHT to Pair(Color("#ff9933".toColorInt()), Rating.HARD),
+        Points.BOTTOM_LEFT to Pair(Color("#ff0000".toColorInt()), Rating.AGAIN)
+
+    )

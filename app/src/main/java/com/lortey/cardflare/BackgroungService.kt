@@ -52,7 +52,8 @@ class AppMonitorService : Service() {
                     previousApp = currentApp ?: ""
                     overwriteDecisionToLearn = false
                     if (currentApp in currentlyBlockedApps) {
-                            val randomCards = rankByDueDate(context = applicationContext, deckList = getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList()).take(3)
+                            val randomCards = rankByDueDate(context = applicationContext,
+                                deckList = deckNamesToDeckList(getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList(), context = applicationContext)).take(3)
                             Log.d("cardflare5", randomCards.toString())
                             if (randomCards != null) {
                                 CardsToLearn = randomCards.toMutableList()
