@@ -36,7 +36,7 @@ class AppMonitorService : Service() {
         val updateApps = CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
                 updateBlockedApps()
-                delay(60_000L)
+                delay(30_000L)
             }
         }
         startMonitoring()
@@ -47,18 +47,28 @@ class AppMonitorService : Service() {
         handler.post(object : Runnable {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
-
-                if(previousApp != currentApp && currentApp != "com.lortey.cardflare" || overwriteDecisionToLearn) {
-                    previousApp = currentApp ?: ""
-                    overwriteDecisionToLearn = false
-                    if (currentApp in currentlyBlockedApps) {
-                            val randomCards = rankByDueDate(context = applicationContext,
-                                deckList = deckNamesToDeckList(getRuleFromApp(appName = currentApp ?: "")!!.deckList.toList(), context = applicationContext)).take(3)
+                previousApp?.let { Log.d("cardflareBackgroundprevious", it) }
+                if((currentApp != null && previousApp != currentApp && currentApp != "com.lortey.cardflare" )|| overwriteDecisionToLearn) {
+                    Thread.sleep(100) // A bug fix it used to randomly pop up when using some apps so i make sure here that this app is really on top
+                    currentApp?.let { Log.d("cardflareBackgroundcurrent", it) }
+                    if(currentApp == getForegroundApp(this@AppMonitorService)) {
+                        previousApp = currentApp ?: ""
+                        overwriteDecisionToLearn = false
+                        if (currentApp in currentlyBlockedApps) {
+                            val randomCards = rankByDueDate(
+                                context = applicationContext,
+                                deckList = deckNamesToDeckList(
+                                    getRuleFromApp(
+                                        appName = currentApp ?: ""
+                                    )!!.deckList.toList(), context = applicationContext
+                                )
+                            ).take(3)
                             Log.d("cardflare5", randomCards.toString())
                             if (randomCards != null) {
                                 CardsToLearn = randomCards.toMutableList()
                                 startOverlay()
                             }
+                        }
                     }
                 }
               handler.postDelayed(this, checkInterval) // Adds delay between checks

@@ -94,14 +94,9 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
         CardsToLearn.reversed().forEachIndexed { cardIndex, card ->
             SwipeableFlashcard(
                 flashcard = CardsToLearn[cardIndex],
-                onSwipeWrong = {
+                onSwipe = { rating->
                     currentCardIndex += 1
-
-                    reviewCard(context = context, CardsToLearn[cardIndex], Rating.EASY)
-                },
-                onSwipeRight = {
-                    currentCardIndex += 1
-                    reviewCard(context = context, CardsToLearn[cardIndex], Rating.HARD)
+                    reviewCard(context = context, CardsToLearn[cardIndex], rating)
                 },
                 modifierParsed = Modifier.background(
                     MaterialTheme.colorScheme.inverseOnSurface,
@@ -127,8 +122,7 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
 @Composable
 fun SwipeableFlashcard(
     flashcard: Flashcard,
-    onSwipeWrong: () -> Unit,
-    onSwipeRight: () -> Unit,
+    onSwipe: (Rating) -> Unit,
     modifierParsed: Modifier,
     onTop: Boolean,
     context: Context) {
@@ -148,7 +142,7 @@ fun SwipeableFlashcard(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
-
+    val alphaValue = alphaValueBasedOnDistance(offset.value.x,offset.value.y, context, swipeThreshold) *1.1f
     // Animate padding change using animateDpAsState
     val closeness by animateFloatAsState(
         targetValue = if (onTop) 1f else 0.7f, // Toggle between two padding values
@@ -172,24 +166,45 @@ fun SwipeableFlashcard(
                             // Decide if the card should snap back or swipe away
                             coroutineScope.launch {
 
-                                    when(getClosestCorner(offset.value.x, offset.value.y, context, swipeThreshold)){
-                                        Points.CENTRE ->
-                                            offset.animateTo(IntOffset(screenWidth/2, screenHeight), tween(300))
-                                        Points.TOP_LEFT ->
-                                            offset.animateTo(IntOffset(0, 0), tween(300))
-                                        Points.TOP_RIGHT ->
-                                            offset.animateTo(IntOffset(screenWidth, 0), tween(300))
-                                        Points.BOTTOM_LEFT ->
-                                            offset.animateTo(IntOffset(0, screenHeight), tween(300))
-                                        Points.BOTTOM_RIGHT ->
-                                            offset.animateTo(IntOffset(screenWidth,screenHeight), tween(300))
-
+                                when (getClosestCorner(offset.value.x, offset.value.y, context, swipeThreshold)) {
+                                    Points.CENTRE -> {
+                                        offset.animateTo(IntOffset(0, 0), tween(300))
+                                    }
+                                    Points.TOP_LEFT -> {
+                                        offset.animateTo(IntOffset(-screenWidth, -screenHeight), tween(300))
+                                        fadeOut = true
+                                        onSwipe(actionsAndColors[Points.TOP_LEFT]!!.second!!)
+                                    }
+                                    Points.TOP_RIGHT -> {
+                                        offset.animateTo(IntOffset(screenWidth, -screenHeight), tween(300))
+                                        fadeOut = true
+                                        onSwipe(actionsAndColors[Points.TOP_RIGHT]!!.second!!)
+                                    }
+                                    Points.BOTTOM_LEFT -> {
+                                        offset.animateTo(IntOffset(-screenWidth, screenHeight), tween(300))
+                                        fadeOut = true
+                                        onSwipe(actionsAndColors[Points.BOTTOM_LEFT]!!.second!!)
+                                    }
+                                    Points.BOTTOM_RIGHT -> {
+                                        offset.animateTo(IntOffset(screenWidth, screenHeight), tween(300))
+                                        fadeOut = true
+                                        onSwipe(actionsAndColors[Points.BOTTOM_RIGHT]!!.second!!)
                                     }
                                 }
+                                }
+
                         }
                     ) { change, dragAmount ->
                         change.consume()
-                        offset.value += IntOffset(dragAmount.x.roundToInt(), dragAmount.y.roundToInt()) // Updates both x and y
+                        coroutineScope.launch {
+                            offset.animateTo(
+                                offset.value
+                                        + IntOffset(
+                                    dragAmount.x.roundToInt(),
+                                    dragAmount.y.roundToInt()
+                                ), tween(0)
+                            ) // Updates both x and y
+                        }
                     }
                 }
                 .offset { IntOffset(offset.value.x, offset.value.y) },
@@ -216,8 +231,8 @@ fun SwipeableFlashcard(
                     .padding(20.dp)
                     .border(
                         width = 5.dp,
-                        color = actionsAndColors[getClosestCorner(positionX = offset.x.roundToInt(), positionY = offset.y.roundToInt(),
-                            context = context, minimalSwipeThreshold = swipeThreshold)]!!.first
+                        color = actionsAndColors[getClosestCorner(positionX = offset.value.x, positionY = offset.value.y ,
+                            context = context, minimalSwipeThreshold = swipeThreshold)]!!.first.copy(alpha = alphaValue)
                         , RoundedCornerShape(20.dp)
                     )
                     .background(
@@ -236,12 +251,19 @@ fun SwipeableFlashcard(
                         .padding(20.dp),
                     contentAlignment = Alignment.Center
                 ) {
+
                     AutoSizeText(
                         text = if (rotationYy > 90f) flashcard.SideB else flashcard.SideA,
-                        color = if (onTop) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.darken(
+                        color = (if (onTop) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.inverseSurface.darken(
                             darknessValue
-                        ),
+                        )).copy(alpha = 1f - alphaValue),
                     )
+                    val closestCorner = getClosestCorner(positionX = offset.value.x, positionY = offset.value.y, context = context, swipeThreshold)
+                    //Rating enumerator
+                    Text(text = actionsAndColors[closestCorner]?.second.toString() ?: "",
+                        color = actionsAndColors[closestCorner]!!.first.copy(alpha = alphaValue),
+                        modifier =  Modifier.align(Alignment.Center),
+                        style = MaterialTheme.typography.displaySmall)
                 }
             }
         }
@@ -255,23 +277,34 @@ inline fun Color.darken(darkenBy: Float = 0.3f): Color {
         alpha = alpha
     )
 }
+fun alphaValueBasedOnDistance(positionX: Int, positionY:Int, context: Context, minimalSwipeThreshold:Float):Float{
+    val displayMetrics = context.resources.displayMetrics
+    val screenWidth = displayMetrics.widthPixels
+    val screenHeight = displayMetrics.heightPixels
+    val maxDistance = distanceFrom(screenHeight/2,screenWidth/2, 0,0)
+    val currentDistance = distanceFrom(positionX,positionY, 0,0)
+    val alpha = (currentDistance - minimalSwipeThreshold)/(maxDistance - minimalSwipeThreshold)
+    return if(alpha<0) 0f else alpha
+
+}
+
 //val configuration = LocalConfiguration.current
 fun getClosestCorner(positionX: Int, positionY:Int, context: Context, minimalSwipeThreshold:Float):Points{
     val displayMetrics = context.resources.displayMetrics
     val screenWidth = displayMetrics.widthPixels
     val screenHeight = displayMetrics.heightPixels
 
-    if(distanceFrom(positionX,positionY, screenWidth/2, screenHeight/2) < minimalSwipeThreshold){
+    if(distanceFrom(positionX,positionY, 0, 0   ) < minimalSwipeThreshold){
         return Points.CENTRE
     }
 
-    if(positionY < screenHeight/2){ //So its closest to the top
-        if(positionX < screenWidth/2){
+    if(positionY < 0){ //So its closest to the top
+        if(positionX < 0){
             return Points.TOP_LEFT
         }
         return Points.TOP_RIGHT
     }
-    if(positionX < screenWidth/2){
+    if(positionX < 0){
         return Points.BOTTOM_LEFT
     }
     return Points.BOTTOM_RIGHT
