@@ -427,6 +427,7 @@ color foreground_material_dark
 color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
+color ic_launcher_background
 color material_blue_grey_800
 color material_blue_grey_900
 color material_blue_grey_950
@@ -721,6 +722,7 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable info
 drawable learn
+drawable logo
 drawable menu
 drawable minus
 drawable nav_arrow_left
@@ -1003,6 +1005,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 raw translate_models_metadata
 string abc_action_bar_home_description

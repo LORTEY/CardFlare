@@ -1,6 +1,7 @@
 R_DEF: Internal format may change without notice
 local
 color black
+color ic_launcher_background
 color purple_200
 color purple_500
 color purple_700
@@ -17,6 +18,7 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable info
 drawable learn
+drawable logo
 drawable menu
 drawable minus
 drawable nav_arrow_left
@@ -29,6 +31,7 @@ drawable settings
 drawable sort
 drawable sort_ascending
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string app_name
 style Theme.CardFlare
