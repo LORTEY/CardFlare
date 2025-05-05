@@ -1,11 +1,29 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-65:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-65:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-65:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-65:12
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/8c32b089d35c95159a8f358821b73f0c/transformed/coil-svg-2.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.camera:camera-video:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/0ed7a4dcbf4a5214fbe54a7e23c61099/transformed/camera-video-1.3.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.camera:camera-lifecycle:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/a32dcd179b1cf2e695f8a298919a286e/transformed/camera-lifecycle-1.3.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.camera:camera-view:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/294fd9842df6ea038e57102d8b52199d/transformed/camera-view-1.3.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:2:1-20:12
+MERGED from [com.google.mlkit:text-recognition:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/99b417f6015722f2fd6a01192f51583e/transformed/text-recognition-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.mlkit:text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/12e03a07e53bebcce650fa405faa27e1/transformed/text-recognition-chinese-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.mlkit:text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/dfbb8f6a183afbf92ef70a5b9c5546ff/transformed/text-recognition-devanagari-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.mlkit:text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/29f650d3d7ea850c019a9723b41c68d3/transformed/text-recognition-japanese-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.mlkit:text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/9c94588151962c6eeabfbc123ca2300a/transformed/text-recognition-korean-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/503d4c9bb54749a55e8daa428df78127/transformed/play-services-mlkit-text-recognition-19.0.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.mlkit:text-recognition-bundled-common:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/4affb5cad2c7b696cde54f0ff2436b8d/transformed/text-recognition-bundled-common-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/52c83aaf49231fafb7561b123743b01d/transformed/play-services-mlkit-text-recognition-chinese-16.0.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/5048a5b3ce49172e2d711c7b3fd4f479/transformed/play-services-mlkit-text-recognition-devanagari-16.0.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3171bc531fedaef62b3f12fecbbd1029/transformed/play-services-mlkit-text-recognition-japanese-16.0.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/48afacf26e7ac3aade4b7c7f4257b770/transformed/play-services-mlkit-text-recognition-korean-16.0.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:2:1-18:12
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:2:1-18:12
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:2:1-26:12
 MERGED from [io.coil-kt:coil-compose:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/b0259b2120e35550017af30a46d74c96/transformed/coil-compose-2.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil-compose-base:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/678d67aed214ec54df97ee36534f9d6e/transformed/coil-compose-base-2.7.0/AndroidManifest.xml:2:1-7:12
@@ -14,6 +32,7 @@ MERGED from [io.coil-kt:coil-base:2.7.0] /home/lortey/.gradle/caches/8.10.2/tran
 MERGED from [androidx.appcompat:appcompat-resources:1.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/f99e92ec8b51b04ec665e4f92d204780/transformed/appcompat-resources-1.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.appcompat:appcompat:1.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/5f8b689866519f8706c2167341f67537/transformed/appcompat-1.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4d443c5d0e4538599129aea10e4c5b14/transformed/play-services-base-18.1.0/AndroidManifest.xml:16:1-24:12
+MERGED from [com.google.mlkit:vision-interfaces:16.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/35a8973539e4c87b6539f376a6b3e67a/transformed/vision-interfaces-16.2.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/0fd0de555f0bcaf3ba7a31d6b7685df0/transformed/play-services-tasks-18.0.2/AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/c35fcaf3d28bb5143433c77d7c27afee/transformed/play-services-basement-18.1.0/AndroidManifest.xml:16:1-26:12
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/91aa40ebc4897446a2a358d895a7ea52/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -49,19 +68,19 @@ MERGED from [androidx.activity:activity:1.9.3] /home/lortey/.gradle/caches/8.10.
 MERGED from [androidx.activity:activity-ktx:1.9.3] /home/lortey/.gradle/caches/8.10.2/transforms/8345b95821d88e6a5b511ec14616821e/transformed/activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity-compose:1.9.3] /home/lortey/.gradle/caches/8.10.2/transforms/0d9ba3764a0e2f4a951a744eb947c9cc/transformed/activity-compose-1.9.3/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] /home/lortey/.gradle/caches/8.10.2/transforms/66f2706586b13a93c8d40db2af0b6ff7/transformed/accompanist-drawablepainter-0.32.0/AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/46929e40dfb57bbdf03f2343c016a882/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/61117aac99e8922037f4663b277371ab/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/67fa6a04884d68212399ef0a37f1eb3f/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/ba2ac4f47122c2412decd46b0b0c79ff/transformed/lifecycle-livedata-ktx-2.8.7/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a597cb0af557a2d0b02b2691e033751f/transformed/lifecycle-viewmodel-2.8.7/AndroidManifest.xml:2:1-5:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/5ceb01f244d84e58fd4c5d46f10e52c7/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/c3ebb2ab2f9cfdaeaa683cb7a0a05e9c/transformed/lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/efe245fafdb53065c376dca9bddc2ee3/transformed/lifecycle-viewmodel-savedstate-2.8.7/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/d3915553a9fa58989bde10701442d4c6/transformed/lifecycle-livedata-core-2.8.7/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/74207bce7934cdb58194b537d16b7ad4/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a5a99074039269f797c92e3570cbedb3/transformed/lifecycle-viewmodel-ktx-2.8.7/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/067d33662878daa2638275f0da322541/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/b6eb84b21e609eb4e8ad542758538c5f/transformed/lifecycle-viewmodel-compose-release/AndroidManifest.xml:2:1-7:12
@@ -97,6 +116,7 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/6119083b8fca4c3aab604e20cbb4a576/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:2:1-7:12
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:2:1-9:12
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/2291faec05b59bf13db6d6281ddb24b8/transformed/androidsvg-aar-1.4/AndroidManifest.xml:2:1-11:12
+MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:2:1-9:12
 	package
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:4:5-35
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
@@ -108,20 +128,50 @@ MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:5:5-80
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:5:22-77
+uses-permission#android.permission.CAMERA
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:6:5-65
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:6:22-62
+uses-feature#android.hardware.camera
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:5-85
+	android:required
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:58-82
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:19-57
+uses-feature#android.hardware.camera.any
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:5-89
+	android:required
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:62-86
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:19-61
+uses-feature#android.hardware.camera.autofocus
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:5-95
+	android:required
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:68-92
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:19-67
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:10:5-81
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:10:22-78
 uses-permission#android.permission.KILL_BACKGROUND_PROCESSES
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:6:5-84
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:5-84
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:6:22-81
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:22-81
 uses-permission#android.permission.INTERNET
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:5-67
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:12:5-67
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:8:5-67
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/556facf9258a66a22b0854c5440740b7/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:26:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/556facf9258a66a22b0854c5440740b7/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:26:5-67
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:7:22-64
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:12:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:5-79
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:5-79
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:7:5-79
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.datatransport:transport-backend-cct:2.3.3] /home/lortey/.gradle/caches/8.10.2/transforms/556facf9258a66a22b0854c5440740b7/transformed/transport-backend-cct-2.3.3/AndroidManifest.xml:25:5-79
@@ -129,36 +179,44 @@ MERGED from [com.google.android.datatransport:transport-backend-cct:2.3.3] /home
 MERGED from [com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/d218b2c2780dc7ecb01f2d93b16ddc11/transformed/transport-runtime-2.2.6/AndroidManifest.xml:22:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:2.2.6] /home/lortey/.gradle/caches/8.10.2/transforms/d218b2c2780dc7ecb01f2d93b16ddc11/transformed/transport-runtime-2.2.6/AndroidManifest.xml:22:5-79
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:8:22-76
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:22-76
 uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:5-76
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:14:5-76
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:9:22-74
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:14:22-74
 uses-permission#android.permission.FOREGROUND_SERVICE_DATA_SYNC
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:10:5-86
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:15:5-86
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:10:22-84
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:15:22-84
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:5-76
-	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:11:22-74
-uses-permission#android.permission.PACKAGE_USAGE_STATS
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:5-14:47
-	tools:ignore
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:14:9-44
-	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:13:22-75
-uses-permission#android.permission.QUERY_ALL_PACKAGES
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:16:5-17:53
-	tools:ignore
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:17:9-50
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:16:5-76
 	android:name
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:16:22-74
+uses-permission#android.permission.PACKAGE_USAGE_STATS
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:18:5-19:47
+	tools:ignore
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:9-44
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:18:22-75
+uses-permission#android.permission.QUERY_ALL_PACKAGES
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:5-22:53
+	tools:ignore
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:22:9-50
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:22-74
 application
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:5-59:19
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:19:5-59:19
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-64:19
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-64:19
+MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:23:5-34:19
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:23:5-34:19
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:10:5-18:19
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:10:5-18:19
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:8:5-16:19
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:8:5-24:19
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:8:5-24:19
 MERGED from [com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4d443c5d0e4538599129aea10e4c5b14/transformed/play-services-base-18.1.0/AndroidManifest.xml:19:5-23:19
@@ -189,106 +247,136 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/lorte
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/lortey/.gradle/caches/8.10.2/transforms/c68738adda89c6c1511eeb212336f331/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:7:5-20
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:7:5-20
 	android:extractNativeLibs
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] /home/lortey/.gradle/caches/8.10.2/transforms/334ba32b1e7404edf699d9eae64556b3/transformed/core-1.15.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:26:9-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:31:9-35
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:9-41
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:29:9-41
 	android:fullBackupContent
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:22:9-54
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:9-54
 	android:roundIcon
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:25:9-54
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:30:9-54
 	tools:targetApi
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:29:9-29
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:34:9-29
 	android:icon
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:23:9-43
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:9-43
 	android:allowBackup
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:20:9-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:25:9-35
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:27:9-47
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:32:9-47
 	android:dataExtractionRules
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:9-65
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:26:9-65
 	android:usesCleartextTraffic
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:28:9-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:33:9-44
 service#com.lortey.cardflare.AppMonitorService
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:30:9-33:55
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:35:9-38:55
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:32:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:37:13-36
 	android:foregroundServiceType
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:33:13-53
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:38:13-53
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:31:13-46
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:36:13-46
 activity#com.lortey.cardflare.MainActivity
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:34:9-43:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:39:9-48:20
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:37:13-45
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:42:13-45
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:36:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:41:13-36
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:38:13-51
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:43:13-51
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:35:13-41
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:40:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:39:13-42:29
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:44:13-47:29
 action#android.intent.action.MAIN
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:40:17-69
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:45:17-69
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:40:25-66
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:45:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:41:17-77
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:17-77
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:41:27-74
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:27-74
 activity#com.lortey.cardflare.OverlayActivity
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:44:9-51:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:49:9-56:20
 	android:label
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:46:13-45
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:51:13-45
 	android:excludeFromRecents
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:49:13-46
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:54:13-46
 	android:launchMode
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:48:13-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:13-44
 	android:permission
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:50:13-72
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:55:13-72
 	android:theme
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:47:13-72
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:13-72
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:45:13-44
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:50:13-44
 receiver#com.lortey.cardflare.broadcasters.KillMain
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:9-58:20
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:57:9-63:20
 	android:enabled
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:53:13-35
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:58:13-35
 	android:exported
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:54:13-36
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:59:13-36
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:52:19-56
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:57:19-56
 intent-filter#action:name:com.lortey.KILL_MAIN_ACTIVITY
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:55:13-57:29
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:60:13-62:29
 action#com.lortey.KILL_MAIN_ACTIVITY
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:56:17-72
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:17-72
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:56:25-69
-uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:60:5-80
-	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:60:22-77
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:5-81
-	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:22-78
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:25-69
 uses-permission#android.permission.SYSTEM_ALERT_WINDOW
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:62:5-77
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:67:5-77
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:62:22-75
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:67:22-75
 uses-sdk
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/8c32b089d35c95159a8f358821b73f0c/transformed/coil-svg-2.7.0/AndroidManifest.xml:5:5-44
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/8c32b089d35c95159a8f358821b73f0c/transformed/coil-svg-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-video:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/0ed7a4dcbf4a5214fbe54a7e23c61099/transformed/camera-video-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-video:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/0ed7a4dcbf4a5214fbe54a7e23c61099/transformed/camera-video-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-lifecycle:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/a32dcd179b1cf2e695f8a298919a286e/transformed/camera-lifecycle-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-lifecycle:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/a32dcd179b1cf2e695f8a298919a286e/transformed/camera-lifecycle-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.camera:camera-view:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/294fd9842df6ea038e57102d8b52199d/transformed/camera-view-1.3.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.camera:camera-view:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/294fd9842df6ea038e57102d8b52199d/transformed/camera-view-1.3.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:5:5-44
 MERGED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/99b417f6015722f2fd6a01192f51583e/transformed/text-recognition-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/99b417f6015722f2fd6a01192f51583e/transformed/text-recognition-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/12e03a07e53bebcce650fa405faa27e1/transformed/text-recognition-chinese-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/12e03a07e53bebcce650fa405faa27e1/transformed/text-recognition-chinese-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/dfbb8f6a183afbf92ef70a5b9c5546ff/transformed/text-recognition-devanagari-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/dfbb8f6a183afbf92ef70a5b9c5546ff/transformed/text-recognition-devanagari-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/29f650d3d7ea850c019a9723b41c68d3/transformed/text-recognition-japanese-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/29f650d3d7ea850c019a9723b41c68d3/transformed/text-recognition-japanese-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/9c94588151962c6eeabfbc123ca2300a/transformed/text-recognition-korean-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/9c94588151962c6eeabfbc123ca2300a/transformed/text-recognition-korean-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/503d4c9bb54749a55e8daa428df78127/transformed/play-services-mlkit-text-recognition-19.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/503d4c9bb54749a55e8daa428df78127/transformed/play-services-mlkit-text-recognition-19.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.mlkit:text-recognition-bundled-common:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/4affb5cad2c7b696cde54f0ff2436b8d/transformed/text-recognition-bundled-common-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:text-recognition-bundled-common:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/4affb5cad2c7b696cde54f0ff2436b8d/transformed/text-recognition-bundled-common-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/52c83aaf49231fafb7561b123743b01d/transformed/play-services-mlkit-text-recognition-chinese-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-chinese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/52c83aaf49231fafb7561b123743b01d/transformed/play-services-mlkit-text-recognition-chinese-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/5048a5b3ce49172e2d711c7b3fd4f479/transformed/play-services-mlkit-text-recognition-devanagari-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-devanagari:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/5048a5b3ce49172e2d711c7b3fd4f479/transformed/play-services-mlkit-text-recognition-devanagari-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3171bc531fedaef62b3f12fecbbd1029/transformed/play-services-mlkit-text-recognition-japanese-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3171bc531fedaef62b3f12fecbbd1029/transformed/play-services-mlkit-text-recognition-japanese-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/48afacf26e7ac3aade4b7c7f4257b770/transformed/play-services-mlkit-text-recognition-korean-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/48afacf26e7ac3aade4b7c7f4257b770/transformed/play-services-mlkit-text-recognition-korean-16.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:6:5-44
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:6:5-44
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:6:5-44
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:6:5-44
 MERGED from [io.coil-kt:coil-compose:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/b0259b2120e35550017af30a46d74c96/transformed/coil-compose-2.7.0/AndroidManifest.xml:5:5-44
@@ -305,6 +393,8 @@ MERGED from [androidx.appcompat:appcompat:1.7.0] /home/lortey/.gradle/caches/8.1
 MERGED from [androidx.appcompat:appcompat:1.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/5f8b689866519f8706c2167341f67537/transformed/appcompat-1.7.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4d443c5d0e4538599129aea10e4c5b14/transformed/play-services-base-18.1.0/AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-base:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/4d443c5d0e4538599129aea10e4c5b14/transformed/play-services-base-18.1.0/AndroidManifest.xml:18:5-43
+MERGED from [com.google.mlkit:vision-interfaces:16.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/35a8973539e4c87b6539f376a6b3e67a/transformed/vision-interfaces-16.2.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.mlkit:vision-interfaces:16.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/35a8973539e4c87b6539f376a6b3e67a/transformed/vision-interfaces-16.2.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/0fd0de555f0bcaf3ba7a31d6b7685df0/transformed/play-services-tasks-18.0.2/AndroidManifest.xml:4:5-43
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/0fd0de555f0bcaf3ba7a31d6b7685df0/transformed/play-services-tasks-18.0.2/AndroidManifest.xml:4:5-43
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] /home/lortey/.gradle/caches/8.10.2/transforms/c35fcaf3d28bb5143433c77d7c27afee/transformed/play-services-basement-18.1.0/AndroidManifest.xml:18:5-43
@@ -375,20 +465,18 @@ MERGED from [androidx.activity:activity-compose:1.9.3] /home/lortey/.gradle/cach
 MERGED from [androidx.activity:activity-compose:1.9.3] /home/lortey/.gradle/caches/8.10.2/transforms/0d9ba3764a0e2f4a951a744eb947c9cc/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
 MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] /home/lortey/.gradle/caches/8.10.2/transforms/66f2706586b13a93c8d40db2af0b6ff7/transformed/accompanist-drawablepainter-0.32.0/AndroidManifest.xml:21:5-44
 MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] /home/lortey/.gradle/caches/8.10.2/transforms/66f2706586b13a93c8d40db2af0b6ff7/transformed/accompanist-drawablepainter-0.32.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/46929e40dfb57bbdf03f2343c016a882/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/46929e40dfb57bbdf03f2343c016a882/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/61117aac99e8922037f4663b277371ab/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/lortey/.gradle/caches/8.10.2/transforms/61117aac99e8922037f4663b277371ab/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:5:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/10824f807d95e171bc3af6efda68646b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/67fa6a04884d68212399ef0a37f1eb3f/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/67fa6a04884d68212399ef0a37f1eb3f/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/ba2ac4f47122c2412decd46b0b0c79ff/transformed/lifecycle-livedata-ktx-2.8.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/ba2ac4f47122c2412decd46b0b0c79ff/transformed/lifecycle-livedata-ktx-2.8.7/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/cb6be9cf8f84a6e7c8d08094ee456ee7/transformed/lifecycle-livedata-core-ktx-2.8.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a597cb0af557a2d0b02b2691e033751f/transformed/lifecycle-viewmodel-2.8.7/AndroidManifest.xml:4:5-43
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a597cb0af557a2d0b02b2691e033751f/transformed/lifecycle-viewmodel-2.8.7/AndroidManifest.xml:4:5-43
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/5ceb01f244d84e58fd4c5d46f10e52c7/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
@@ -401,6 +489,8 @@ MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] /home/lortey/.gra
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/d3915553a9fa58989bde10701442d4c6/transformed/lifecycle-livedata-core-2.8.7/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/74207bce7934cdb58194b537d16b7ad4/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:21:5-44
 MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/74207bce7934cdb58194b537d16b7ad4/transformed/lifecycle-process-2.8.7/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/7baec381c54def7236bec35ac08b7ae6/transformed/lifecycle-livedata-2.8.7/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a5a99074039269f797c92e3570cbedb3/transformed/lifecycle-viewmodel-ktx-2.8.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/a5a99074039269f797c92e3570cbedb3/transformed/lifecycle-viewmodel-ktx-2.8.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7] /home/lortey/.gradle/caches/8.10.2/transforms/067d33662878daa2638275f0da322541/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
@@ -471,12 +561,38 @@ MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:5:5-44
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/2291faec05b59bf13db6d6281ddb24b8/transformed/androidsvg-aar-1.4/AndroidManifest.xml:7:5-9:41
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/2291faec05b59bf13db6d6281ddb24b8/transformed/androidsvg-aar-1.4/AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:5:5-44
 	android:targetSdkVersion
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
+service#androidx.camera.core.impl.MetadataHolderService
+ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:24:9-33:19
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:29:9-33:78
+MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:29:9-33:78
+	tools:node
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:29:13-31
+	android:enabled
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:26:13-36
+	android:exported
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:27:13-37
+	tools:ignore
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:28:13-75
+	android:name
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:25:13-75
+meta-data#androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER
+ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:30:13-32:89
+	android:value
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:32:17-86
+	android:name
+		ADDED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:31:17-103
 service#com.google.mlkit.common.internal.MlKitComponentDiscoveryService
 ADDED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:11:9-17:19
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:15:9-23:19
 MERGED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:15:9-23:19
 	android:exported
@@ -493,6 +609,18 @@ ADDED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.
 		ADDED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:16:17-82
 	android:name
 		ADDED from [com.google.mlkit:translate:17.0.2] /home/lortey/.gradle/caches/8.10.2/transforms/a931bbf97f95a549c58a8bcb8039bdc4/transformed/translate-17.0.2/AndroidManifest.xml:15:17-126
+meta-data#com.google.firebase.components:com.google.mlkit.vision.text.internal.TextRegistrar
+ADDED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:12:13-14:85
+	android:value
+		ADDED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:14:17-82
+	android:name
+		ADDED from [com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0] /home/lortey/.gradle/caches/8.10.2/transforms/3910fc2192ffcce90ccca76c572ebb6e/transformed/play-services-mlkit-text-recognition-common-19.0.0/AndroidManifest.xml:13:17-114
+meta-data#com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar
+ADDED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:12:13-14:85
+	android:value
+		ADDED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:14:17-82
+	android:name
+		ADDED from [com.google.mlkit:vision-common:17.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/97d20f1fbac8368c4ee54dea2d5e312a/transformed/vision-common-17.3.0/AndroidManifest.xml:13:17-124
 provider#com.google.mlkit.common.internal.MlKitInitProvider
 ADDED from [com.google.mlkit:common:18.10.0] /home/lortey/.gradle/caches/8.10.2/transforms/185d776018da2bb89ae1ca239a77d834/transformed/common-18.10.0/AndroidManifest.xml:9:9-13:38
 	android:authorities

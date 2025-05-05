@@ -257,7 +257,7 @@ fun ModifyRule(context: Context,navController: NavController){
             .background(MaterialTheme.colorScheme.inverseOnSurface)){
             LazyColumn(modifier = Modifier
                 .padding(10.dp)
-                .height((minOf((listOfApps.size) * 48, 300)).dp) ) {
+                .height((minOf((listOfApps.size) * 53, 300)).dp) ) {
                 items(listOfApps){packageName->
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 5.dp)) {
                         Image(
@@ -349,7 +349,7 @@ fun ModifyRule(context: Context,navController: NavController){
                 Text(text = "Add Deck", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
-                    contentDescription = "Add App",
+                    contentDescription = "Add Deck",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
@@ -551,28 +551,7 @@ Column(modifier = Modifier
         }
     }
 }
-@Composable
-fun LegacyTimePicker() {
-    val context = LocalContext.current
-    var selectedTime by remember { mutableStateOf("") }
 
-    Button(onClick = {
-        val calendar = Calendar.getInstance()
-        TimePickerDialog(
-            context,
-            { _, hour, minute ->
-                selectedTime = "$hour:$minute"
-            },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            true
-        ).show()
-    }) {
-        Text("Show Legacy Time Picker")
-    }
-
-    Text("Selected time: $selectedTime")
-}
 @Composable
 fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDecks: (MutableList<Deck>) -> Unit){
     var selectMode by remember{ mutableStateOf(false)}

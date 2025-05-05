@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     id("com.chaquo.python") version "16.0.0" apply false
 }
+
 buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.22")

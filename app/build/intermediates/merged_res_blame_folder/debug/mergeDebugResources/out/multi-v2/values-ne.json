@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.lortey.cardflare.app-mergeDebugResources-67:/values-ne/values-ne.xml",
+            "outputFile": "com.lortey.cardflare.app-mergeDebugResources-72:/values-ne/values-ne.xml",
             "map": [
                 {
                     "source": "/home/lortey/.gradle/caches/8.10.2/transforms/c35fcaf3d28bb5143433c77d7c27afee/transformed/play-services-basement-18.1.0/res/values-ne/values.xml",

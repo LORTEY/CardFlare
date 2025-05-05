@@ -208,9 +208,9 @@ fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAsce
         var tagsRequired = mutableListOf<String>()
         if ('#' in searchQuery){
             searchQuery.split(' ').forEach { word ->
-                if (word.length > 0){
+                if (word.length > 1){
                     if(word[0] == '#'){
-                        tagsRequired.add(word)
+                        tagsRequired.add(word.substring(1, word.length))
                     }
                 }
             }
@@ -225,7 +225,9 @@ fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAsce
         var decksQualified = mutableListOf<Deck>()
 
         decks.forEach { currentDeck->
-            if ((tagsRequired.any { it in currentDeck.tags } || tagsRequired.size == 0) and (searchTerm in currentDeck.name || searchTerm.length == 0)){
+            Log.d("cardflare111",currentDeck.tags.map{it.tagName}.toString())
+            if ((tagsRequired.any { it in currentDeck.tags.map{it.tagName} } || tagsRequired.size == 0)
+                || (searchTerm in currentDeck.name || searchTerm.length == 0)){
                 decksQualified.add(currentDeck)
             }
         }
@@ -279,7 +281,7 @@ fun removeMultiple(context: Context, cards:List<Flashcard>, deckFrom: Deck){
         MoveCardToBin(context = context, deckFrom = deckFrom, card = element)
     }
 }
-fun getDeck(name: String ="",filename: String="",date_made:Int = 0, last_edited:Int = 0, tags: MutableList<String> = mutableListOf(), cards: MutableList<Flashcard> = mutableListOf() ):Deck{
+fun getDeck(name: String ="",filename: String="",date_made:Int = 0, last_edited:Int = 0, tags: MutableList<Tag> = mutableListOf(), cards: MutableList<Flashcard> = mutableListOf() ):Deck{
     return Deck(if(filename.isBlank()) URLEncoder.encode(name, StandardCharsets.UTF_8.toString()) else filename,name,date_made,last_edited, tags,cards)
 }
 fun multipleDeckMoveToBin(decks:List<Deck>, selected:MutableList<Boolean>,context: Context){
@@ -520,7 +522,7 @@ data class Deck(
     val name: String,
     val date_made: Int,
     val last_edited: Int,
-    val tags: MutableList<String>,
+    val tags: MutableList<Tag>,
     val cards: MutableList<Flashcard>,
     var minimalID: Int = 0)
 

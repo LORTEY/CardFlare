@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.lortey.cardflare.app-mergeDebugResources-67:/values-nb/values-nb.xml",
+            "outputFile": "com.lortey.cardflare.app-mergeDebugResources-72:/values-nb/values-nb.xml",
             "map": [
                 {
                     "source": "/home/lortey/.gradle/caches/8.10.2/transforms/334ba32b1e7404edf699d9eae64556b3/transformed/core-1.15.0/res/values-nb/values-nb.xml",

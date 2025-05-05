@@ -142,7 +142,7 @@ fun SwipeableFlashcard(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
-    val alphaValue = alphaValueBasedOnDistance(offset.value.x,offset.value.y, context, swipeThreshold) *1.1f
+    val alphaValue = alphaValueBasedOnDistance(offset.value.x,offset.value.y, context, swipeThreshold) * 1.2f // multiplied for the effects to appear closer to the center
     // Animate padding change using animateDpAsState
     val closeness by animateFloatAsState(
         targetValue = if (onTop) 1f else 0.7f, // Toggle between two padding values
