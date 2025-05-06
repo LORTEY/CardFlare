@@ -106,6 +106,7 @@ import com.lortey.cardflare.Deck
 import com.lortey.cardflare.TimeValue
 import com.lortey.cardflare.addDeckToRule
 import com.lortey.cardflare.deckNamesToDeckList
+import com.lortey.cardflare.getTranslation
 import java.util.Calendar
 
 var appsInfo:List<AppInfo> = listOf()
@@ -236,7 +237,7 @@ fun ModifyRule(context: Context,navController: NavController){
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
+            label = { Text(getTranslation("Name"), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -286,7 +287,7 @@ fun ModifyRule(context: Context,navController: NavController){
             }
             Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable { appearAppAddMenu = true },
                 verticalAlignment =  Alignment.CenterVertically){
-                Text(text = "Add App", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
+                Text(text = getTranslation("Add App"), modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add App",
@@ -319,7 +320,7 @@ fun ModifyRule(context: Context,navController: NavController){
                                 onClick = { appearAppAddMenu = false }) {
 
                                 Text(
-                                    text = "Close",
+                                    text = getTranslation("Close"),
                                     color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyMedium
                                 )
@@ -346,7 +347,7 @@ fun ModifyRule(context: Context,navController: NavController){
                 }
             }
             Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable { appearAddDeckMenu = true }, verticalAlignment =  Alignment.CenterVertically){
-                Text(text = "Add Deck", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
+                Text(text = getTranslation("Add Deck"), modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add Deck",
@@ -394,7 +395,7 @@ Column(modifier = Modifier
     .background(MaterialTheme.colorScheme.inverseOnSurface)
     .padding(10.dp)) {
     Text(
-        text = "Active",
+        text = getTranslation("Active"),
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.titleLarge
     )
@@ -427,12 +428,12 @@ Column(modifier = Modifier
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = "From",
+            text = getTranslation("From"),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
-            text = if (launchOnRuleToModify.value?.activeFrom == null) "Always" else "${launchOnRuleToModify.value!!.activeFrom!!.hour}:${launchOnRuleToModify.value!!.activeFrom!!.minute}",
+            text = if (launchOnRuleToModify.value?.activeFrom == null) getTranslation("Always") else "${launchOnRuleToModify.value!!.activeFrom!!.hour}:${launchOnRuleToModify.value!!.activeFrom!!.minute}",
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(10.dp).background(
                 shape = MaterialTheme.shapes.medium,
@@ -471,12 +472,12 @@ Column(modifier = Modifier
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = "To",
+            text = getTranslation("To"),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium
         )
         Text(
-            text = if (launchOnRuleToModify.value?.activeTo == null) "Always" else "${launchOnRuleToModify.value!!.activeTo!!.hour}:${launchOnRuleToModify.value!!.activeTo!!.minute}",
+            text = if (launchOnRuleToModify.value?.activeTo == null) getTranslation("Always") else "${launchOnRuleToModify.value!!.activeTo!!.hour}:${launchOnRuleToModify.value!!.activeTo!!.minute}",
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(10.dp).background(
                 shape = MaterialTheme.shapes.medium,
@@ -487,7 +488,7 @@ Column(modifier = Modifier
     }
     Button(onClick = {launchOnRuleToModify.value = launchOnRuleToModify.value?.copy(activeFrom = null, activeTo = null)}) {
         Text(
-            text = "Always",
+            text = getTranslation("Always"),
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium
         )
@@ -515,7 +516,7 @@ Column(modifier = Modifier
                 }
             ) {
                 Text(
-                    text = "Save Rule",
+                    text = getTranslation("Save Rule"),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -543,7 +544,7 @@ Column(modifier = Modifier
             ) {
 
                 Text(
-                    text = "Delete Rule",
+                    text = getTranslation("Delete Rule"),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -636,7 +637,7 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
                 }) {
 
                 Text(
-                    text = "Close",
+                    text = getTranslation("Close"),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -700,7 +701,7 @@ fun SearchableAppListLoad(apps:List<AppInfo>, context: Context){
                 )
                 if (searchQuery.isEmpty()) {
                     Text(
-                        text = "Search Apps...",
+                        text = getTranslation("Search Apps..."),
                         color = MaterialTheme.colorScheme.onBackground, // Placeholder text color
                         modifier = Modifier.align(Alignment.CenterStart)
                     )

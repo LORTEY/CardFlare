@@ -134,7 +134,6 @@ fun SwipeableFlashcard(
     val coroutineScope = rememberCoroutineScope()
     val appSettings = AppSettings
     require(appSettings["Flashcard Swipe Threshold"]?.state is Float)
-    require(appSettings["Flip Flashcard Right Wrong Answer"]?.state is Boolean)
     var fadeOut by remember { mutableStateOf(false) }
     val swipeThreshold = appSettings["Flashcard Swipe Threshold"]?.state as Float // Distance needed to register a swipe
     var isFlipped by remember { mutableStateOf(false) }

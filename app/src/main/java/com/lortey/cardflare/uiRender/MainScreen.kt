@@ -57,6 +57,7 @@ import androidx.navigation.NavHostController
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
 import com.lortey.cardflare.SortType
+import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadData
 import com.lortey.cardflare.multipleDeckMoveToBin
 import com.lortey.cardflare.sortDecks
@@ -264,7 +265,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             )
                             if (searchQuery.isEmpty()) {
                                 Text(
-                                    text = "Search Sets...",
+                                    text = getTranslation("Search Sets..."),
                                     color = MaterialTheme.colorScheme.onBackground, // Placeholder text color
                                     modifier = Modifier.align(Alignment.CenterStart)
                                 )
@@ -348,7 +349,7 @@ fun SlideMenuContent(navController: NavController){
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Settings", color = MaterialTheme.colorScheme.primary)
+        Text(text = getTranslation("Settings"), color = MaterialTheme.colorScheme.primary)
 
     }
 
@@ -361,7 +362,7 @@ fun SlideMenuContent(navController: NavController){
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Home", color = MaterialTheme.colorScheme.primary)
+        Text(text = getTranslation("Home"), color = MaterialTheme.colorScheme.primary)
     }
 
     Row(modifier = Modifier
@@ -373,7 +374,7 @@ fun SlideMenuContent(navController: NavController){
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Launch On Options", color = MaterialTheme.colorScheme.primary)
+        Text(text = getTranslation("Launch On Options"), color = MaterialTheme.colorScheme.primary)
     }
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -384,7 +385,7 @@ fun SlideMenuContent(navController: NavController){
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )
-        Text(text = "Bin", color = MaterialTheme.colorScheme.primary)
+        Text(text = getTranslation("Bin"), color = MaterialTheme.colorScheme.primary)
     }
 }
 
@@ -392,9 +393,9 @@ fun SlideMenuContent(navController: NavController){
 @Composable
 fun SortMenuContent(decks: List<Deck>, searchQuery:String){
 
-    Text("Sort By", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+    Text(getTranslation("Sort By"), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
 
-    Text("Name (Ascending)",
+    Text(getTranslation("Name (Ascending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
@@ -412,7 +413,7 @@ fun SortMenuContent(decks: List<Deck>, searchQuery:String){
             .fillMaxWidth()
             .padding(vertical = 5.dp))
 
-    Text("Name (Descending)",
+    Text(getTranslation("Name (Descending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
@@ -430,7 +431,7 @@ fun SortMenuContent(decks: List<Deck>, searchQuery:String){
             .fillMaxWidth()
             .padding(vertical = 5.dp))
 
-    Text("Last Modified (Ascending)",
+    Text(getTranslation("Last Modified (Ascending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
@@ -448,7 +449,7 @@ fun SortMenuContent(decks: List<Deck>, searchQuery:String){
             .fillMaxWidth()
             .padding(vertical = 5.dp))
 
-    Text("Date Modified (Descending)",
+    Text(getTranslation("Date Modified (Descending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
@@ -466,7 +467,7 @@ fun SortMenuContent(decks: List<Deck>, searchQuery:String){
             .fillMaxWidth()
             .padding(vertical = 5.dp))
 
-    Text("Date Created (Ascending)",
+    Text(getTranslation("Date Created (Ascending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier
@@ -484,7 +485,7 @@ fun SortMenuContent(decks: List<Deck>, searchQuery:String){
             .fillMaxWidth()
             .padding(vertical = 5.dp))
 
-    Text("Date Created (Descending)",
+    Text(getTranslation("Date Created (Descending)"),
         fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier

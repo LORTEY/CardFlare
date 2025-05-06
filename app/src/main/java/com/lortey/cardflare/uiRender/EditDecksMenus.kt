@@ -66,6 +66,7 @@ import com.lortey.cardflare.Tag
 import com.lortey.cardflare.addDeck
 import com.lortey.cardflare.addTag
 import com.lortey.cardflare.getDeck
+import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadTags
 import com.lortey.cardflare.tags
 import com.lortey.cardflare.ui.theme.Material3AppTheme
@@ -101,7 +102,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
         OutlinedTextField(
             value = DeckName,
             onValueChange = { DeckName = it },
-            label = { Text("Name", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
+            label = { Text(getTranslation("Name"), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -145,7 +146,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                         .fillMaxWidth()
                         .padding(10.dp)
                         .clickable { addTagMenu = true }, verticalAlignment =  Alignment.CenterVertically){
-                        Text(text = "Add Tag", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
+                        Text(text = getTranslation("Add Tag"), modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "Add Tag",
@@ -175,7 +176,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 }) {
 
                 Text(
-                    text = "Add",
+                    text = getTranslation("Add"),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -195,7 +196,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 }) {
 
                 Text(
-                    text = "From Image",
+                    text = getTranslation("From Image"),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -266,7 +267,7 @@ fun tagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
                 onValueChange = { newTagName = it },
                 label = {
                     Text(
-                        "New Tag Name",
+                        getTranslation("New Tag Name"),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -328,7 +329,7 @@ fun tagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
                 onClick = { disappear() }) {
 
                 Text(
-                    text = "Close",
+                    text = getTranslation("Close"),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )

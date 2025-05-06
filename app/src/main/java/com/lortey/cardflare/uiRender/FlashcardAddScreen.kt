@@ -35,6 +35,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translator
 import com.lortey.cardflare.getDefaultFSRSValue
 import com.lortey.cardflare.getDueDate
+import com.lortey.cardflare.getTranslation
 
 
 @Composable
@@ -51,7 +52,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
         Column {
-            Text("Side A", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+            Text(getTranslation("Side A"), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
 
             TextField(
                 value = textStateA,
@@ -73,7 +74,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 minLines = 1
             )
 
-            Text("Side B", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+            Text(getTranslation("Side B"), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
             TextField(
                 value = textStateB,
                 placeholder = { Text(defaultStateB, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f)) },
@@ -124,7 +125,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 },
                 horizontalArrangement = Arrangement.SpaceEvenly) {
                 Text(
-                    "Add", style = MaterialTheme.typography.bodyLarge,
+                    getTranslation("Add"), style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = if (ableToAdd) 1f else 0.5f),
                 )
             }

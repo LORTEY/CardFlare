@@ -416,6 +416,11 @@ fun EnsureDirectoryStructure(context: Context){
     if (!flashcardDir.exists()) {
         flashcardDir.mkdirs() // Creates parent directories if needed
     }
+
+    val TranslationDir = File(context.getExternalFilesDir(null), "Translations")
+    if (!TranslationDir.exists()) {
+        TranslationDir.mkdirs() // Creates parent directories if needed
+    }
 }
 
 fun RecoverMultipleFlashcards(context:Context,listSelected:List<Boolean>, listOfFlashcards:List<Flashcard>, deckFrom:Deck){

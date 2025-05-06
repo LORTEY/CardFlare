@@ -50,6 +50,7 @@ import androidx.navigation.NavController
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
 import com.lortey.cardflare.getDeck
+import com.lortey.cardflare.getTranslation
 
 data class AddMenuEntry(
     val Name:String,
@@ -112,7 +113,7 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
 
                     ) {
                         Text(
-                            entry.Name,
+                            getTranslation(entry.Name),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
@@ -203,7 +204,7 @@ fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:
                                 .fillMaxWidth()
                         ) {
                             androidx.compose.material.Text(
-                                "Close",
+                                getTranslation("Close"),
                                 modifier = Modifier
                                     .background(MaterialTheme.colorScheme.primary)
                                     .padding(5.dp)

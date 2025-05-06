@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.lortey.cardflare.AppSettings
 import com.lortey.cardflare.Category
@@ -41,7 +42,9 @@ import com.lortey.cardflare.Chooser
 import com.lortey.cardflare.R
 import com.lortey.cardflare.SettingEntry
 import com.lortey.cardflare.SettingsType
+import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.saveSettings
+import com.lortey.cardflare.translations
 import com.lortey.cardflare.updateSetting
 
 
@@ -49,6 +52,8 @@ import com.lortey.cardflare.updateSetting
 @Composable
 fun SettingsMenu(navController: NavHostController, context: Context) {
     val appSettings = remember { AppSettings }
+
+    Log.d("cardflareSetts", appSettings.toString())
     DisposableEffect(Unit) {
         onDispose {
             saveSettings(context)
@@ -68,7 +73,7 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
 
                 item {
                     Text(
-                        text = category.toString().replace("_", " "),
+                        text = getTranslation(category.toString().replace("_", " ")),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -76,7 +81,7 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
                 }
 
                 items(filtered) { setting ->
-                    SettingsEntryComposable(setting, appSettings, context)
+                    SettingsEntryComposable(setting, appSettings, context, navController)
                 }
             }
         }
@@ -84,11 +89,11 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
 }
 
 @Composable
-fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>, context: Context) {
+fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>, context: Context, navController: NavController) {
     var openPopup by remember { mutableStateOf(false) }
     if (openPopup) {
         if(!setting.description.isNullOrEmpty()) {
-            PopUp(setting.name, setting.description, { openPopup = !openPopup }, openPopup)
+            PopUp(getTranslation(setting.name), getTranslation(setting.description), { openPopup = !openPopup }, openPopup)
         }
         /*Popup(
             alignment = Alignment.TopStart,
@@ -132,7 +137,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     .clickable { openPopup = true }
                     .padding(vertical = 10.dp)
             )
-            Text(setting.name, modifier = Modifier.padding(vertical = 10.dp),color = MaterialTheme.colorScheme.onBackground)
+            Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp),color = MaterialTheme.colorScheme.onBackground)
             Spacer(modifier = Modifier.weight(1f))
             val state = remember { mutableStateOf(setting.state as Boolean) }
             Switch(
@@ -160,7 +165,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .clickable { openPopup = true }
                         .padding(vertical = 10.dp)
                 )
-                Text(setting.name, modifier = Modifier.padding(vertical = 10.dp))
+                Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
                 Spacer(modifier = Modifier.weight(1f))
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -188,7 +193,6 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
             .padding(horizontal = 20.dp, vertical = 10.dp)) {
             val state = remember { mutableStateOf(setting.state) }
             var expanded by remember { mutableStateOf(false) }
-            var selectedText by remember { mutableStateOf("Select Option") }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -201,7 +205,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .clickable { openPopup = true }
                         .padding(vertical = 10.dp)
                 )
-                Text(setting.name, modifier = Modifier.padding(vertical = 10.dp))
+                Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
                     modifier = Modifier
@@ -212,7 +216,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                 ) {
                     val keyValue = setting.dropDownMenuEntries!!.entries.firstOrNull { it.value == setting.state }?.key
                     Text(
-                        text = keyValue ?: "",
+                        text = getTranslation(keyValue ?: ""),
                         modifier = Modifier.clickable { expanded = !expanded }
                     )
                     DropdownMenu(
@@ -222,7 +226,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     ) {
                         setting.dropDownMenuEntries.forEach { (key, value) ->
                             DropdownMenuItem(
-                                text = { Text(key) },
+                                text = { Text(getTranslation(key)) },
                                 onClick = {
                                     updateSetting(setting.name, value)
                                     expanded = false
@@ -233,6 +237,102 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                 }
             }
         }
+    }else if ((setting.type == SettingsType.CHOOSE && setting.customChooser == Chooser.NonSpecified) /*|| setting.customChooser == Chooser.Slider*/ ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+        ) {
+            val state = remember { mutableStateOf(setting.state) }
+            var expanded by remember { mutableStateOf(false) }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = "info",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable { openPopup = true }
+                        .padding(vertical = 10.dp)
+                )
+                Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .background(MaterialTheme.colorScheme.inverseOnSurface),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    val keyValue =
+                        setting.dropDownMenuEntries!!.entries.firstOrNull { it.value == setting.state }?.key
+                    Text(
+                        text = getTranslation(keyValue ?: ""),
+                        modifier = Modifier.clickable { expanded = !expanded }
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.width(200.dp)
+                            .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    ) {
+                        setting.dropDownMenuEntries.forEach { (key, value) ->
+                            DropdownMenuItem(
+                                text = { Text(getTranslation(key)) },
+                                onClick = {
+                                    updateSetting(setting.name, value)
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }else if ((setting.type == SettingsType.ACTION) /*|| setting.customChooser == Chooser.Slider*/ ){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.clickable { setting.navChoose?.let { navController.navigate(it) } }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.info),
+                    contentDescription = "info",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable { openPopup = true }
+                        .padding(vertical = 10.dp)
+                )
+                Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .background(MaterialTheme.colorScheme.inverseOnSurface),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text(
+                        text = getTranslation(deserializeName(setting.stateDataclass,setting.state)),
+
+                    )
+                }
+            }
+        }
+    }
+}
+
+fun deserializeName(className: String, input: Any): String {
+    return when (className) {
+        "translations" -> (input as translations).name
+        else -> throw IllegalArgumentException("Unknown class: $className")
     }
 }
 

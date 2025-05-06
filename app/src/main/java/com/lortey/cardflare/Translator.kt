@@ -1,9 +1,11 @@
 package com.lortey.cardflare
 
 import android.util.Log
+import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import java.util.Locale
 
 // File that manages translator
 fun createTranslator(sourceLang: String, targetLang: String): Translator {
@@ -27,4 +29,10 @@ fun translateText(text: String, translator: Translator, onResult: (String) -> Un
     translator.translate(text)
         .addOnSuccessListener { translatedText -> onResult(translatedText) }
         .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }
+}
+fun getAllSupportedLanguages(): List<String> {
+    return TranslateLanguage.getAllLanguages().map { languageCode ->
+        // Convert language code to display name
+        Locale(languageCode).displayName
+    }.sorted()
 }

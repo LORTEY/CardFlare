@@ -40,6 +40,7 @@ import com.lortey.cardflare.uiRender.renderMainMenu
 import com.lortey.cardflare.uiRender.BinRender
 import com.lortey.cardflare.uiRender.BinCards
 import com.lortey.cardflare.uiRender.ModifyRule
+import com.lortey.cardflare.uiRender.chooseLanguage
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -59,9 +60,11 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
+        loadMap(applicationContext)
+        //remap(context = applicationContext)
         launchOnRules = loadLaunchOnRules(applicationContext)
         EnsureDirectoryStructure(context = applicationContext)
-
+        Log.d("cardflareLanguages", getAllSupportedLanguages().toString())
         Log.d("cardflare5", getDueCards(applicationContext).toString())
         BinAutoEmpty(context = applicationContext)
         startMainMenu()
@@ -72,6 +75,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         super.onDestroy()
         // Unregister the receiver to avoid memory leaks
         unregisterReceiver(receiver)
+        //saveMap(applicationContext)
         Log.d("MainActivity", "Receiver unregistered")
     }
 
@@ -123,7 +127,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
                         composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
                         composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }
-                        composable("image_get") { ImagePickerScreen() }}
+                        composable("image_get") { ImagePickerScreen() }
+                        composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }}
 
                 }
             }
