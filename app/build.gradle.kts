@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId =("com.lortey.cardflare")
-        minSdk = 26
+        minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName =("1.0")
@@ -22,7 +22,7 @@ android {
         testInstrumentationRunner =("androidx.test.runner.AndroidJUnitRunner")
         ndk {
             // On Apple silicon, you can omit x86_64.
-            abiFilters += listOf("arm64-v8a","x86_64")
+            abiFilters += listOf("arm64-v8a","x86_64","armeabi-v7a")
         }
     }
 
