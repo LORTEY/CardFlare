@@ -1,166 +1,198 @@
 [
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_sort.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/sort.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_menu.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/menu.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_sort_ascending.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/sort_ascending.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/ic_launcher_background.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_redo.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/redo.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_info.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/info.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_delete.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/delete.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_nav_arrow_left.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/nav_arrow_left.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_nav_arrow_right.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/nav_arrow_right.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_plus.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/plus.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher_foreground.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/xml_backup_rules.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/xml_backup_rules.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/xml/backup_rules.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/xml_data_extraction_rules.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_learn.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/learn.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_visible.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/visible.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_apps.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/apps.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_delete.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/delete.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_home.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/home.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_sort_ascending.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/sort_ascending.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/xml_data_extraction_rules.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/xml/data_extraction_rules.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_plus.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/plus.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_nav_arrow_left.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/nav_arrow_left.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_bar_chart.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/bar_chart.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_plus_circle_solid.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/plus_circle_solid.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher_foreground.webp"
+        "merged": "com.lortey.cardflare.app-debug-74:/drawable_visible.xml.flat",
+        "source": "com.lortey.cardflare.app-main-76:/drawable/visible.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_sort.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/sort.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_learn.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/learn.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_visibility_off.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/visibility_off.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_logo.png.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/logo.png"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_minus.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/minus.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_create_empty.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/create_empty.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher_foreground.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_create_empty.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/create_empty.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_settings.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/settings.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_menu.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/menu.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_logo.png.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/logo.png"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_apps.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/apps.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_redo.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/redo.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_bar_chart.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/bar_chart.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_home.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/home.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_nav_arrow_right.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/nav_arrow_right.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_info.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/info.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_plus_circle_solid.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/plus_circle_solid.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_unlink.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/unlink.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/ic_launcher_foreground.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_minus.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/minus.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_edit.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/edit.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_ic_launcher_background.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.lortey.cardflare.app-debug-74:/drawable_plus_circle.xml.flat",
-        "source": "com.lortey.cardflare.app-main-76:/drawable/plus_circle.xml"
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_settings.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/settings.xml"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_link.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/link.xml"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_edit.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/edit.xml"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-74:/drawable_visibility_off.xml.flat",
+        "source": "com.lortey.cardflare.app-main-76:/drawable/visibility_off.xml"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-74:/drawable_unlink.xml.flat",
+        "source": "com.lortey.cardflare.app-main-76:/drawable/unlink.xml"
+    },
+    {
+        "merged": "com.lortey.cardflare.app-debug-74:/drawable_link.xml.flat",
+        "source": "com.lortey.cardflare.app-main-76:/drawable/link.xml"
+    },
+    {
+        "merged": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-debug-74:/drawable_plus_circle.xml.flat",
+        "source": "/home/lortey/.gradle/daemon/8.10.2/com.lortey.cardflare.app-main-76:/drawable/plus_circle.xml"
     }
 ]

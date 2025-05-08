@@ -18,6 +18,7 @@ drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable info
 drawable learn
+drawable link
 drawable logo
 drawable menu
 drawable minus
@@ -30,6 +31,9 @@ drawable redo
 drawable settings
 drawable sort
 drawable sort_ascending
+drawable unlink
+drawable visibility_off
+drawable visible
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round

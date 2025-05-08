@@ -127,7 +127,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
                         composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
                         composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }
-                        composable("image_get") { ImagePickerScreen() }
+                        composable("image_get") { ImagePickerScreen(navController = navController) }
                         composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }}
 
                 }
