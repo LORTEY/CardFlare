@@ -129,7 +129,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }
                         composable("image_get") { ImagePickerScreen(navController = navController) }
                         composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }}
-
                 }
             }
         }

@@ -2,27 +2,14 @@ package com.lortey.cardflare
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
-import android.graphics.Matrix
-import kotlin.math.sqrt
-import kotlin.math.pow
-import android.graphics.Point
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
 import android.provider.ContactsContract
-import android.renderscript.Script
 import android.util.Log
-import android.widget.TableLayout
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.view.CameraController
-import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,65 +17,40 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.drawscope.scale
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.zIndex
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
-import coil.compose.rememberAsyncImagePainter
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.lortey.cardflare.uiRender.distanceFrom
-import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.abs
 import androidx.core.graphics.createBitmap
-import androidx.core.graphics.minus
-import androidx.exifinterface.media.ExifInterface
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.lortey.cardflare.uiRender.PopUp
+import com.lortey.cardflare.uiRender.flashcardsAddedToDeck
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import java.lang.Float.min
-import java.util.Collections.max
 
 val CenterToWidth:Float = 0f
 val CenterToHeight:Float = 0.5f
-
+var FinalColumnsGlobal: MutableList<Pair<MutableList<TextColumn>, MutableList<TextColumn>>> = mutableListOf(Pair(
+    mutableListOf(), mutableListOf()))
 // Helper extension function for combined gesture detection
 suspend fun PointerInputScope.detectTapAndDragGestures(
     onTap: (Offset) -> Unit = { },
@@ -160,8 +122,9 @@ fun ImagePickerScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .background(MaterialTheme.colorScheme.inverseOnSurface),
+                    .padding(horizontal = 10.dp, vertical = 10.dp),
+                    //.background(MaterialTheme.colorScheme.inverseOnSurface)
+
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(onClick = { imagePicker.launch("image/*") }) {
@@ -325,41 +288,51 @@ fun ImagePickerScreen(navController: NavController) {
                             }
                         }
                     }
-
                 }
-
-
                 //Spacer(Modifier.height(16.dp))
-
                 if (isLoading) {
                     CircularProgressIndicator()
                 } else {
 
                 }
             }
+            if (imageUri != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(onClick = { showTable = true }) {
-                    Text("Add")
+                        .padding(horizontal = 10.dp, vertical = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = { showTable = true }) {
+                        Text("Next")
+                    }
                 }
-
             }
         }
     }
         if(showTable){
-            Box(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues())){
-                DataTable(Columns = transformToColumns(boxLines))
+            Column(modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues())){
+                DataTable(Columns = transformToColumns(boxLines), modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .padding(horizontal = 10.dp, vertical = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = { flashcardsAddedToDeck.addAll(
+                        finalTranslationToListOfFlashcards(FinalColumnsGlobal, context))
+                    navController.navigate("deck_add_screen")},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()) {
+                        Text("Add")
+                    }
+                }
             }
         }
-
-
 }
 
 @Composable
@@ -369,11 +342,20 @@ fun DataTable(
 ) {
     var finalColumns by remember{
         mutableStateOf(aspectsToPairTranslation(columns = Columns))}
-    LazyColumn()
+    LaunchedEffect(Unit) { FinalColumnsGlobal = finalColumns }
+    val skippedAmount by remember{ mutableIntStateOf(finalColumns.count { it.first.firstOrNull()?.aspects == Aspect.IGNORED || it.second.firstOrNull()?.aspects == Aspect.IGNORED }) }
+    LazyColumn(modifier = modifier)
     {
+        Log.d("cardflareRecomp", finalColumns.toString())
         itemsIndexed(finalColumns){index, pairOfLines->
             Row(modifier= Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.SpaceAround, ){
-                Text(text = index.toString() ,modifier = Modifier.width(50.dp)
+
+                Text(text = if(pairOfLines.first.firstOrNull()?.aspects == Aspect.IGNORED || pairOfLines.second.firstOrNull()?.aspects == Aspect.IGNORED)
+                        "X"
+                        else
+                        (index + 1 - skippedAmount).toString(),
+                    color = if(pairOfLines.first.firstOrNull()?.aspects == Aspect.IGNORED || pairOfLines.second.firstOrNull()?.aspects == Aspect.IGNORED) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.width(50.dp)
                     .fillMaxHeight()
                     //.heightIn(min = (height).dp, max = (height).dp)
                     //.onSizeChanged{ if(it.height > height) height = (it.height)}
@@ -390,9 +372,11 @@ fun DataTable(
                     .border(1.dp, MaterialTheme.colorScheme.outline)
                     .padding(8.dp)){
                     pairOfLines.first.forEach{ line->
-                        Text(text = line.text)
+                        Text(text = line.text,
+                            color = if(line.aspects == Aspect.IGNORED) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
+                        )
                         var aspect:Aspect by remember { mutableStateOf(line.aspects)}
-                        functionPanel(linked = aspect == Aspect.LINKED,
+                        functionPanel(aspect = aspect ,
                             onLinkAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.LINKED
@@ -402,8 +386,8 @@ fun DataTable(
                                     aspect = Aspect.NONE
                                 }
                                 finalColumns = aspectsToPairTranslation(columns = Columns)
+                                FinalColumnsGlobal = finalColumns
                             },
-                            ignored = aspect == Aspect.IGNORED,
                             onIgnoreAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.IGNORED
@@ -413,12 +397,12 @@ fun DataTable(
                                     aspect = Aspect.NONE
                                 }
                                 finalColumns = aspectsToPairTranslation(columns = Columns)
+                                FinalColumnsGlobal = finalColumns
                             },
                         )
                     }
-
                 }
-
+                
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
@@ -428,9 +412,11 @@ fun DataTable(
                     .border(1.dp, MaterialTheme.colorScheme.outline)
                     .padding(8.dp)){
                     pairOfLines.second.forEach{ line->
-                        Text(text = line.text)
-                        var aspect:Aspect by remember (line){ mutableStateOf(line.aspects)}
-                        functionPanel(linked = aspect == Aspect.LINKED,
+                        Text(text = line.text,
+                            color = if(line.aspects == Aspect.IGNORED) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
+                        )
+                        var aspect:Aspect = line.aspects
+                        functionPanel(aspect = aspect,
                             onLinkAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.LINKED
@@ -441,7 +427,6 @@ fun DataTable(
                                 }
                                 finalColumns = aspectsToPairTranslation(columns = Columns)
                             },
-                            ignored = aspect == Aspect.IGNORED,
                             onIgnoreAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.IGNORED
@@ -463,16 +448,16 @@ fun DataTable(
 }
 
 @Composable
-fun functionPanel(linked:Boolean, onLinkAction:(Boolean) -> Unit, ignored:Boolean, onIgnoreAction:(Boolean) -> Unit){
+fun functionPanel(aspect: Aspect, onLinkAction:(Boolean) -> Unit, onIgnoreAction:(Boolean) -> Unit){
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
-        IconButton(onClick = {onLinkAction(!linked)}, modifier = Modifier.background(
+        IconButton(onClick = {onLinkAction(aspect != Aspect.LINKED)}, modifier = Modifier.background(
             shape = RoundedCornerShape(128.dp),
             color = MaterialTheme.colorScheme.inverseOnSurface
         ) .size(32.dp)){
             Icon(
-                painter = painterResource(id = if(linked) R.drawable.unlink else R.drawable.link),
+                painter = painterResource(id = if(aspect == Aspect.LINKED) R.drawable.unlink else R.drawable.link),
                 contentDescription = "link",
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     //.padding(10.dp)
                     .fillMaxSize()
@@ -481,12 +466,12 @@ fun functionPanel(linked:Boolean, onLinkAction:(Boolean) -> Unit, ignored:Boolea
                 //.padding(8.dp)
             )
         }
-        IconButton(onClick = {onIgnoreAction(!ignored)}, modifier = Modifier.background(
+        IconButton(onClick = {onIgnoreAction(aspect != Aspect.IGNORED)}, modifier = Modifier.background(
             shape = RoundedCornerShape(128.dp),
             color = MaterialTheme.colorScheme.inverseOnSurface
         ) .size(32.dp)){
             Icon(
-                painter = painterResource(id = if(ignored) R.drawable.visibility_off else R.drawable.visible),
+                painter = painterResource(id = if(aspect == Aspect.IGNORED) R.drawable.visibility_off else R.drawable.visible),
                 contentDescription = "link",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
@@ -537,7 +522,11 @@ fun aspectsToPairTranslation(columns:Pair<MutableList<TextColumn>,MutableList<Te
     val columnA:MutableList<MutableList<TextColumn>> = mutableListOf()
     columns.first.forEach{ line->
         if(line.aspects == Aspect.LINKED){
-            columnA[columnA.lastIndex].add(line)
+            if(columnA.size > 0){
+                columnA[columnA.lastIndex].add(line)
+            }else{
+                columnA.add(mutableListOf(line))
+            }
         }else{
             columnA.add(mutableListOf(line))
         }
@@ -546,14 +535,17 @@ fun aspectsToPairTranslation(columns:Pair<MutableList<TextColumn>,MutableList<Te
     val columnB:MutableList<MutableList<TextColumn>> = mutableListOf()
     columns.second.forEach{ line->
         if(line.aspects == Aspect.LINKED){
-            columnB[columnB.lastIndex].add(line)
+            if(columnB.size > 0){
+                columnB[columnB.lastIndex].add(line)
+            }else{
+                columnB.add(mutableListOf(line))
+            }
         }else{
             columnB.add(mutableListOf(line))
         }
     }
 
-    val finalColumns:MutableList<Pair<MutableList<TextColumn>,MutableList<TextColumn>>> = mutableListOf(Pair(
-        mutableListOf(), mutableListOf()))
+    val finalColumns:MutableList<Pair<MutableList<TextColumn>,MutableList<TextColumn>>> = mutableListOf()
 
     var a:Int = 0
     var b:Int = 0
@@ -623,6 +615,18 @@ fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
     }
 }
 
+fun finalTranslationToListOfFlashcards(finalColumns: MutableList<Pair<MutableList<TextColumn>, MutableList<TextColumn>>>, context: Context):MutableList<Flashcard>{
+    val listOfCards: MutableList<Flashcard> = mutableListOf()
+
+    finalColumns.forEach { pair->
+        if((pair.first.size>0 || pair.first.firstOrNull()?.aspects != Aspect.IGNORED) && (pair.second.size>0 || pair.second.firstOrNull()?.aspects != Aspect.IGNORED)){
+
+            val fsrsValue = getDefaultFSRSValue(context)
+            listOfCards.add(Flashcard(id = -1, SideA = pair.first.map{it.text}.joinToString(" "), SideB = pair.second.map{it.text}.joinToString(" "), FromDeck = "", FsrsData = fsrsValue,due = getDueDate(context,fsrsValue) ))
+        }
+    }
+    return listOfCards
+}
 /* I might be stupid but actually this algorithm works just dont know why i need it
 fun arrangeLinesIntoColumns(lines:List<TextLine>):MutableList<MutableList<TextLine>>{
     var linesLeft: MutableList<TextLine> = lines.toMutableList()

@@ -35,6 +35,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,10 +61,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lortey.cardflare.Deck
+import com.lortey.cardflare.Flashcard
 import com.lortey.cardflare.LaunchOnRule
 import com.lortey.cardflare.R
 import com.lortey.cardflare.Tag
 import com.lortey.cardflare.addDeck
+import com.lortey.cardflare.addFlashcard
 import com.lortey.cardflare.addTag
 import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getTranslation
@@ -77,7 +80,7 @@ import java.nio.charset.StandardCharsets
 // The menu that appears when you press plus button on the deck view screen
 
 public var deckToModify:Deck? = null
-
+var flashcardsAddedToDeck:MutableList<Flashcard> = mutableListOf()
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddDeckScreen(context: Context, navController: NavController){
@@ -102,7 +105,13 @@ fun AddDeckScreen(context: Context, navController: NavController){
         OutlinedTextField(
             value = DeckName,
             onValueChange = { DeckName = it },
-            label = { Text(getTranslation("Name"), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
+            label = {
+                Text(
+                    getTranslation("Name"),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -120,10 +129,12 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 .fillMaxWidth()
         )
 
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.inverseOnSurface)) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .padding(10.dp)
@@ -134,19 +145,31 @@ fun AddDeckScreen(context: Context, navController: NavController){
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(vertical = 5.dp)
                     ) {
-                        tagItem(tag,
+                        tagItem(
+                            tag,
                             addTag = {
                                 deckToModify?.tags?.remove(tag)
-                                tags = deckToModify?.tags?.toMutableStateList() ?: mutableStateListOf()},
-                            icon = R.drawable.minus)
+                                tags =
+                                    deckToModify?.tags?.toMutableStateList() ?: mutableStateListOf()
+                            },
+                            icon = R.drawable.minus
+                        )
                     }
                 }
-                item{
-                    Row(modifier = Modifier
+                item {
+                    Row(
+                        modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
-                        .clickable { addTagMenu = true }, verticalAlignment =  Alignment.CenterVertically){
-                        Text(text = getTranslation("Add Tag"), modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
+                        .clickable { addTagMenu = true },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = getTranslation("Add Tag"),
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.titleMedium
+                        )
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "Add Tag",
@@ -156,7 +179,8 @@ fun AddDeckScreen(context: Context, navController: NavController){
                                 .background(
                                     MaterialTheme.colorScheme.background,
                                     shape = CircleShape
-                                ))
+                                )
+                        )
                     }
                 }
             }
@@ -172,7 +196,26 @@ fun AddDeckScreen(context: Context, navController: NavController){
         ) {
             Button(
                 onClick = {
-                    addDeck(context, name = DeckName,deck = getDeck(filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString()), name = DeckName, tags = deckToModify!!.tags), filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())); navController.popBackStack()
+                    val filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
+                    addDeck(
+                        context, name = DeckName,
+                        deck = getDeck(
+                            filename = filename,
+                            name = DeckName,
+                            tags = deckToModify!!.tags
+                        ),
+                        filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
+                    );
+                    flashcardsAddedToDeck.forEach { card ->
+                        addFlashcard(
+                            filename = filename,
+                            card,
+                            context = context,
+                            reassignID = true
+                        )
+                    }
+                    navController.clearBackStack("main_menu")
+                    navController.navigate("main_menu")
                 }) {
 
                 Text(
@@ -180,6 +223,42 @@ fun AddDeckScreen(context: Context, navController: NavController){
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium
                 )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+        ){
+            LazyColumn(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .height((minOf((flashcardsAddedToDeck.size) * 32, 300)).dp)
+            ) {
+                items(flashcardsAddedToDeck) { cards ->
+
+                    Surface(modifier = Modifier.padding(vertical = 5.dp, horizontal = 4.dp),  shadowElevation = 4.dp, color = MaterialTheme.colorScheme.inverseOnSurface) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.background(Color.Transparent)
+                                .padding(vertical = 5.dp, horizontal = 4.dp)
+                        ) {
+                            Text(
+                                text = cards.SideA,
+                                modifier = Modifier.weight(1f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = cards.SideB,
+                                modifier = Modifier.weight(1f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+                }
             }
         }
         Row(
@@ -402,6 +481,7 @@ fun preview2(){
     // Apply Material 3 Theme with Dynamic Colors
     //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)
     Material3AppTheme {
+        flashcardsAddedToDeck.add(Flashcard(1,"adfdsdsf","fgdhjjt", "   ", "   ", 0))
         val navController = rememberNavController()
         val colorScheme = MaterialTheme.colorScheme
         Log.d("ThemeDebug", MaterialTheme.colorScheme.primary.toString())
