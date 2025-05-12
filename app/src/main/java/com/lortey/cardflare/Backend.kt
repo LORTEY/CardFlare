@@ -281,8 +281,8 @@ fun removeMultiple(context: Context, cards:List<Flashcard>, deckFrom: Deck){
         MoveCardToBin(context = context, deckFrom = deckFrom, card = element)
     }
 }
-fun getDeck(name: String ="",filename: String="",date_made:Int = 0, last_edited:Int = 0, tags: MutableList<Tag> = mutableListOf(), cards: MutableList<Flashcard> = mutableListOf() ):Deck{
-    return Deck(if(filename.isBlank()) URLEncoder.encode(name, StandardCharsets.UTF_8.toString()) else filename,name,date_made,last_edited, tags,cards)
+fun getDeck(name: String ="",filename: String="",date_made:Int = 0, last_edited:Int = 0, tags: MutableList<Tag> = mutableListOf(), cards: MutableList<Flashcard> = mutableListOf(), sideALang: String? = null, sideBLang: String? = null):Deck{
+    return Deck(if(filename.isBlank()) URLEncoder.encode(name, StandardCharsets.UTF_8.toString()) else filename,name,date_made,last_edited, tags,cards, 0,sideALang,sideBLang)
 }
 fun multipleDeckMoveToBin(decks:List<Deck>, selected:MutableList<Boolean>,context: Context){
     selected.forEachIndexed{ index, isSelected->
@@ -529,7 +529,10 @@ data class Deck(
     val last_edited: Int,
     val tags: MutableList<Tag>,
     val cards: MutableList<Flashcard>,
-    var minimalID: Int = 0)
+    var minimalID: Int = 0,
+    var sideALang:String? = null,
+    var sideBLang:String? = null
+    )
 
 @Serializable
 data class BinEntry(

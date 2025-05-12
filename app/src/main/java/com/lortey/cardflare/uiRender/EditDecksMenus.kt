@@ -3,11 +3,6 @@ package com.lortey.cardflare.uiRender
 import android.content.Context
 import android.graphics.Color.parseColor
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
@@ -28,6 +23,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +32,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,6 +64,7 @@ import com.lortey.cardflare.Tag
 import com.lortey.cardflare.addDeck
 import com.lortey.cardflare.addFlashcard
 import com.lortey.cardflare.addTag
+import com.lortey.cardflare.getAllSupportedLanguages
 import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadTags
@@ -87,6 +84,8 @@ fun AddDeckScreen(context: Context, navController: NavController){
     var DeckName by remember{ mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<Tag>()) }
     var pickImage by remember { mutableStateOf(false) }
+    var sideALang:String? by remember { mutableStateOf(null) }
+    var sideBLang:String? by remember { mutableStateOf(null) }
     LaunchedEffect(Unit) {
         if (deckToModify != null) {
             DeckName = deckToModify!!.name
@@ -202,7 +201,9 @@ fun AddDeckScreen(context: Context, navController: NavController){
                         deck = getDeck(
                             filename = filename,
                             name = DeckName,
-                            tags = deckToModify!!.tags
+                            tags = deckToModify!!.tags,
+                            sideALang = sideALang,
+                            sideBLang = sideBLang
                         ),
                         filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
                     );
@@ -211,7 +212,8 @@ fun AddDeckScreen(context: Context, navController: NavController){
                             filename = filename,
                             card,
                             context = context,
-                            reassignID = true
+                            reassignID = true,
+
                         )
                     }
                     navController.clearBackStack("main_menu")
@@ -281,6 +283,143 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 )
             }
         }
+
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+        ) {
+            Text(
+                text = getTranslation("Auto Completion"),
+                modifier = Modifier.padding(10.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium
+            )
+            var appearChooseLanguageMenuA by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    .clickable { appearChooseLanguageMenuA = true },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = getTranslation("SideA Language"),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = if (sideALang == null) getTranslation("None") else sideALang ?: "None",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(10.dp).background(
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                DropdownMenu(
+                    expanded = appearChooseLanguageMenuA,
+                    onDismissRequest = { appearChooseLanguageMenuA = false }, // Close menu on dismiss
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.inverseOnSurface)
+                        .padding(start = 16.dp)
+                        .height(400.dp)
+                ) {
+                    val possibleLanguages by remember(Unit){ mutableStateOf(getAllSupportedLanguages())}
+                        possibleLanguages.forEach { lang ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = lang,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                },
+                                onClick = {
+                                    appearChooseLanguageMenuA = false
+                                    sideALang = lang
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                }
+            }
+            var appearChooseLanguageMenuB by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    .clickable { appearChooseLanguageMenuB = true },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = getTranslation("SideB Language"),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = if (sideBLang == null) getTranslation("None") else sideBLang ?: "None",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(10.dp).background(
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                DropdownMenu(
+                    expanded = appearChooseLanguageMenuB,
+                    onDismissRequest = { appearChooseLanguageMenuB = false }, // Close menu on dismiss
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.inverseOnSurface)
+                        .padding(start = 16.dp)
+                        .height(400.dp)
+                ) {
+                    val possibleLanguages by remember(Unit){ mutableStateOf(getAllSupportedLanguages())}
+                    possibleLanguages.forEach { lang ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = lang,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            onClick = {
+                                appearChooseLanguageMenuB = false
+                                sideBLang = lang
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                    .padding(12.dp)
+                    .align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    onClick = {
+                        sideBLang = null; sideALang = null
+                    }) {
+
+                    Text(
+                        text = getTranslation("No Auto Completion"),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        }
+
         if(addTagMenu) {
             Popup(
                 properties = PopupProperties(

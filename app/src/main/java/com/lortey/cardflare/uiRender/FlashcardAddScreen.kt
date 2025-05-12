@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,7 @@ import com.google.mlkit.nl.translate.Translator
 import com.lortey.cardflare.getDefaultFSRSValue
 import com.lortey.cardflare.getDueDate
 import com.lortey.cardflare.getTranslation
+import java.util.Locale
 
 
 @Composable
@@ -44,8 +46,20 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
     var textStateB by remember { mutableStateOf("") }
     var defaultStateA by remember {  mutableStateOf("") }
     var defaultStateB by remember { mutableStateOf("") }
-    val translator = remember { createTranslator(TranslateLanguage.ENGLISH, TranslateLanguage.POLISH) }
-    translator.downloadModelIfNeeded()
+    var translator:Translator? by remember(Unit) { mutableStateOf(null)}
+    LaunchedEffect(Unit) {
+        if(currentOpenedDeck.value.sideALang != null && currentOpenedDeck.value.sideBLang != null){
+            val sideALang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.value.sideALang };
+            val sideBLang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.value.sideBLang };
+            if(sideBLang != null && sideALang != null){
+                translator = createTranslator( sideALang,sideBLang)
+                translator!!.downloadModelIfNeeded()
+            }
+        }
+    }
+
+
+
     Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -57,7 +71,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             TextField(
                 value = textStateA,
                 placeholder = { Text(defaultStateA, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f)) },
-                onValueChange = { newText -> textStateA = newText; if(textStateB.isBlank()) translateText(textStateA, translator){result-> defaultStateB = result} },
+                onValueChange = { newText -> textStateA = newText; if(textStateB.isBlank() && translator != null) translateText(textStateA, translator!!){result-> defaultStateB = result} },
                 //label = { Text(text = if(textStateB.isEmpty()) "Enter Text Of Side A" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,7 +92,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             TextField(
                 value = textStateB,
                 placeholder = { Text(defaultStateB, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f)) },
-                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isBlank()) translateText(textStateB, translator){result-> defaultStateA = result} },
+                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isBlank() && translator != null) translateText(textStateB, translator!!){result-> defaultStateA = result} },
                 //label = { Text(text = if(textStateB.isBlank()) "Enter Text Of Side B" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,11 +126,15 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                                 SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
                                 "",
                                 fsrsValue,
-                                getDueDate(context,fsrsValue)
+                                getDueDate(context, fsrsValue)
                             ), context = context
                         )
-                        currentOpenedDeck =IndexTracker(
-                            loadData(filename = currentOpenedDeck.value.filename, context = context)[0])
+                        currentOpenedDeck = IndexTracker(
+                            loadData(
+                                filename = currentOpenedDeck.value.filename,
+                                context = context
+                            )[0]
+                        )
                         defaultStateA = ""
                         defaultStateB = ""
                         textStateA = ""
