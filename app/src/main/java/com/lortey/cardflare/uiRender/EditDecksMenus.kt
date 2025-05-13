@@ -21,7 +21,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -70,6 +72,7 @@ import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadTags
 import com.lortey.cardflare.tags
 import com.lortey.cardflare.ui.theme.Material3AppTheme
+import java.io.File
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -87,6 +90,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
     var sideALang:String? by remember { mutableStateOf(null) }
     var sideBLang:String? by remember { mutableStateOf(null) }
     LaunchedEffect(Unit) {
+        //flashcardsAddedToDeck = mutableListOf();
         if (deckToModify != null) {
             DeckName = deckToModify!!.name
             tags = deckToModify!!.tags.toMutableStateList()
@@ -100,6 +104,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
+            .verticalScroll(rememberScrollState(0))
     ) {
         OutlinedTextField(
             value = DeckName,
@@ -134,6 +139,12 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
+            Text(
+                text = getTranslation("Tags"),
+                modifier = Modifier.padding(10.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium
+            )
             LazyColumn(
                 modifier = Modifier
                     .padding(10.dp)
@@ -185,58 +196,23 @@ fun AddDeckScreen(context: Context, navController: NavController){
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                //.background(color = MaterialTheme.colorScheme.inverseOnSurface)
-                .padding(12.dp)
-                .align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Button(
-                onClick = {
-                    val filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
-                    addDeck(
-                        context, name = DeckName,
-                        deck = getDeck(
-                            filename = filename,
-                            name = DeckName,
-                            tags = deckToModify!!.tags,
-                            sideALang = sideALang,
-                            sideBLang = sideBLang
-                        ),
-                        filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
-                    );
-                    flashcardsAddedToDeck.forEach { card ->
-                        addFlashcard(
-                            filename = filename,
-                            card,
-                            context = context,
-                            reassignID = true,
 
-                        )
-                    }
-                    navController.clearBackStack("main_menu")
-                    navController.navigate("main_menu")
-                }) {
-
-                Text(
-                    text = getTranslation("Add"),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
         Column(
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.inverseOnSurface)
         ){
+            Text(
+                text = getTranslation("New Flashcards Added"),
+                modifier = Modifier.padding(10.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium
+            )
             LazyColumn(
                 modifier = Modifier
                     .padding(10.dp)
-                    .height((minOf((flashcardsAddedToDeck.size) * 32, 300)).dp)
+                    .height((minOf((flashcardsAddedToDeck.size) * 50, 300)).dp)
             ) {
                 items(flashcardsAddedToDeck) { cards ->
 
@@ -263,6 +239,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 }
             }
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -417,6 +394,67 @@ fun AddDeckScreen(context: Context, navController: NavController){
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                .padding(12.dp)
+                .align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                onClick = {
+                    val filename = if ((deckToModify!= null && deckToModify!!.filename.isNotBlank())) deckToModify!!.filename else URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())
+                    if (deckToModify!=null) {
+                        val sourceDir = File(context.getExternalFilesDir(null), "FlashcardDirectory")
+
+                        val previousDeck = File(sourceDir, deckToModify!!.filename)
+
+                        if (previousDeck.exists()) {
+                            previousDeck.delete() // Delete existing file first
+                        }
+
+                    }
+                    addDeck(
+                        context, name = DeckName,
+                        deck = getDeck(
+                            filename = filename,
+                            name = if(DeckName.isNotBlank()) DeckName else deckToModify!!.name,
+                            tags = deckToModify!!.tags,
+                            sideALang = sideALang,
+                            sideBLang = sideBLang,
+                        ),
+                        filename = filename)
+                    if (deckToModify!=null) {
+
+                        deckToModify!!.cards.forEach { card ->
+                            addFlashcard(
+                                filename = filename,
+                                card,
+                                context = context,
+                                reassignID = false
+                            )
+                        }
+                    }
+                    flashcardsAddedToDeck.forEach { card ->
+                        addFlashcard(
+                            filename = filename,
+                            card,
+                            context = context,
+                            reassignID = true)
+                    }
+                    navController.clearBackStack("main_menu")
+                    navController.navigate("main_menu")
+                }) {
+
+                Text(
+                    text = getTranslation("Add"),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
 

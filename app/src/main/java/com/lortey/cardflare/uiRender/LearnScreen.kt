@@ -64,14 +64,15 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import androidx.core.graphics.toColorInt
+import kotlin.random.Random.Default.nextBoolean
 
 
 @Composable
 fun LearnScreen(navController: NavController, context: Context, atFinnish:(() -> Unit)? = null) {
     var currentCardIndex by remember { mutableStateOf(0) }
     //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
-    if (CardsToLearn == null) {
-        throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
+    if (CardsToLearn.isEmpty()) {
+        //throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
         navController.popBackStack()
     }
     var isReversed by remember { mutableStateOf(false) }
@@ -136,7 +137,7 @@ fun SwipeableFlashcard(
     require(appSettings["Flashcard Swipe Threshold"]?.state is Float)
     var fadeOut by remember { mutableStateOf(false) }
     val swipeThreshold = appSettings["Flashcard Swipe Threshold"]?.state as Float // Distance needed to register a swipe
-    var isFlipped by remember { mutableStateOf(false) }
+    var isFlipped by remember { mutableStateOf(nextBoolean()) }
     val rotationYy by animateFloatAsState(
         targetValue = if (isFlipped) 180f else 0f,
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
@@ -215,8 +216,8 @@ fun SwipeableFlashcard(
                     .fillMaxHeight()
                     .width(LocalConfiguration.current.screenWidthDp.dp)
                     .graphicsLayer {
+                        rotationY = rotationY
                         if(onTop) {
-                            rotationY = rotationYy
                             cameraDistance = 8 * density
                             shape = RectangleShape // Ensures clean edges during rotation
                             clip = true // Prevents content from bleeding through

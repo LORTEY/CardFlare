@@ -48,13 +48,10 @@ import com.lortey.cardflare.removeMultiple
 @Composable
 fun deckScreen(context: Context, navController: NavController){
     //val backStackEntry = remember { navController.currentBackStackEntry }
-
     //var data by remember { mutableStateOf(loadData()) }
-
-
     val currentDeck by rememberUpdatedState(currentOpenedDeck.value)
     var openedTarget by remember { mutableStateOf(currentDeck) }
-    var cards by remember(openedTarget) { mutableStateOf(openedTarget.cards) }
+    var cards by remember(openedTarget) { mutableStateOf(openedTarget.cards.sortedBy { it.id }) }
     var selectMode by remember { mutableStateOf(false) }
     Log.d("cardflare3", cards.toString())
     // Initialize selection state based on current cards
@@ -191,12 +188,18 @@ fun deckScreen(context: Context, navController: NavController){
 
                                     currentOpenedDeck.value = loadData(context, openedTarget.filename)[0] // I spent an hour trying to fix this. I did not update the global but copy of global to local variable. I might be stupid.
                                     openedTarget = currentOpenedDeck.value
-                                    cards = openedTarget.cards
+                                    cards = openedTarget.cards.sortedBy { it.id }.toMutableList()
 
                                     selectMode = false
                                     CardsToLearn.clear()
                                 }
-                            }
+                            },
+                            AddMenuEntry("Edit Flashcard", R.drawable.apps,
+                                {
+                                    if (cardsSelected.count{it} == 1){
+                                        currentModifiedFlashcard = cards[cardsSelected.indexOf(true)]
+                                        navController.navigate("add_flashcard")
+                                    }})
 
 
                     ))

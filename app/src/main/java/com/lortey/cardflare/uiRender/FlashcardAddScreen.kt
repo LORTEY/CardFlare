@@ -14,7 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -25,7 +30,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.Flashcard
@@ -34,12 +41,22 @@ import com.lortey.cardflare.createTranslator
 import com.lortey.cardflare.loadData
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translator
+import com.lortey.cardflare.R
+import com.lortey.cardflare.addDeck
+import com.lortey.cardflare.addTag
+import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getDefaultFSRSValue
 import com.lortey.cardflare.getDueDate
 import com.lortey.cardflare.getTranslation
+import com.lortey.cardflare.loadTags
+import com.lortey.cardflare.removeFlashcard
+import com.lortey.cardflare.tags
+import java.io.File
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.Locale
 
-
+var currentModifiedFlashcard:Flashcard? = null
 @Composable
 fun AddFlashcardScreen(navController: NavController, context: Context){
     var textStateA by remember {  mutableStateOf("") }
@@ -47,6 +64,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
     var defaultStateA by remember {  mutableStateOf("") }
     var defaultStateB by remember { mutableStateOf("") }
     var translator:Translator? by remember(Unit) { mutableStateOf(null)}
+    var revTranslator:Translator? by remember(Unit) { mutableStateOf(null)}
     LaunchedEffect(Unit) {
         if(currentOpenedDeck.value.sideALang != null && currentOpenedDeck.value.sideBLang != null){
             val sideALang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.value.sideALang };
@@ -54,7 +72,14 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             if(sideBLang != null && sideALang != null){
                 translator = createTranslator( sideALang,sideBLang)
                 translator!!.downloadModelIfNeeded()
+
+                revTranslator = createTranslator( sideBLang,sideALang)
+                revTranslator!!.downloadModelIfNeeded()
             }
+        }
+        if(currentModifiedFlashcard != null){
+            textStateA = currentModifiedFlashcard!!.SideA
+            textStateB = currentModifiedFlashcard!!.SideB
         }
     }
 
@@ -88,11 +113,40 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 minLines = 1
             )
 
+            IconButton(onClick = {
+                var holder = ""
+                if(textStateB.isBlank() && textStateA.isBlank()){
+                    holder = defaultStateA
+                    defaultStateA = defaultStateB
+                    defaultStateB = holder
+                }else if(textStateB.isBlank() && textStateA.isNotBlank()){
+                        holder = textStateA
+                        textStateA = defaultStateB
+                        defaultStateB = holder
+                }else if(textStateB.isNotBlank() && textStateA.isBlank()){
+                    holder = defaultStateA
+                    defaultStateA = textStateB
+                    textStateB = holder
+                }else{
+                    holder = textStateA
+                    textStateA = textStateB
+                    textStateB = holder
+                }
+
+            }) {
+                Icon(painter = painterResource(id = R.drawable.nav_arrow_left),
+                    contentDescription = "Add Tag",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(MaterialTheme.colorScheme.background, shape = CircleShape))
+            }
+
             Text(getTranslation("Side B"), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
             TextField(
                 value = textStateB,
                 placeholder = { Text(defaultStateB, color = MaterialTheme.colorScheme.inverseSurface.copy(alpha=0.8f)) },
-                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isBlank() && translator != null) translateText(textStateB, translator!!){result-> defaultStateA = result} },
+                onValueChange = { newText:String -> textStateB = newText; if(textStateA.isBlank() && revTranslator != null) translateText(textStateB, revTranslator!!){result-> defaultStateA = result} },
                 //label = { Text(text = if(textStateB.isBlank()) "Enter Text Of Side B" else translatedFlashcardSide,color = MaterialTheme.colorScheme.inverseSurface, style = MaterialTheme.typography.titleMedium) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,43 +164,67 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
             )
             val ableToAdd = (textStateA.isNotBlank() || defaultStateA.isNotBlank()) && (textStateB.isNotBlank() || defaultStateB.isNotBlank())
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp, horizontal = 20.dp)
-                .background(color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = if (ableToAdd) 1f else 0.5f))
-                .height(50.dp)
-                .clickable {
-                    if (ableToAdd) {
-                        val fsrsValue = getDefaultFSRSValue(context)
-                        addFlashcard(
-                            currentOpenedDeck.value.filename,
-                            Flashcard(
-                                0,
-                                SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
-                                SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
-                                "",
-                                fsrsValue,
-                                getDueDate(context, fsrsValue)
-                            ), context = context
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        //.background(color = MaterialTheme.colorScheme.inverseOnSurface)
+                        .padding(12.dp)
+                        .align(Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = {
+                            if (ableToAdd) {
+                                if(currentModifiedFlashcard == null) {
+                                    val fsrsValue = getDefaultFSRSValue(context)
+                                    addFlashcard(
+                                        currentOpenedDeck.value.filename,
+                                        Flashcard(
+                                            0,
+                                            SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
+                                            SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
+                                            "",
+                                            fsrsValue,
+                                            getDueDate(context, fsrsValue)
+                                        ), context = context
+                                    )
+
+                                }else{
+                                    removeFlashcard(context,currentModifiedFlashcard!!.FromDeck,currentModifiedFlashcard!!)
+                                    addFlashcard(
+                                        currentModifiedFlashcard!!.FromDeck,
+                                        Flashcard(
+                                            currentModifiedFlashcard!!.id,
+                                            SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
+                                            SideB = if (textStateB.isNotBlank()) textStateB else defaultStateB,
+                                            currentModifiedFlashcard!!.FromDeck,
+                                            currentModifiedFlashcard!!.FsrsData,
+                                            currentModifiedFlashcard!!.due
+                                        ), context = context
+                                    )
+                                }
+                                currentOpenedDeck = IndexTracker(
+                                    loadData(
+                                        filename = currentOpenedDeck.value.filename,
+                                        context = context
+                                    )[0]
+                                )
+                                defaultStateA = ""
+                                defaultStateB = ""
+                                textStateA = ""
+                                textStateB = ""
+                            }
+                        },
+                        enabled = ableToAdd) {
+
+                        Text(
+                            text = getTranslation("Add"),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodyMedium
                         )
-                        currentOpenedDeck = IndexTracker(
-                            loadData(
-                                filename = currentOpenedDeck.value.filename,
-                                context = context
-                            )[0]
-                        )
-                        defaultStateA = ""
-                        defaultStateB = ""
-                        textStateA = ""
-                        textStateB = ""
                     }
-                },
-                horizontalArrangement = Arrangement.SpaceEvenly) {
-                Text(
-                    getTranslation("Add"), style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = if (ableToAdd) 1f else 0.5f),
-                )
-            }
+                }
         }
     }
 }

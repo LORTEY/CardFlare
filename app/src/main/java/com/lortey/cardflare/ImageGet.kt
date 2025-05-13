@@ -301,7 +301,6 @@ fun ImagePickerScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp)
-
                         .padding(horizontal = 10.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {

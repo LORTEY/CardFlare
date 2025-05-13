@@ -190,7 +190,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                     //.width(128.dp)
                                     .align(Alignment.End)) {
                                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
-                                    listOf(AddMenuEntry("Add Deck", R.drawable.create_empty, Action = { navController.navigate("deck_add_screen") }),
+                                    listOf(AddMenuEntry("Add Deck", R.drawable.create_empty, Action = { flashcardsAddedToDeck.clear(); navController.navigate("deck_add_screen") }),
                                         AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.delete,
                                             Action = {
                                                 multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected)
@@ -201,7 +201,15 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                                     com.lortey.cardflare.uiRender.isAscending
                                                 )
                                                 selectMode = false
-                                            })
+                                            }),
+                                        AddMenuEntry(Name = "Edit Deck", Icon = R.drawable.apps, Action = {
+                                            flashcardsAddedToDeck.clear()
+                                            if (decksSelected.count{it} == 1){
+                                                deckToModify = qualifiedDecks[decksSelected.indexOf(true)]
+                                                navController.navigate("deck_add_screen")
+                                            }
+
+                                        })
                                     ))
                             }
                         }
@@ -386,6 +394,18 @@ fun SlideMenuContent(navController: NavController){
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(text = getTranslation("Bin"), color = MaterialTheme.colorScheme.primary)
+    }
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clickable { navController.navigate("fsrs_due_today")}){
+        Icon(
+            painter = painterResource(id = R.drawable.delete),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(text = getTranslation("Cards Due Today"), color = MaterialTheme.colorScheme.primary)
     }
 }
 
