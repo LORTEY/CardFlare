@@ -2,6 +2,7 @@ package com.lortey.cardflare
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import kotlinx.coroutines.CoroutineScope
@@ -17,18 +18,20 @@ import java.io.File
 var currentTranslationMap:MutableMap<String,String> = mutableMapOf()
 var currentlyChosenTranslationLocation:location = location.ASSETS
 var currentlyChosenTranslationFilePath:String = "Polski"
+
 fun getTranslation(text:String):String{
     if(text in currentTranslationMap){
         return currentTranslationMap[text]!!
     }else{
         Log.d("cardflareTranslations", "No Translation For: $text")
+        currentTranslationMap[text] = "MISSING=====> $text"
         return text
     }
 }
 
 private val jsonFormat = Json { prettyPrint = true }
 
-private fun saveMap(context: Context, filename:String){
+public fun saveMap(context: Context, filename:String){
     val jsonString = jsonFormat.encodeToString(currentTranslationMap)
     val file = File(context.getExternalFilesDir(null), "Translations/$filename")
     file.writeText(jsonString)

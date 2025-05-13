@@ -1,7 +1,9 @@
 package com.lortey.cardflare
 
 import android.Manifest
+import android.app.Activity
 import android.app.AppOpsManager
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -21,31 +23,28 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
+import com.lortey.cardflare.ui.theme.Material3AppTheme
 import com.lortey.cardflare.uiRender.AddDeckScreen
 import com.lortey.cardflare.uiRender.AddFlashcardScreen
+import com.lortey.cardflare.uiRender.BinCards
+import com.lortey.cardflare.uiRender.BinRender
 import com.lortey.cardflare.uiRender.CardMenu
+import com.lortey.cardflare.uiRender.DueToday
+import com.lortey.cardflare.uiRender.ImagePickerScreen
 import com.lortey.cardflare.uiRender.LaunchOnMenu
 import com.lortey.cardflare.uiRender.LearnScreen
 import com.lortey.cardflare.uiRender.MainMenuRender
-import com.lortey.cardflare.ui.theme.Material3AppTheme
+import com.lortey.cardflare.uiRender.ModifyRule
 import com.lortey.cardflare.uiRender.SettingsMenu
+import com.lortey.cardflare.uiRender.chooseLanguage
 import com.lortey.cardflare.uiRender.deckScreen
 import com.lortey.cardflare.uiRender.renderMainMenu
-import com.lortey.cardflare.uiRender.BinRender
-import com.lortey.cardflare.uiRender.BinCards
-import com.lortey.cardflare.uiRender.DueToday
-import com.lortey.cardflare.uiRender.ModifyRule
-import com.lortey.cardflare.uiRender.chooseLanguage
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.net.URLEncoder
 
 
 private const val STORAGE_PERMISSION_CODE = 101
@@ -67,6 +66,9 @@ class MainActivity : androidx.activity.ComponentActivity(){
         EnsureDirectoryStructure(context = applicationContext)
         Log.d("cardflareLanguages", getAllSupportedLanguages().toString())
         Log.d("cardflare5", getDueCards(applicationContext).toString())
+        if (Build.VERSION.SDK_INT >= 33){
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.POST_NOTIFICATIONS),101)
+        }
         BinAutoEmpty(context = applicationContext)
         startMainMenu()
     }
@@ -74,6 +76,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
     override fun onDestroy() {
         super.onDestroy()
+        saveMap(applicationContext, "extendedMap")
         // Unregister the receiver to avoid memory leaks
         unregisterReceiver(receiver)
         //saveMap(applicationContext)
@@ -94,8 +97,6 @@ class MainActivity : androidx.activity.ComponentActivity(){
         val filter = IntentFilter("com.example.KILL_MAIN_ACTIVITY")
         registerReceiver(receiver, filter, RECEIVER_EXPORTED)
     }
-
-
 
     @OptIn(ExperimentalSnapperApi::class)
     private fun startMainMenu() {
@@ -128,7 +129,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
                         composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
                         composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }
-                        composable("image_get") { ImagePickerScreen(navController = navController) }
+                        composable("image_get") { ImagePickerScreen(navController = navController, LocalContext.current) }
                         composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }
                         composable("fsrs_due_today") { DueToday(context = LocalContext.current, navController = navController) }
                     }
@@ -164,6 +165,19 @@ class MainActivity : androidx.activity.ComponentActivity(){
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
+
+            val notificationManager = NotificationManagerCompat.from(this)
+            val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+
+            if (!areNotificationsEnabled) {
+                // Notifications are disabled - guide user to app settings
+                val intent1 = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                startActivity(intent1)
+            }
+
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(getApplicationContext())) {
                 val intent = Intent(
@@ -175,6 +189,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
             }
         }
     }
+
     private fun requestStoragePermission() {
         ActivityCompat.requestPermissions(
             this,
@@ -201,11 +216,12 @@ class MainActivity : androidx.activity.ComponentActivity(){
         // Check usage stats permission
         val isUsageAccessGranted = isUsageAccessGranted(this)
 
+        val notificationManager = NotificationManagerCompat.from(this)
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         // Return true if any permission is missing
-        return /*!isStorageGranted ||*/ !isOverlayGranted || !isUsageAccessGranted
+        return /*!isStorageGranted ||*/ !isOverlayGranted || !isUsageAccessGranted || !areNotificationsEnabled
     }
 
-    // Helper function (already in your code)
     private fun isUsageAccessGranted(context: Context): Boolean {
         val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = appOpsManager.checkOpNoThrow(
@@ -215,5 +231,4 @@ class MainActivity : androidx.activity.ComponentActivity(){
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }
-
 }

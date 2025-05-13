@@ -200,6 +200,15 @@ fun getRuleFromApp(appName:String):LaunchOnRule?{
     }
     return null
 }
+fun anyRuleSetToRunAtUnlock():LaunchOnRule?{
+    val activeRules = getCurrentActiveRules()
+    activeRules.forEach { rule->
+        if(rule.unlockedCatch){
+            return rule
+        }
+    }
+    return null
+}
 
 fun deckNamesToDeckList(deckNames:List<String>,context: Context):List<Deck>{
     val loadedDecks = mutableListOf<Deck>()
@@ -218,7 +227,8 @@ data class LaunchOnRule(
     var flashcardList : MutableList<Flashcard>,
     var deckList : MutableList<String>,
     var activeFrom: TimeValue? = null,
-    var activeTo: TimeValue? = null
+    var activeTo: TimeValue? = null,
+    var unlockedCatch:Boolean = false
 )
 @Serializable
 data class TimeValue(

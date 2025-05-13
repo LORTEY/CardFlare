@@ -722,6 +722,7 @@ drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_launcher_foreground_logo
 drawable info
 drawable learn
 drawable link

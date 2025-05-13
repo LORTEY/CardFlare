@@ -98,6 +98,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.draw.shadow
@@ -202,7 +203,7 @@ fun ModifyRule(context: Context,navController: NavController){
     var appearAppAddMenu by remember { mutableStateOf(false) }
     var appearAddDeckMenu by remember{ mutableStateOf(false)}
     var listOfDecks by remember(state){ mutableStateOf(deckNamesToDeckList(state?.deckList ?: mutableListOf(), context = context))}
-
+    var runOnUnlock by remember { mutableStateOf(launchOnRuleToModify.value?.unlockedCatch) }
     Log.d("cardflare3", launchOnRuleToModify.toString())
     LaunchedEffect(Unit) {  // Run once when composable enters composition
         if (state == null) {
@@ -237,7 +238,13 @@ fun ModifyRule(context: Context,navController: NavController){
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(getTranslation("Name"), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) },
+            label = {
+                Text(
+                    getTranslation("Name"),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -252,26 +259,41 @@ fun ModifyRule(context: Context,navController: NavController){
             ),
             modifier = Modifier.padding(10.dp).fillMaxWidth()
         )
-        Column(modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.inverseOnSurface)){
-            LazyColumn(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .padding(10.dp)
-                .height((minOf((listOfApps.size) * 53, 300)).dp) ) {
-                items(listOfApps){packageName->
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 5.dp)) {
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.inverseOnSurface)
+        ) {
+            Text(
+                text = getTranslation("Active when these apps used"),
+                modifier = Modifier.padding(10.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .height((minOf((listOfApps.size) * 53, 300)).dp)
+            ) {
+                items(listOfApps) { packageName ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 5.dp)
+                    ) {
                         Image(
                             bitmap = drawableToBitmap(appMap[packageName]?.icon).asImageBitmap(),
                             contentDescription = null,
                             modifier = Modifier.size(48.dp)
                         )
-                        Text(text = appMap[packageName].let{it?.name ?: packageName },
+                        Text(
+                            text = appMap[packageName].let { it?.name ?: packageName },
                             modifier = Modifier.weight(1f).padding(horizontal = 5.dp),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         Icon(
                             painter = painterResource(id = R.drawable.minus),
                             contentDescription = "remove app from rule",
@@ -280,23 +302,35 @@ fun ModifyRule(context: Context,navController: NavController){
                                 //.size(128.dp)
                                 //.padding(2.dp)
                                 .size(36.dp)
-                                .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                                .background(
+                                    MaterialTheme.colorScheme.background,
+                                    shape = CircleShape
+                                )
                                 .clickable { removeAppFromRule(packageName) })
                     }
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth().padding(10.dp).clickable { appearAppAddMenu = true },
-                verticalAlignment =  Alignment.CenterVertically){
-                Text(text = getTranslation("Add App"), modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
+                    .clickable { appearAppAddMenu = true },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = getTranslation("Add App"),
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Icon(
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "Add App",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .size(36.dp)
-                        .background(MaterialTheme.colorScheme.background, shape = CircleShape))
+                        .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                )
             }
-            if(appearAppAddMenu) {
+            if (appearAppAddMenu) {
                 Popup(
                     properties = PopupProperties(
                         dismissOnBackPress = true,
@@ -330,10 +364,34 @@ fun ModifyRule(context: Context,navController: NavController){
                 }
             }
         }
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp).background(MaterialTheme.colorScheme.inverseOnSurface).padding(horizontal = 10.dp)) {
+        Text(
+            getTranslation("Active on unlock:"),
+            modifier = Modifier.padding(vertical = 10.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.weight(1f))
+
+        Switch(
+            checked = runOnUnlock ?: false,
+            onCheckedChange = { newValue ->
+                runOnUnlock = newValue
+                launchOnRuleToModify.value?.unlockedCatch = newValue
+            }
+        )
+    }
+
         Column(modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.inverseOnSurface)){
+            Text(
+                text = getTranslation("Get Flashcards From These Decks:"),
+                modifier = Modifier.padding(10.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium
+            )
             LazyColumn(modifier = Modifier
                 .padding(10.dp)
                 .height((minOf((listOfDecks.size +1) * 10, 300)).dp)) {
@@ -395,9 +453,10 @@ Column(modifier = Modifier
     .background(MaterialTheme.colorScheme.inverseOnSurface)
     .padding(10.dp)) {
     Text(
-        text = getTranslation("Active"),
-        color = MaterialTheme.colorScheme.onSurface,
-        style = MaterialTheme.typography.titleLarge
+        text = getTranslation("Aktywne"),
+        modifier = Modifier.padding(10.dp),
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        style = MaterialTheme.typography.titleMedium
     )
     Row(
         modifier = Modifier

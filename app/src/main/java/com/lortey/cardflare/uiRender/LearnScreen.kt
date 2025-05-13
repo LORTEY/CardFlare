@@ -75,7 +75,6 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
         //throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
         navController.popBackStack()
     }
-    var isReversed by remember { mutableStateOf(false) }
 
     // Reverse only once when the screen first loads
     /*LaunchedEffect(Unit) {
@@ -216,7 +215,7 @@ fun SwipeableFlashcard(
                     .fillMaxHeight()
                     .width(LocalConfiguration.current.screenWidthDp.dp)
                     .graphicsLayer {
-                        rotationY = rotationY
+                        rotationY = rotationYy
                         if(onTop) {
                             cameraDistance = 8 * density
                             shape = RectangleShape // Ensures clean edges during rotation

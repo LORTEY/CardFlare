@@ -68,6 +68,10 @@
         "source": "com.lortey.cardflare.app-main-76:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
+        "merged": "com.lortey.cardflare.app-debug-74:/drawable_ic_launcher_foreground_logo.webp.flat",
+        "source": "com.lortey.cardflare.app-main-76:/drawable/ic_launcher_foreground_logo.webp"
+    },
+    {
         "merged": "com.lortey.cardflare.app-debug-74:/drawable_plus.xml.flat",
         "source": "com.lortey.cardflare.app-main-76:/drawable/plus.xml"
     },

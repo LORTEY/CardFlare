@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-70:12
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-78:12
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:2:1-78:12
 MERGED from [io.coil-kt:coil-svg:2.7.0] /home/lortey/.gradle/caches/8.10.2/transforms/8c32b089d35c95159a8f358821b73f0c/transformed/coil-svg-2.7.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.camera:camera-video:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/0ed7a4dcbf4a5214fbe54a7e23c61099/transformed/camera-video-1.3.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.camera:camera-lifecycle:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/a32dcd179b1cf2e695f8a298919a286e/transformed/camera-lifecycle-1.3.0/AndroidManifest.xml:2:1-7:12
@@ -114,6 +114,7 @@ MERGED from [androidx.compose.runtime:runtime-android:1.7.2] /home/lortey/.gradl
 MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.2] /home/lortey/.gradle/caches/8.10.2/transforms/023456f99c3bdff2fe4a569b22b4aa64/transformed/runtime-saveable-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/d455384498b3c1ea707cfd667e2735f3/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/6119083b8fca4c3aab604e20cbb4a576/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:2:1-7:12
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/f47cba424ce7d2d2f603b2af48c13656/transformed/eventbus-3.3.1/AndroidManifest.xml:2:1-9:12
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:2:1-9:12
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/2291faec05b59bf13db6d6281ddb24b8/transformed/androidsvg-aar-1.4/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/lortey/.gradle/caches/8.10.2/transforms/53115394c1146ab6ac3ef1ab55611221/transformed/image-1.0.0-beta1/AndroidManifest.xml:2:1-9:12
@@ -205,8 +206,8 @@ ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidMani
 	android:name
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:21:22-74
 application
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-64:19
-INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-64:19
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-72:19
+INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:24:5-72:19
 MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-camera2:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/832debcd6fda15c39c637eb204818efd/transformed/camera-camera2-1.3.0/AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-core:1.3.0] /home/lortey/.gradle/caches/8.10.2/transforms/d4c3169413e2e4280a31cddf573c0f23/transformed/camera-core-1.3.0/AndroidManifest.xml:23:5-34:19
@@ -329,10 +330,24 @@ action#com.lortey.KILL_MAIN_ACTIVITY
 ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:17-72
 	android:name
 		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:61:25-69
-uses-permission#android.permission.SYSTEM_ALERT_WINDOW
-ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:67:5-77
+receiver#com.lortey.cardflare.broadcasters.UnlockReceiver
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:64:9-71:20
+	android:enabled
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:66:13-35
+	android:exported
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:67:13-37
 	android:name
-		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:67:22-75
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:65:13-56
+intent-filter#action:name:android.intent.action.USER_PRESENT
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:68:13-70:29
+action#android.intent.action.USER_PRESENT
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:69:17-76
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:69:25-74
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:75:5-77
+	android:name
+		ADDED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml:75:22-75
 uses-sdk
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/lortey/AndroidStudioProjects/CardFlare/app/src/main/AndroidManifest.xml
@@ -557,6 +572,8 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /home/lortey/.gradle/caches/8.10.2/transforms/d455384498b3c1ea707cfd667e2735f3/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/6119083b8fca4c3aab604e20cbb4a576/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] /home/lortey/.gradle/caches/8.10.2/transforms/6119083b8fca4c3aab604e20cbb4a576/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/f47cba424ce7d2d2f603b2af48c13656/transformed/eventbus-3.3.1/AndroidManifest.xml:5:5-7:41
+MERGED from [org.greenrobot:eventbus:3.3.1] /home/lortey/.gradle/caches/8.10.2/transforms/f47cba424ce7d2d2f603b2af48c13656/transformed/eventbus-3.3.1/AndroidManifest.xml:5:5-7:41
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:5:5-44
 MERGED from [com.jakewharton.threetenabp:threetenabp:1.4.6] /home/lortey/.gradle/caches/8.10.2/transforms/f582352ddfe9b9acb46fb9b2e9a506f8/transformed/threetenabp-1.4.6/AndroidManifest.xml:5:5-44
 MERGED from [com.caverock:androidsvg-aar:1.4] /home/lortey/.gradle/caches/8.10.2/transforms/2291faec05b59bf13db6d6281ddb24b8/transformed/androidsvg-aar-1.4/AndroidManifest.xml:7:5-9:41

@@ -88,6 +88,14 @@
                 <action android:name="com.lortey.KILL_MAIN_ACTIVITY" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.lortey.cardflare.broadcasters.UnlockReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="androidx.camera.core.impl.MetadataHolderService"

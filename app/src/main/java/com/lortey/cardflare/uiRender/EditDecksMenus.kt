@@ -3,6 +3,8 @@ package com.lortey.cardflare.uiRender
 import android.content.Context
 import android.graphics.Color.parseColor
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -66,12 +70,14 @@ import com.lortey.cardflare.Tag
 import com.lortey.cardflare.addDeck
 import com.lortey.cardflare.addFlashcard
 import com.lortey.cardflare.addTag
+import com.lortey.cardflare.extractTextFromUri
 import com.lortey.cardflare.getAllSupportedLanguages
 import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadTags
 import com.lortey.cardflare.tags
 import com.lortey.cardflare.ui.theme.Material3AppTheme
+import com.lortey.cardflare.updateSetting
 import java.io.File
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -197,6 +203,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
         }
 
 
+
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -239,7 +246,19 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 }
             }
         }
+        val imagePicker = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri ->
+            imageUri = uri
+            uri?.let {
+                extractTextFromUri(context, it) { boxes ->
+                    boxLines  = boxes
+                }
 
+                navController.navigate("image_get")
+            }
+
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -250,7 +269,8 @@ fun AddDeckScreen(context: Context, navController: NavController){
         ) {
             Button(
                 onClick = {
-                    pickImage = true
+                    imagePicker.launch("image/*");
+
                 }) {
 
                 Text(
@@ -448,7 +468,8 @@ fun AddDeckScreen(context: Context, navController: NavController){
                     }
                     navController.clearBackStack("main_menu")
                     navController.navigate("main_menu")
-                }) {
+                }, enabled = DeckName.isNotBlank()
+                ) {
 
                 Text(
                     text = getTranslation("Add"),
@@ -494,7 +515,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
         }
 
         if(pickImage){
-            navController.navigate("image_get")
+
         }
         //Text("Add", Modifier.clickable { addDeck(context, name = DeckName, filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())); navController.popBackStack()})
     }

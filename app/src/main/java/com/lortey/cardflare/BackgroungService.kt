@@ -1,26 +1,37 @@
 package com.lortey.cardflare
 
+import android.R
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.app.usage.UsageStatsManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.lortey.cardflare.broadcasters.UnlockEvent
+import com.lortey.cardflare.broadcasters.UnlockReceiver
 import com.lortey.cardflare.uiRender.CardsToLearn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
+public var currentService:AppMonitorService? = null
 class AppMonitorService : Service() {
     // This is the foreground service that checks if certain apps are open and starts OverlayActivity
     // I dont know why it does not show a notification but it seems not to be closing automatically so its good
@@ -28,8 +39,15 @@ class AppMonitorService : Service() {
     private val checkInterval = 2000L // Recheck every 2 seconds
     private var currentlyBlockedApps:HashSet<String> = hashSetOf()
     private var overwriteDecisionToLearn = false
+    private var unlockReceiver: BroadcastReceiver? = null
     override fun onCreate() {
         super.onCreate()
+        EventBus.getDefault().register(this)
+        unlockReceiver = UnlockReceiver()
+        currentService = this
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_USER_PRESENT)
+        registerReceiver(unlockReceiver, filter)
         createNotificationChannel()
         startForeground(1, createNotification())
         //Starts monitoring
@@ -41,6 +59,7 @@ class AppMonitorService : Service() {
         }
         startMonitoring()
     }
+
 
     fun startMonitoring() {
         var previousApp = ""
@@ -88,7 +107,7 @@ class AppMonitorService : Service() {
     private fun createNotificationChannel() {
         val channelId = "background_service_channel"
         val channel = NotificationChannel(
-            channelId, "Background Service", NotificationManager.IMPORTANCE_HIGH
+            channelId, "Background Service", NotificationManager.IMPORTANCE_HIGH,
         )
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
@@ -102,10 +121,15 @@ class AppMonitorService : Service() {
         manager.createNotificationChannel(channel)
 
         return NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Cardflare Is Ready To Serve You Flashcards")
-            .setContentText("Cardflare's service is running in the background.")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .build()
+                .setContentTitle(getTranslation("Cardflare Is Ready To Serve You Flashcards"))
+                .setContentText(getTranslation("Cardflare's service is running in the background."))
+                .setPriority(NotificationCompat.PRIORITY_LOW) // For pre-Oreo devices
+                .setOngoing(true) // Makes it persistent (can't be swiped away)
+                .setAutoCancel(false)
+                .setSound(null) // No sound
+                .setVibrate(null) // No vibration
+                .setOnlyAlertOnce(true).build() // Only alert once even if updated
+
     }
     //returns the name of currently used app
    fun getForegroundApp(context: Context): String? {
@@ -132,7 +156,29 @@ class AppMonitorService : Service() {
         }
         return null
     }
+    public fun userPresent(){
+        createNotification()
+        val ruleToRun = anyRuleSetToRunAtUnlock()
+        if(ruleToRun != null){
+                val randomCards = rankByDueDate(
+                    context = applicationContext,
+                    deckList = deckNamesToDeckList(
+                        ruleToRun.deckList.toList(), context = applicationContext
+                    )
+                ).take(3)
+                Log.d("cardflare5", randomCards.toString())
+                if (randomCards != null) {
+                    CardsToLearn = randomCards.toMutableList()
+                    startOverlay()
+                }
 
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUnlockEvent(event: UnlockEvent?) {
+        userPresent()
+    }
     // Starts OverlayService
     private fun startOverlay() {
         // checks if overlay permissions are granted
@@ -154,6 +200,7 @@ class AppMonitorService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this);
         handler.removeCallbacksAndMessages(null)
     }
 }

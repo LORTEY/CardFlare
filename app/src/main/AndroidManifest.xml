@@ -61,6 +61,14 @@
                 <action android:name="com.lortey.KILL_MAIN_ACTIVITY" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".broadcasters.UnlockReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
