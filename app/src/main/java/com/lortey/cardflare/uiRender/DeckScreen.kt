@@ -46,10 +46,10 @@ import com.lortey.cardflare.removeMultiple
 // loads the screen when you click certain deck
 
 @Composable
-fun deckScreen(context: Context, navController: NavController){
+fun DeckScreen(context: Context, navController: NavController){
     //val backStackEntry = remember { navController.currentBackStackEntry }
     //var data by remember { mutableStateOf(loadData()) }
-    val currentDeck by rememberUpdatedState(currentOpenedDeck.value)
+    val currentDeck by rememberUpdatedState(currentOpenedDeck)
     var openedTarget by remember { mutableStateOf(currentDeck) }
     var cards by remember(openedTarget) { mutableStateOf(openedTarget.cards.sortedBy { it.id }) }
     var selectMode by remember { mutableStateOf(false) }
@@ -123,7 +123,7 @@ fun deckScreen(context: Context, navController: NavController){
                                             selectMode = false
                                         }
                                     } else {
-                                        currentOpenFlashCard = IndexTracker(index)
+                                        currentOpenFlashCard = index
                                         navController.navigate("card_menu")
                                     }
                                 }
@@ -186,8 +186,8 @@ fun deckScreen(context: Context, navController: NavController){
                                 if (toRemove.isNotEmpty()) {
                                     removeMultiple(context = context, deckFrom = openedTarget, cards = toRemove)
 
-                                    currentOpenedDeck.value = loadData(context, openedTarget.filename)[0] // I spent an hour trying to fix this. I did not update the global but copy of global to local variable. I might be stupid.
-                                    openedTarget = currentOpenedDeck.value
+                                    currentOpenedDeck = loadData(context, openedTarget.filename)[0] // I spent an hour trying to fix this. I did not update the global but copy of global to local variable. I might be stupid.
+                                    openedTarget = currentOpenedDeck
                                     cards = openedTarget.cards.sortedBy { it.id }.toMutableList()
 
                                     selectMode = false

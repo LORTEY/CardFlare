@@ -129,7 +129,7 @@ fun removeAppFromRule(packageName: String){
 
 //Fetches currently active rules
 fun getCurrentActiveRules():List<LaunchOnRule>{
-    var i = mutableListOf<LaunchOnRule>()
+    val i = mutableListOf<LaunchOnRule>()
     val currentTime = getCurrentTime()
     launchOnRules.forEach{rule->
         if(isCurrentTimeInBetweenTimes(rule.activeFrom, rule.activeTo, currentTime)){ // current time is in the time when a rule is supposed to be active
@@ -141,7 +141,7 @@ fun getCurrentActiveRules():List<LaunchOnRule>{
 
 //get an easy to search collection of currently blocked apps
 fun generateSetOfBlockedApps(currentActiveRules : List<LaunchOnRule>? = null):HashSet<String>{
-    var setOfApps = hashSetOf<String>()
+    val setOfApps = hashSetOf<String>()
     (currentActiveRules ?: getCurrentActiveRules()).forEach { rule ->
         setOfApps.addAll(rule.appList)
     }

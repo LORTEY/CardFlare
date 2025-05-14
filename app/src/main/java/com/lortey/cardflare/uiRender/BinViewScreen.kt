@@ -38,8 +38,8 @@ import androidx.navigation.NavController
 import com.lortey.cardflare.R
 import com.lortey.cardflare.RecoverMultipleDecks
 import com.lortey.cardflare.RecoverMultipleFlashcards
-import com.lortey.cardflare.RemoveMultipleDecksFromBin
-import com.lortey.cardflare.RemoveMultipleFlashcardsFromBin
+import com.lortey.cardflare.removeMultipleDecksFromBin
+import com.lortey.cardflare.removeMultipleFlashcardsFromBin
 import com.lortey.cardflare.loadData
 
 @Composable
@@ -50,7 +50,7 @@ fun BinRender(context: Context, navController: NavController){
     var showAddMenu by remember { mutableStateOf(false) }
 
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    var binSelected = remember {
+    val binSelected = remember {
         mutableStateListOf<Boolean>().apply {
             addAll(List(decksInBin.size) { false })
         }
@@ -133,7 +133,7 @@ fun BinRender(context: Context, navController: NavController){
                         AddMenuEntry(
                             Name = "Remove Deck", Icon = R.drawable.delete,
                             Action = {
-                                RemoveMultipleDecksFromBin(
+                                removeMultipleDecksFromBin(
                                     context = context,
                                     decksSelected = binSelected,
                                     listOfDecks = decksInBin
@@ -170,7 +170,7 @@ fun BinCards(context: Context, navController: NavController){
     var showAddMenu by remember { mutableStateOf(false) }
 
     //var cards = arrayOf(arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"),arrayOf("ghf", "dfg"))
-    var binSelected = remember {  // Runs only once
+    val binSelected = remember {  // Runs only once
         mutableStateListOf<Boolean>().apply {
             addAll(List(cardsInBin.size) { false })
         }
@@ -263,7 +263,7 @@ fun BinCards(context: Context, navController: NavController){
                         AddMenuEntry(
                             Name = "Remove Card", Icon = R.drawable.delete,
                             Action = {
-                                RemoveMultipleFlashcardsFromBin(
+                                removeMultipleFlashcardsFromBin(
                                     context = context,
                                     cardsSelected = binSelected,
                                     listOfCards = cardsInBin,

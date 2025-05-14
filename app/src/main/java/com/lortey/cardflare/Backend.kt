@@ -16,7 +16,6 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.time.temporal.ChronoUnit.MONTHS
 import java.time.temporal.ChronoUnit.WEEKS
 
 // This file contains all the functions used to load manage and store database of Flashcards And Decks
@@ -204,7 +203,7 @@ fun addDeck(context: Context, name:String="", filename: String = "", deck:Deck? 
 //sort decks based on sorting aspect and user search query
 fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAscending: Boolean): List<Deck>{
         // Enumerating tags
-        var tagsRequired = mutableListOf<String>()
+        val tagsRequired = mutableListOf<String>()
         if ('#' in searchQuery){
             searchQuery.split(' ').forEach { word ->
                 if (word.length > 1){
@@ -245,7 +244,7 @@ fun sortDecks(searchQuery: String, decks: List<Deck>, sortType: SortType, isAsce
 
 
 //Move card To bin or from bin
-fun MoveCardToBin(context: Context, deckFrom: Deck, card: Flashcard, moveToBin:Boolean = true) {
+fun moveCardToBin(context: Context, deckFrom: Deck, card: Flashcard, moveToBin:Boolean = true) {
     //Set source destination directories base on course of move
     val to = if(moveToBin) "BinDirectory" else "FlashcardDirectory"
     val from = if(moveToBin) "FlashcardDirectory" else "BinDirectory"
@@ -270,13 +269,13 @@ fun MoveCardToBin(context: Context, deckFrom: Deck, card: Flashcard, moveToBin:B
 //remove flashcard from deck
 fun removeFlashcard(context: Context, filename: String, card: Flashcard, folderName: String = "FlashcardDirectory") {
     val fileData = loadData(context = context, filename = filename, folderName = folderName)
-    //val iterator = fileData[0].cards.iterator()
-    /*while (iterator.hasNext()) {
+    val iterator = fileData[0].cards.iterator()
+    while (iterator.hasNext()) {
         if (iterator.next().id == card.id) {
             iterator.remove()
         }
-    }*/
-    fileData[0].cards.filterNot { it.id == card.id } //remove flashcard from loaded data with coresponding id
+    }
+    //fileData[0].cards.filterNot { it.id == card.id } //remove flashcard from loaded data with coresponding id
     //save deck without that flashcard
     saveDeck(context = context,fileData[0], filename = filename, folderName = folderName)
 }
@@ -284,7 +283,7 @@ fun removeFlashcard(context: Context, filename: String, card: Flashcard, folderN
 //Move multiple cards to bin
 fun removeMultiple(context: Context, cards:List<Flashcard>, deckFrom: Deck){
     cards.forEach { element ->// move each card
-        MoveCardToBin(context = context, deckFrom = deckFrom, card = element)
+        moveCardToBin(context = context, deckFrom = deckFrom, card = element)
     }
 }
 
@@ -338,7 +337,7 @@ private fun moveDeckToBin(filename: String, context: Context){
 }
 
 //Delete Decks from bin
-fun RemoveMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, listOfDecks:List<Deck>){
+fun removeMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, listOfDecks:List<Deck>){
     val binDir = File(context.getExternalFilesDir(null), "BinDirectory")
     decksSelected.forEachIndexed{index , element-> // for each selected by user deck delete coresponding deck index
         if(element) {
@@ -351,7 +350,7 @@ fun RemoveMultipleDecksFromBin(decksSelected:List<Boolean>, context: Context, li
 }
 
 //Delete Flashcards from bin
-fun RemoveMultipleFlashcardsFromBin(cardsSelected:List<Boolean>,context: Context, listOfCards: List<Flashcard>,deck: Deck){
+fun removeMultipleFlashcardsFromBin(cardsSelected:List<Boolean>, context: Context, listOfCards: List<Flashcard>, deck: Deck){
     val fileData = loadData(context = context, filename = deck.filename,"BinDirectory")
     val IDsOfFlashcardsToRemove = listOfCards.zip(cardsSelected) // Translates user selected cards to list of ids of flashcards in deck to remove
         .filter { (_, flag) -> flag }
@@ -383,7 +382,7 @@ fun addDaysToEpochMillis(epochMillis: Long): Long {
 }
 
 //Searches bin descriptor file for flashcards that should be removed
-fun BinAutoEmpty(context:Context){
+fun binAutoEmpty(context:Context){
     var binDescriptorContent = loadBinDescriptor(context = context)
     var lastNotRemovedIndex = 0 // used to find where the new bin descriptor should begin tracking
     for(entry in binDescriptorContent){
@@ -394,7 +393,7 @@ fun BinAutoEmpty(context:Context){
                 removeFlashcard(context = context, filename = entry.filename, Flashcard(entry.id, "", "","", "", 0), folderName = "BinDirectory")
                 val deck = loadData(context = context, filename = entry.filename, folderName = "BinDirectory")
                 if(deck[0].cards.isEmpty()){
-                    RemoveMultipleDecksFromBin(listOf(true), context, deck)
+                    removeMultipleDecksFromBin(listOf(true), context, deck)
                 }
             }catch (e:Exception){
                 Log.d("cardflare3",entry.filename)
@@ -417,7 +416,7 @@ fun BinAutoEmpty(context:Context){
     saveBinDescriptor(context, descriptorToSave)
 }
 
-fun EnsureDirectoryStructure(context: Context){
+fun ensureDirectoryStructure(context: Context){
 
     val directory = File(context.getExternalFilesDir(null), "BinDirectory")
     if (!directory.exists()) {
@@ -449,13 +448,13 @@ fun EnsureDirectoryStructure(context: Context){
 fun RecoverMultipleFlashcards(context:Context,listSelected:List<Boolean>, listOfFlashcards:List<Flashcard>, deckFrom:Deck){
     listOfFlashcards.forEachIndexed{index, card->
         if(listSelected[index]){     // Translate Selected by user flashcards to list of flashcards to recover
-            MoveCardToBin(context = context, deckFrom = deckFrom, card = card, moveToBin = false) //reverse moving card to bin
+            moveCardToBin(context = context, deckFrom = deckFrom, card = card, moveToBin = false) //reverse moving card to bin
         }
     }
     try{ // if decks left empty in bin delete them
         val deck = loadData(context = context, filename = deckFrom.filename, folderName = "BinDirectory")
         if(deck[0].cards.isEmpty()){
-            RemoveMultipleDecksFromBin(listOf(true), context, deck)
+            removeMultipleDecksFromBin(listOf(true), context, deck)
         }
     }catch (e:Exception){
         Log.d("cardflare3",deckFrom.filename)
@@ -483,7 +482,7 @@ fun RecoverMultipleDecks(context:Context, listSelected:List<Boolean>, listOfDeck
             } else {
                 deck.cards.forEach { card ->
                     //If some parts of this deck are left in FlashcardDir copy the flashcards to this decks name mate in FlashcardDir
-                    MoveCardToBin(
+                    moveCardToBin(
                         context = context,
                         deckFrom = deck,
                         card = card,
@@ -500,7 +499,7 @@ fun RecoverMultipleDecks(context:Context, listSelected:List<Boolean>, listOfDeck
                         folderName = "BinDirectory"
                     )
                 if (deckInBin[0].cards.isEmpty()) { //Remove recovered decks from bin if it was not directly copied back to FlashcardDirectory
-                    RemoveMultipleDecksFromBin(listOf(true), context, deckInBin)
+                    removeMultipleDecksFromBin(listOf(true), context, deckInBin)
                 }
             } catch (e: Exception) {
                 Log.d("cardflare3", deck.filename)

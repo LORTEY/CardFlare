@@ -2,21 +2,13 @@ package com.lortey.cardflare
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
-import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.Translator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
 var currentTranslationMap:MutableMap<String,String> = mutableMapOf()
-var currentlyChosenTranslationLocation:location = location.ASSETS
+var currentlyChosenTranslationLocation:Location = Location.ASSETS
 var currentlyChosenTranslationFilePath:String = "Polski"
 
 //get string translated in current map
@@ -41,15 +33,15 @@ public fun saveMap(context: Context, filename:String){
 
 //load selected language from file
 fun loadMap(context: Context){
-    val state = AppSettings["Language"]?.state as translations
-    currentlyChosenTranslationLocation= if(state.typeOfTranslation == typeOfTranslation.Default) location.ASSETS else location.FILES_DIR
+    val state = AppSettings["Language"]?.state as Translations
+    currentlyChosenTranslationLocation= if(state.typeOfTranslation == TypeOfTranslation.Default) Location.ASSETS else Location.FILES_DIR
     currentlyChosenTranslationFilePath = state.name
     var jsonString = ""
     when(currentlyChosenTranslationLocation){
-        location.ASSETS ->
+        Location.ASSETS ->
             jsonString = context.assets.open("Translations/$currentlyChosenTranslationFilePath").bufferedReader().use { it.readText() }
 
-        location.FILES_DIR ->
+        Location.FILES_DIR ->
             jsonString = File(context.getExternalFilesDir(null), "Translations/$currentlyChosenTranslationFilePath").readText()
     }
 
@@ -68,23 +60,23 @@ fun remap(context: Context){
     }
     //saveMap(filename = str)
 }
-//get all possible translations , creator provided, custom and ai generated not yet implemented
-fun getPossibleTranslations(context: Context):List<translations>{
-    val possibleTranslations:MutableList<translations> = mutableListOf()
-    possibleTranslations.add(translations("English",typeOfTranslation.Default,
+//get all possible Translations , creator provided, custom and ai generated not yet implemented
+fun getPossibleTranslations(context: Context):List<Translations>{
+    val possibleTranslations:MutableList<Translations> = mutableListOf()
+    possibleTranslations.add(Translations("English",TypeOfTranslation.Default,
 ))
-    possibleTranslations.add(translations("Polski",typeOfTranslation.Default,
+    possibleTranslations.add(Translations("Polski",TypeOfTranslation.Default,
 ))
 
     val filenames = listFilesInFilesDir(context,folderName =  "Translations")
     filenames.forEach { name ->
-        possibleTranslations.add(translations(name,typeOfTranslation.Custom,))
+        possibleTranslations.add(Translations(name,TypeOfTranslation.Custom,))
     }
 
     /*val AiTranslations = getAllSupportedLanguages()
 
     AiTranslations.forEach { name ->
-        possibleTranslations.add(translations(name,typeOfTranslation.AI,
+        possibleTranslations.add(Translations(name,TypeOfTranslation.AI,
             {currentlyChosenTranslationLocation= location.FILES_DIR
                 currentlyChosenTranslationFilePath = name}))
     }*/
@@ -109,7 +101,7 @@ suspend fun createCustomTranslation(context: Context, desiredLanguage:String){
         }
     }
 
-    // Wait for all translations to complete
+    // Wait for all Translations to complete
     val results = translationJobs.awaitAll()
 
     // Put all results in the map
@@ -131,19 +123,19 @@ fun translateTextUi(text: String, translator: Translator, onResult: (String) -> 
 
 }*/
 
-//location of translations
-enum class location{
+//location of Translations
+enum class Location{
     ASSETS, FILES_DIR
 }
 
 //type of translation: provided by app creator, user custom or ai translated not yet implemented
-enum class typeOfTranslation{
+enum class TypeOfTranslation{
     Default, Custom, AI
 }
 
 //translation entry in translation choose screen
 @Serializable
-data class translations(
+data class Translations(
     val name:String,
-    val typeOfTranslation: typeOfTranslation
+    val typeOfTranslation: TypeOfTranslation
 ) : StateData

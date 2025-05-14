@@ -4,51 +4,19 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.provider.ContactsContract
-import android.util.Log
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.scale
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.PointerInputScope
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.lortey.cardflare.uiRender.distanceFrom
-import java.util.*
-import androidx.core.graphics.createBitmap
-import androidx.navigation.NavController
-import com.lortey.cardflare.uiRender.flashcardsAddedToDeck
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.lang.Float.min
 
-val CenterToWidth:Float = 0f
-val CenterToHeight:Float = 0.5f
+const val CenterToWidth:Float = 0f
+const val CenterToHeight:Float = 0.5f
 var FinalColumnsGlobal: MutableList<Pair<MutableList<TextColumn>, MutableList<TextColumn>>> = mutableListOf(Pair(
     mutableListOf(), mutableListOf()))
 
@@ -164,7 +132,7 @@ fun extractTextFromUri(
 
     val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     val image = InputImage.fromFilePath(context, uri)
-    var lines : MutableList<TextLine> = mutableListOf()
+    val lines : MutableList<TextLine> = mutableListOf()
     recognizer.process(image)
         .addOnSuccessListener { visionText ->
             val result = StringBuilder()

@@ -93,7 +93,7 @@ var imageUri:Uri? = null
 var boxLines:MutableList<TextLine> =  mutableListOf()
 @Composable
 fun ImagePickerScreen(navController: NavController,context:Context) {
-    var isLoading by remember { mutableStateOf(false) }
+    val isLoading by remember { mutableStateOf(false) }
 
     var expanded by remember { mutableStateOf(true) }
     var reload by remember { mutableStateOf(true) }
@@ -116,7 +116,7 @@ fun ImagePickerScreen(navController: NavController,context:Context) {
             navController.popBackStack()
         }
     }
-    var boxesDraggedOverThisDrag: MutableList<TextLine> = mutableListOf()
+    val boxesDraggedOverThisDrag: MutableList<TextLine> = mutableListOf()
     var currentMapTo by remember{ mutableStateOf( MappedTo.Side_A) }
     if(!showTable) {
         Log.d("cardflare9", "${mutableImageBitmap.colorSpace} ")
@@ -294,8 +294,6 @@ fun ImagePickerScreen(navController: NavController,context:Context) {
                 //Spacer(Modifier.height(16.dp))
                 if (isLoading) {
                     CircularProgressIndicator()
-                } else {
-
                 }
             }
             if (imageUri != null) {
@@ -382,7 +380,7 @@ fun DataTable(
                             color = if(line.aspects == Aspect.IGNORED) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
                         )
                         var aspect: Aspect by remember { mutableStateOf(line.aspects) }
-                        functionPanel(aspect = aspect ,
+                        FunctionPanel(aspect = aspect ,
                             onLinkAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.LINKED
@@ -422,7 +420,7 @@ fun DataTable(
                             color = if(line.aspects == Aspect.IGNORED) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onBackground,
                         )
                         var aspect: Aspect = line.aspects
-                        functionPanel(aspect = aspect,
+                        FunctionPanel(aspect = aspect,
                             onLinkAction = {newState->
                                 if(newState){
                                     line.aspects = Aspect.LINKED
@@ -454,7 +452,7 @@ fun DataTable(
 }
 
 @Composable
-fun functionPanel(aspect: Aspect, onLinkAction:(Boolean) -> Unit, onIgnoreAction:(Boolean) -> Unit){
+fun FunctionPanel(aspect: Aspect, onLinkAction:(Boolean) -> Unit, onIgnoreAction:(Boolean) -> Unit){
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End){
         IconButton(onClick = {onLinkAction(aspect != Aspect.LINKED)}, modifier = Modifier.background(
             shape = RoundedCornerShape(128.dp),

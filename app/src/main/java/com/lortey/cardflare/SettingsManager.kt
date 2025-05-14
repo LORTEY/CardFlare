@@ -3,12 +3,10 @@ package com.lortey.cardflare
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateMapOf
-import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
-import kotlin.reflect.KClass
 
 
 // This file handles settings of the app
@@ -65,7 +63,7 @@ private fun encodeSettings():Map<String,String> {
             mappedSettings[key] = stringOfEntry.toString()
 
         }else if (AppSettings.get(key)?.type == SettingsType.ACTION ) {
-            mappedSettings[key] = json.encodeToString(valueOfSetting.state as translations)
+            mappedSettings[key] = json.encodeToString(valueOfSetting.state as Translations)
         }else{
             mappedSettings[key] = valueOfSetting.state.toString()
         }
@@ -120,7 +118,7 @@ fun deserializeDataclass(input:String, type:String):Any{
     val json = Json { ignoreUnknownKeys = true }
     when(type){
         "translations" ->
-            return json.decodeFromString<translations>(input)
+            return json.decodeFromString<Translations>(input)
         else ->
             return "error"
     }
@@ -181,7 +179,7 @@ val AppSettings = mutableStateMapOf(
         name = "Language",
         description = "App's Language.",
         type = SettingsType.ACTION,
-        state = translations("Polski",typeOfTranslation.Default),
+        state = Translations("Polski",TypeOfTranslation.Default),
         stateDataclass = "translations",
         navChoose = "language_choose"
         )

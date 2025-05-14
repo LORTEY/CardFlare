@@ -1,8 +1,6 @@
 package com.lortey.cardflare.uiRender
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +44,7 @@ import com.lortey.cardflare.SettingEntry
 import com.lortey.cardflare.SettingsType
 import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.saveSettings
-import com.lortey.cardflare.translations
+import com.lortey.cardflare.Translations
 import com.lortey.cardflare.updateSetting
 
 
@@ -148,14 +146,14 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     .padding(horizontal = 10.dp, vertical = 10.dp)
                     .background(MaterialTheme.colorScheme.inverseOnSurface), horizontalArrangement = Arrangement.SpaceEvenly){
                     Text(
-                        text = state.value.toString(),
+                        text = state.floatValue.toString(),
                     )
                 }
             }
                 Slider(
-                    value = state.value,
+                    value = state.floatValue,
                     onValueChange = { newValue ->
-                        state.value = newValue
+                        state.floatValue = newValue
                         updateSetting(setting.name, newValue)
                     },
                     valueRange = (setting.sliderData?.get("from") ?: 0f)..(setting.sliderData?.get("to") ?: 100f),
@@ -313,7 +311,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
 //used for language
 fun deserializeName(className: String, input: Any): String {
     return when (className) {
-        "translations" -> (input as translations).name
+        "translations" -> (input as Translations).name
         else -> throw IllegalArgumentException("Unknown class: $className")
     }
 }

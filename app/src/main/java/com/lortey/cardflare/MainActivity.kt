@@ -1,9 +1,7 @@
 package com.lortey.cardflare
 
 import android.Manifest
-import android.app.Activity
 import android.app.AppOpsManager
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -41,8 +39,8 @@ import com.lortey.cardflare.uiRender.LearnScreen
 import com.lortey.cardflare.uiRender.MainMenuRender
 import com.lortey.cardflare.uiRender.ModifyRule
 import com.lortey.cardflare.uiRender.SettingsMenu
-import com.lortey.cardflare.uiRender.chooseLanguage
-import com.lortey.cardflare.uiRender.deckScreen
+import com.lortey.cardflare.uiRender.ChooseLanguage
+import com.lortey.cardflare.uiRender.DeckScreen
 import com.lortey.cardflare.uiRender.renderMainMenu
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 
@@ -69,7 +67,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         launchOnRules = loadLaunchOnRules(applicationContext)
 
         //create proper FilesDir directory structure if missing
-        EnsureDirectoryStructure(context = applicationContext)
+        ensureDirectoryStructure(context = applicationContext)
 
         //Ask for notification permissions android 13+
         if (Build.VERSION.SDK_INT >= 33){
@@ -77,7 +75,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
         }
 
         //auto empty bin
-        BinAutoEmpty(context = applicationContext)
+        binAutoEmpty(context = applicationContext)
 
         //start ui
         startMainMenu()
@@ -135,7 +133,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         //learn screen
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current) }
                         //menu that displays flashcards in opened deck
-                        composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
+                        composable("deck_menu") { DeckScreen(context = LocalContext.current,navController) }
                         //settings menu
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
                         //deck adding screen
@@ -151,7 +149,7 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         //screen to get flashcards from image
                         composable("image_get") { ImagePickerScreen(navController = navController, LocalContext.current) }
                         //language picker screen
-                        composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }
+                        composable("language_choose") { ChooseLanguage(context = LocalContext.current, navController = navController, { Translations -> updateSetting("Language", Translations); loadMap(context = applicationContext) }) }
                         //screen displaying flashcards due today
                         composable("fsrs_due_today") { DueToday(context = LocalContext.current, navController = navController) }
                     }

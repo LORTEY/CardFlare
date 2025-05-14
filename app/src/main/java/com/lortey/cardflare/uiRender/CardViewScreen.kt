@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.Deck
 import com.lortey.cardflare.R
-import com.lortey.cardflare.getDeck
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlinx.coroutines.launch
@@ -49,7 +48,7 @@ import kotlinx.coroutines.launch
 @ExperimentalSnapperApi
 @Composable
 fun CardMenu(navController: NavController){ //is the menu you see when viewing individual flashcards in a deck
-    val openedTarget: Deck = currentOpenedDeck.value
+    val openedTarget: Deck = currentOpenedDeck
     val cards = openedTarget.cards
     var isFlipped by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -60,7 +59,7 @@ fun CardMenu(navController: NavController){ //is the menu you see when viewing i
         animationSpec = tween(durationMillis = 600, easing = LinearOutSlowInEasing), label = ""
     )
     LaunchedEffect(Unit) {
-        listState.scrollToItem(currentOpenFlashCard.value)
+        listState.scrollToItem(currentOpenFlashCard)
     }
 
     Column(

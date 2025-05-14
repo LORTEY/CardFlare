@@ -1,7 +1,6 @@
 package com.lortey.cardflare.uiRender
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -68,7 +67,7 @@ import com.lortey.cardflare.sortDecks
 fun MainMenuRender(navController: NavHostController, context: Context, permissionGranter:() -> Unit, arePermissionsMissing:()->Boolean) {
 
     var searchQuery by remember { mutableStateOf("") }
-    var isAscending by remember { mutableStateOf(true) }
+    val isAscending by remember { mutableStateOf(true) }
     var selectMode by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         decks = loadData(filename = "", context = context)
@@ -393,7 +392,7 @@ fun SlideMenuContent(navController: NavController){
         .padding(10.dp)
         .clickable { navController.navigate("fsrs_due_today")}){
         Icon(
-            painter = painterResource(id = R.drawable.delete),
+            painter = painterResource(id = R.drawable.intelligent),
             contentDescription = "chart",
             tint = MaterialTheme.colorScheme.primary,
         )

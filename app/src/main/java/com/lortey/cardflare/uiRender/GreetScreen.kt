@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,14 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.lortey.cardflare.getTranslation
-import com.lortey.cardflare.translations
-import com.lortey.cardflare.typeOfTranslation
+import com.lortey.cardflare.Translations
+import com.lortey.cardflare.TypeOfTranslation
 import com.lortey.cardflare.updateSetting
 import kotlinx.coroutines.delay
 import java.util.Locale
@@ -42,7 +42,7 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
     var permissionsMissing by remember { mutableStateOf(arePermissionsMissing()) }
     val locale = Locale.getDefault().toString()
     if(locale == "pl"){
-        updateSetting("Language", translations("Polski", typeOfTranslation.Default))
+        updateSetting("Language", Translations("Polski", TypeOfTranslation.Default))
     }
     // Auto-refreshing coroutine
     LaunchedEffect(Unit) {

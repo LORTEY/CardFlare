@@ -2,7 +2,6 @@ package com.lortey.cardflare
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

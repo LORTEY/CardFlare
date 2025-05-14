@@ -1,24 +1,18 @@
 package com.lortey.cardflare.uiRender
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
-import android.icu.text.Transliterator.Position
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntOffsetAsState
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,49 +21,40 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.ViewConfiguration
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.core.view.ViewCompat
+import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import com.lortey.cardflare.AppSettings
 import com.lortey.cardflare.Flashcard
 import com.lortey.cardflare.Rating
 import com.lortey.cardflare.reviewCard
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
-import androidx.core.graphics.toColorInt
 import kotlin.random.Random.Default.nextBoolean
 
 //Learn screen
 @Composable
 fun LearnScreen(navController: NavController, context: Context, atFinnish:(() -> Unit)? = null) {
-    var currentCardIndex by remember { mutableStateOf(0) }
+    var currentCardIndex by remember { mutableIntStateOf(0) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -243,7 +228,7 @@ fun SwipeableFlashcard(
                     )
                     val closestCorner = getClosestCorner(positionX = offset.value.x, positionY = offset.value.y, context = context, swipeThreshold)
                     //Rating enumerator
-                    Text(text = actionsAndColors[closestCorner]?.second.toString() ?: "",
+                    Text(text = actionsAndColors[closestCorner]?.second.toString(),
                         color = actionsAndColors[closestCorner]!!.first.copy(alpha = alphaValue),
                         modifier =  Modifier.align(Alignment.Center),
                         style = MaterialTheme.typography.displaySmall)

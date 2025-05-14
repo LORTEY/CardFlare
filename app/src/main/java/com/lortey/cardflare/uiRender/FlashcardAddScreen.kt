@@ -3,7 +3,6 @@ package com.lortey.cardflare.uiRender
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,25 +33,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.lortey.cardflare.Flashcard
-import com.lortey.cardflare.addFlashcard
-import com.lortey.cardflare.createTranslator
-import com.lortey.cardflare.loadData
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translator
+import com.lortey.cardflare.Flashcard
 import com.lortey.cardflare.R
-import com.lortey.cardflare.addDeck
-import com.lortey.cardflare.addTag
-import com.lortey.cardflare.getDeck
+import com.lortey.cardflare.addFlashcard
+import com.lortey.cardflare.createTranslator
 import com.lortey.cardflare.getDefaultFSRSValue
 import com.lortey.cardflare.getDueDate
 import com.lortey.cardflare.getTranslation
-import com.lortey.cardflare.loadTags
+import com.lortey.cardflare.loadData
 import com.lortey.cardflare.removeFlashcard
-import com.lortey.cardflare.tags
-import java.io.File
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.util.Locale
 
 var currentModifiedFlashcard:Flashcard? = null
@@ -66,9 +56,9 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
     var translator:Translator? by remember(Unit) { mutableStateOf(null)}
     var revTranslator:Translator? by remember(Unit) { mutableStateOf(null)}
     LaunchedEffect(Unit) {
-        if(currentOpenedDeck.value.sideALang != null && currentOpenedDeck.value.sideBLang != null){
-            val sideALang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.value.sideALang };
-            val sideBLang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.value.sideBLang };
+        if(currentOpenedDeck.sideALang != null && currentOpenedDeck.sideBLang != null){
+            val sideALang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.sideALang };
+            val sideBLang = TranslateLanguage.getAllLanguages().find{ Locale(it).displayName == currentOpenedDeck.sideBLang };
             if(sideBLang != null && sideALang != null){
                 translator = createTranslator( sideALang,sideBLang)
                 translator!!.downloadModelIfNeeded()
@@ -179,7 +169,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                                 if(currentModifiedFlashcard == null) {
                                     val fsrsValue = getDefaultFSRSValue(context)
                                     addFlashcard(
-                                        currentOpenedDeck.value.filename,
+                                        currentOpenedDeck.filename,
                                         Flashcard(
                                             0,
                                             SideA = if (textStateA.isNotBlank()) textStateA else defaultStateA,
@@ -204,12 +194,12 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                                         ), context = context
                                     )
                                 }
-                                currentOpenedDeck = IndexTracker(
+                                currentOpenedDeck =
                                     loadData(
-                                        filename = currentOpenedDeck.value.filename,
+                                        filename = currentOpenedDeck.filename,
                                         context = context
                                     )[0]
-                                )
+
                                 defaultStateA = ""
                                 defaultStateB = ""
                                 textStateA = ""

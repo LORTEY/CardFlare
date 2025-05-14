@@ -9,20 +9,14 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lortey.cardflare.ui.theme.Material3AppTheme
-import com.lortey.cardflare.uiRender.CardMenu
-import com.lortey.cardflare.uiRender.LaunchOnMenu
 import com.lortey.cardflare.uiRender.LearnScreen
-import com.lortey.cardflare.uiRender.MainMenuRender
 import com.lortey.cardflare.uiRender.MyOverlayComposable
 
 

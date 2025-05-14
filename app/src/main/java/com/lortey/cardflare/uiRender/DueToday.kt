@@ -33,14 +33,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.lortey.cardflare.R
-import com.lortey.cardflare.addDeck
-import com.lortey.cardflare.addFlashcard
-import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getDueCards
 import com.lortey.cardflare.getTranslation
-import java.io.File
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.ZoneId
 

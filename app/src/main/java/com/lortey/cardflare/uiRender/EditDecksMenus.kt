@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -77,7 +75,6 @@ import com.lortey.cardflare.getTranslation
 import com.lortey.cardflare.loadTags
 import com.lortey.cardflare.tags
 import com.lortey.cardflare.ui.theme.Material3AppTheme
-import com.lortey.cardflare.updateSetting
 import java.io.File
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -92,7 +89,7 @@ var flashcardsAddedToDeck:MutableList<Flashcard> = mutableListOf()
 fun AddDeckScreen(context: Context, navController: NavController){
     var DeckName by remember{ mutableStateOf("") }
     var tags by remember { mutableStateOf(listOf<Tag>()) }
-    var pickImage by remember { mutableStateOf(false) }
+    val pickImage by remember { mutableStateOf(false) }
     var sideALang:String? by remember { mutableStateOf(null) }
     var sideBLang:String? by remember { mutableStateOf(null) }
     LaunchedEffect(Unit) {
@@ -161,7 +158,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(vertical = 5.dp)
                     ) {
-                        tagItem(
+                        TagItem(
                             tag,
                             addTag = {
                                 deckToModify?.tags?.remove(tag)
@@ -494,7 +491,7 @@ fun AddDeckScreen(context: Context, navController: NavController){
                     .padding(50.dp)
                     .fillMaxSize()
                     .focusable()) {
-                    tagsMenu(context, {
+                    TagsMenu(context, {
                         Log.d("cardflare8", deckToModify!!.tags.toString());
                         tags = deckToModify?.tags?.toMutableStateList() ?: mutableStateListOf(Tag("empty", ""));
                         Log.d("cardflare81", tags.toMutableList().toString());
@@ -513,17 +510,12 @@ fun AddDeckScreen(context: Context, navController: NavController){
                 }
             }
         }
-
-        if(pickImage){
-
-        }
-        //Text("Add", Modifier.clickable { addDeck(context, name = DeckName, filename = URLEncoder.encode(DeckName, StandardCharsets.UTF_8.toString())); navController.popBackStack()})
-    }
+   }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun tagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
+fun TagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
 
     var tagsLocal by remember { mutableStateOf(tags) }
     LaunchedEffect(Unit) {
@@ -586,7 +578,7 @@ fun tagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
         )
         {
             items(tagsLocal) { tag ->
-                tagItem(
+                TagItem(
                     tag,
                     {
                         deckToModify?.tags?.add(tag);
@@ -616,7 +608,7 @@ fun tagsMenu(context: Context, reloadTags:() -> Unit, disappear:() -> Unit){
 }
 
 @Composable
-fun tagItem(tag: Tag, addTag: (() -> Unit)? = null, icon:Int = R.drawable.plus){
+fun TagItem(tag: Tag, addTag: (() -> Unit)? = null, icon:Int = R.drawable.plus){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -661,8 +653,9 @@ fun tagItem(tag: Tag, addTag: (() -> Unit)? = null, icon:Int = R.drawable.plus){
 @Composable
 fun ColorIndicator(
     color: Color,
+    modifier: Modifier = Modifier,
     size: Dp = 24.dp,
-    modifier: Modifier = Modifier
+
 ) {
     Box(
         modifier = modifier
@@ -674,7 +667,7 @@ fun ColorIndicator(
 
 @Composable
 @Preview
-fun preview2(){
+fun Preview2(){
     launchOnRuleToModify = remember {mutableStateOf(LaunchOnRule(name = "hii", appList = mutableListOf(), flashcardList = mutableListOf(), deckList = mutableListOf()))}
     // Apply Material 3 Theme with Dynamic Colors
     //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)

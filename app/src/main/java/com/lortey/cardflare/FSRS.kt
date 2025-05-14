@@ -1,7 +1,6 @@
 package com.lortey.cardflare
 
 import android.content.Context
-import android.util.Log
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
@@ -106,7 +105,7 @@ fun rankByDueDate(context: Context,deckList:List<Deck>? = null):List<Flashcard>{
 
 fun getDueCards(context: Context):List<Flashcard>{
     val cardsRanked = rankByDueDate(context)
-    var cardsDueNow:MutableList<Flashcard> = mutableListOf()
+    val cardsDueNow:MutableList<Flashcard> = mutableListOf()
     for (card in cardsRanked){
         if(card.due < System.currentTimeMillis() || isEpochMillisToday(card.due)){
             cardsDueNow.add(card)

@@ -47,7 +47,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.DismissState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -115,7 +114,7 @@ var appsInfo:List<AppInfo> = listOf()
 //preview
 @Composable
 @Preview
-fun preview(){
+fun Preview(){
     launchOnRuleToModify = remember {mutableStateOf(LaunchOnRule(name = "hii", appList = mutableListOf(), flashcardList = mutableListOf(), deckList = mutableListOf()))}
         // Apply Material 3 Theme with Dynamic Colors
         //Greeter(context = LocalContext.current,::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1)
@@ -141,7 +140,7 @@ fun preview(){
 @Composable
 fun LaunchOnMenu(context: Context, navController: NavController){
 
-    var apps = remember { mutableStateListOf<AppInfo>() }
+    val apps = remember { mutableStateListOf<AppInfo>() }
     var isLoading by remember { mutableStateOf(false) }
     var searchQuery by remember{ mutableStateOf("")}
     // Runs once when the composable enters composition
@@ -200,7 +199,7 @@ fun LaunchOnMenu(context: Context, navController: NavController){
 fun ModifyRule(context: Context,navController: NavController){
     val state by remember(launchOnRuleToModify.value) { mutableStateOf(launchOnRuleToModify.value) }
     var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
-    var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
+    val listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
     val apps by remember{mutableStateOf(appsInfo.toMutableList())}
     var appMap by remember(apps) { mutableStateOf( apps.associateBy { it.packageName }) }
     var appearAppAddMenu by remember { mutableStateOf(false) }
@@ -687,7 +686,7 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
         ) {
             Button(
                 onClick = {
-                    var decksToSelect = mutableListOf<Deck>()
+                    val decksToSelect = mutableListOf<Deck>()
                     decksLoaded.forEachIndexed { index, deck ->
                         if (decksSelected[index]) {
                             decksToSelect.add(deck)
@@ -709,7 +708,7 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
 }
 @Composable
 fun SearchableAppListLoad(apps:List<AppInfo>, context: Context){
-    var apps = remember { mutableStateListOf<AppInfo>() }
+    val apps = remember { mutableStateListOf<AppInfo>() }
     var isLoading by remember { mutableStateOf(false) }
     var searchQuery by remember{ mutableStateOf("")}
 
