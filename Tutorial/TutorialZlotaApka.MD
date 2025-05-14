@@ -6,4 +6,4 @@ Cardflare jest aplikacją stworzoną do zmuszania użytkownika do nauki fiszek w
 Cardflare jest aplikacją stworzoną do zmuszania użytkownika do nauki fiszek według ustawionego przez niego planu auto nauki. Wcelu osiągnięcia tego aplikacja potrzebuje dostępu do **statystyk użytkowania** oraz do opcji wyświetlaj nad innymi dla wyświetlania fiszek.
 
 ## Jak Używać?
-![Image1](/assets/images/Tutorial/Screenshot_20250514_205136_CardFlare.jpg)
+![Image1](https://assets/images/Tutorial/Screenshot_20250514_205136_CardFlare.jpg)
