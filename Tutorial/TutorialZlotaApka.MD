@@ -45,7 +45,7 @@ Otwórz **Opcje Auto Nauki**
 
 ### Opcje Auto Nauki
 W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się opcja dodaj zasadę. Kliknij ją.\
-![LaunchOnRule](Screenshot_20250514_205229_CardFlare.jpg)
+![LaunchOnRule](Screenshot_20250514_205229_CardFlare.jpg)\
 Ukaże ci się takie menu. Najpierw kliknij opcje **Dodaj Aplikację**. Ukaże ci się pop up, w którym możesz wybrać aplikacje. Dodaj dowolną aplikację klikając przycisk plus koło jej nazwy (Nie wszystkie aplikacje się tu wyświetlają, nie ma tu aplikacji systemowych. Jeżeli chcesz blokować np. Youtube musisz włączyć tę opcje w ustawieniach aplikacji.). Zamknij popup i zaznacz opcje **Aktywne przy odblokowaniu**. Teraz Kliknij opcje **Dodaj Deck**. Wybierz ostatnio dodany deck i zamknij okno pop upu. Kliknij przycisk **Zapisz Zasadę**. Wyłącz telefon i odblokuj go, spróbuj także otworzyć dodaną przed tem aplikację. Pojawią ci się te fiszki z wybranego decku, które powinny być najszybciej powtórzone. 
 
 ### Miłej Zabawy i Nauki z Cardflare

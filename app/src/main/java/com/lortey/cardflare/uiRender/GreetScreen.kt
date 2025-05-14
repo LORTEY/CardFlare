@@ -97,7 +97,7 @@ fun Greeter(context: Context, permissionGrant: () -> Unit, arePermissionsMissing
                             .padding(5.dp)
                             .clickable {
                                 val intent =
-                                    Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
+                                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/LORTEY/CardFlare/blob/main/Tutorial/TutorialZlotaApka.MD"))
                                 context.startActivity(intent)
                             },
                         color = MaterialTheme.colorScheme.onPrimary,
