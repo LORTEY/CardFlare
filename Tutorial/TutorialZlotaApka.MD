@@ -7,7 +7,7 @@ Cardflare jest aplikacją stworzoną do zmuszania użytkownika do nauki fiszek w
 
 ## Jak Używać? / SzybkiTutorial
 ###Menu Główne
-Po włączeniu aplikacji Znajdziesz się na ekranie głównym. W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się te opcje:
+Po włączeniu aplikacji Znajdziesz się na ekranie głównym. W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się te opcje:\
 ![Add Menu](Screenshot_20250514_205205_CardFlare.jpg)
 Jakoż, że inne opcje wymagają istnienia decków dodajmy nowy klikając Dodaj Deck.
 
@@ -21,7 +21,7 @@ Wrócisz na ekran dodawania, w którym możesz przetestować jeszcze jedną funk
 Znajdziesz się teraz na stronie głównej. Zauważ, że przytrzymanie nowo dodanego decku zaznacza go. Zaznaczony deck możesz zmodyfikować albo przenieść do kosza. Nie róbmy tego teraz. Odznacz deck i kliknij go.
 
 ###Menu fiszek
-Jesteś teraz w menu fiszek tak samo jak decki fiszki możesz zaznaczać albo klikać, aby otworzyć ekran scrollowania.  W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się te opcje:
+Jesteś teraz w menu fiszek tak samo jak decki fiszki możesz zaznaczać albo klikać, aby otworzyć ekran scrollowania.  W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się te opcje:\
 ![Flashcard Add Menu](Screenshot_20250514_205156_CardFlare.jpg)
 Opcja dodaj fiszkę otwiera ekran, w którym możesz dodawać fiszki korzystając ze wspomnianej funkcji auto uzupełniania (funkcja zacznie działać dopiero wtedy gdy odpowiednie modele się pobiorą).
 We wspomnianym menu ekranu masz opcję **Ucz się**. Kliknij ją. 
@@ -32,7 +32,7 @@ Na ekranie nauki ukazują ci się fiszki, które zaznaczyłeś lub jeśli nie za
 ###Więcej O Menu Głównym
 W górnej części menu głównego znajduje się pasek wyszukiwania. możesz w nim wpisać nazwę decku jakiego szukasz lub aby wyszukać po tagach wpisać **#nazwa_szukanego_taga**. W prawej części paska znajduje się menu sortowania, a w lewym menu ekranów kliknij je.
 
-###Menu Ekranów
+###Menu Ekranów\
 ![Pasek Ekranów](Screenshot_20250514_205136_CardFlare.jpg)
 Ukaże ci się taki pasek. Samemu możesz popróbować jakie funkcje zawiera każdy ekran bo nie będziemy się w to bardziej tutaj zagłębiać.
 Powinieneś widzieć kolejno:
@@ -44,7 +44,7 @@ Powinieneś widzieć kolejno:
 Otwórz **Opcje Auto Nauki**
 
 ###Opcje Auto Nauki
-W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się opcja dodaj zasadę. Kliknij ją.
+W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się opcja dodaj zasadę. Kliknij ją.\
 ![LaunchOnRule](Screenshot_20250514_205229_CardFlare.jpg)
 Ukaże ci się takie menu. Najpierw kliknij opcje **Dodaj Aplikację**. Ukaże ci się pop up, w którym możesz wybrać aplikacje. Dodaj dowolną aplikację klikając przycisk plus koło jej nazwy (Nie wszystkie aplikacje się tu wyświetlają, nie ma tu aplikacji systemowych. Jeżeli chcesz blokować np. Youtube musisz włączyć tę opcje w ustawieniach aplikacji.). Zamknij popup i zaznacz opcje **Aktywne przy odblokowaniu**. Teraz Kliknij opcje **Dodaj Deck**. Wybierz ostatnio dodany deck i zamknij okno pop upu. Kliknij przycisk **Zapisz Zasadę**. Wyłącz telefon i odblokuj go, spróbuj także otworzyć dodaną przed tem aplikację. Pojawią ci się te fiszki z wybranego decku, które powinny być najszybciej powtórzone. 
 
