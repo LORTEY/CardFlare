@@ -13,8 +13,8 @@ Jakoż, że inne opcje wymagają istnienia decków dodajmy nowy klikając Dodaj 
 
 ### Dodawnaie Decków
 Znajdujesz się teraz na ekranie dodawania decków. Z tąd możesz skonfigurować parametry nowego decku. Rozpocznijmy od dodania mu tagu. Kliknij dodaj tag i w pokazanym popupie wpisz nową nazwę taga np. pierwszy (nazwy nie mogą zawierać spacji) i kliknij plus koło tego pola aby dodać tag. Teraz naciśnij plus koło taga który pojawił się w liście poniżej aby dodać go do decku.
-Spróbujmy teraz dodać fiszki ze zdjęcia. Kliknij przycisk **Dodaj Ze Zdjęcia** i wybierz zdjęcie, z którego chcesz wgrać fiszki. Zdjęcie otworzy się na nowym ekranie. Na górze ekranu znajduje się napis Strona A albo Strona B. Kliknij go i w dropdownie wybierz strona A. Teraz przejedź palcem po ekranie zaznaczając boksy, w których znajdują się wartości jednej ze stron fiszek (możesz też klikać pojedyńcze fiszki). Kiedy wybierzesz już wszystkie znów kliknij napis na górze i wybierz stronę B a następnie powtórz czynność wybierając wartości Strony B. Kiedy Skończysz kliknij Przycisk **Następny**.
-####Tabela
+Spróbujmy teraz dodać fiszki ze zdjęcia. Kliknij przycisk **Dodaj Ze Zdjęcia** i wybierz zdjęcie, z którego chcesz wgrać fiszki. Zdjęcie otworzy się na nowym ekranie. Na górze ekranu znajduje się napis Strona A albo Strona B. Kliknij go i w dropdownie wybierz strona A. Teraz przejedź palcem po ekranie zaznaczając boksy, w których znajdują się wartości jednej ze stron fiszek (możesz też klikać pojedyńcze fiszki). Kiedy wybierzesz już wszystkie znów kliknij napis na górze i wybierz stronę B a następnie powtórz czynność wybierając wartości Strony B. Kiedy Skończysz kliknij Przycisk **Następny**.\
+#### Tabela
 Zobzczysz tabelę w której każda kolumna ma dwie opcje. Opcja **oka** przy wybraniu oka komórka jest ignorowana z tabeli. Opcja **link** łączy komórkę z komórką powyżej. Możesz spróbować teraz uporządkować tabelę wyrzucając komórki z błędnymi danymi i łącząc komórki zawierające te same definicje. Kiedy skończysz kliknij przycisk na dole.
 Wrócisz na ekran dodawania, w którym możesz przetestować jeszcze jedną funkcję - funkcja auto uzupełniania. Funkcja ta sprawia, że podczas dodawania fiszek strony będą automatycznie tłumaczone po to by ułatwić dodawanie. Możesz wybrać tutaj dwa dowolne języki po jednym na każdą stronę. Wybierz np. Polski i Angielski. Teraz w polu na samej górze ekranu wpisz nazwę nowego decku i kliknij przycisk **Dodaj** na dole strony.
 
@@ -32,7 +32,7 @@ Na ekranie nauki ukazują ci się fiszki, które zaznaczyłeś lub jeśli nie za
 ### Więcej O Menu Głównym
 W górnej części menu głównego znajduje się pasek wyszukiwania. możesz w nim wpisać nazwę decku jakiego szukasz lub aby wyszukać po tagach wpisać **#nazwa_szukanego_taga**. W prawej części paska znajduje się menu sortowania, a w lewym menu ekranów kliknij je.
 
-### Menu Ekranów\
+### Menu Ekranów
 ![Pasek Ekranów](Screenshot_20250514_205136_CardFlare.jpg)\
 Ukaże ci się taki pasek. Samemu możesz popróbować jakie funkcje zawiera każdy ekran bo nie będziemy się w to bardziej tutaj zagłębiać.
 Powinieneś widzieć kolejno:
