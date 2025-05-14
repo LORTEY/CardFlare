@@ -307,7 +307,7 @@ fun ImagePickerScreen(navController: NavController,context:Context) {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(onClick = { showTable = true }) {
-                        Text("Next")
+                        Text(getTranslation("Next"))
                     }
                 }
             }

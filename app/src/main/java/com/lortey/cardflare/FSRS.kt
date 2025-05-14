@@ -11,12 +11,13 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-
+//Rating of user memory of fsrs
 enum class Rating{
     GOOD, AGAIN, HARD, EASY
 }
 
     private var module:PyObject? = null
+
     private fun getPython(context: Context):Python{
         if (!Python.isStarted()) {
             Python.start(AndroidPlatform(context))
@@ -33,25 +34,32 @@ enum class Rating{
         module.callAttr("initialization")
     }
 
+    //parse to python previous fsrs value to getnew fsrs value based on how good user performed
     public fun reviewCard(context: Context, card: Flashcard, rating: Rating){
         val module = getModule(context)
-        Log.d("cardflare5", rating.toString())
+
         val returnedFsrsValue = module.callAttr("reviewCard", card.FsrsData, rating.toString()).toString()
+
+        //replace the flashcard swapping the fsrs value
         removeFlashcard(context = context, filename = card.FromDeck, card = card)
         addFlashcard(filename = card.FromDeck, flashcardContent = card.copy(FsrsData = returnedFsrsValue, due = getDueDate(context, returnedFsrsValue)), context = context, reassignID = false)
     }
+
+//default fsrs value for new flashcards
     public fun getDefaultFSRSValue(context: Context):String{
         val module = getModule(context)
         return module.callAttr("default_fsrs_value").toString()
     }
+
+//get due date of a flashcard based on the fsrs value
 fun getDueDate(context: Context, fsrsValue:String):Long{
     val module = getModule(context)
     val ret = module.callAttr("get_due_date", fsrsValue).toString()
-    Log.d("cardflare5", isoToEpochMillis(ret).toString())
+
     return isoToEpochMillis(ret)
 }
 
-
+// is epochi millis time today
 fun isEpochMillisToday(millis: Long, timeZone: ZoneId = ZoneId.systemDefault()): Boolean {
     // Convert millis to Instant and then to ZonedDateTime in target timezone
     val dateTime = Instant.ofEpochMilli(millis).atZone(timeZone)
@@ -63,7 +71,7 @@ fun isEpochMillisToday(millis: Long, timeZone: ZoneId = ZoneId.systemDefault()):
     return dateTime.toLocalDate() == today
 }
 
-
+// iso time to epoch millis
 fun isoToEpochMillis(isoString: String): Long {
     // First standardize the format by replacing space with 'T' for strict ISO-8601
     val standardized = isoString.replace(" ", "T")
@@ -75,6 +83,7 @@ fun isoToEpochMillis(isoString: String): Long {
     return odt.toInstant().toEpochMilli()
 }
 
+// sort list of flashcards by their due date
 fun rankByDueDate(context: Context,deckList:List<Deck>? = null):List<Flashcard>{
     var data = listOf<Deck>()
     if(deckList == null){
@@ -90,8 +99,10 @@ fun rankByDueDate(context: Context,deckList:List<Deck>? = null):List<Flashcard>{
     }
 
     listOfCards = listOfCards.sortedBy { it.due }.toMutableList()
+
     return listOfCards
 }
+
 
 fun getDueCards(context: Context):List<Flashcard>{
     val cardsRanked = rankByDueDate(context)
@@ -100,6 +111,7 @@ fun getDueCards(context: Context):List<Flashcard>{
         if(card.due < System.currentTimeMillis() || isEpochMillisToday(card.due)){
             cardsDueNow.add(card)
         }else{
+            //break if card is not today because the list is sorted
             break
         }
     }

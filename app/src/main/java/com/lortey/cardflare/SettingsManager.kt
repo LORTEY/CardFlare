@@ -17,7 +17,7 @@ fun updateSetting(key: String, newState: Any) {//the settings map is rebuilt in 
     AppSettings[key] = currentEntry.copy(state = newState) // Triggers recomposition
     Log.d("cardflare", AppSettings.toString())
 }
-
+//save settings to file run on closing the setting screen
 fun saveSettings(context: Context){
     val json = Json {
         prettyPrint = true
@@ -30,6 +30,7 @@ fun saveSettings(context: Context){
     file.writeText(jsonString)
 }
 
+//load settings from file
 fun loadSettings(context: Context) {
     val file = File(context.getExternalFilesDir(null), "settings.json")
     if (file.exists()) {
@@ -38,6 +39,8 @@ fun loadSettings(context: Context) {
         decodeSettings(map = map)
     }
 }
+
+//decode savefile to usable setting states
 private fun decodeSettings(map: Map<String,String>){
     map.forEach{(key, value) ->
         if(AppSettings[key]?.type != null) {
@@ -47,6 +50,8 @@ private fun decodeSettings(map: Map<String,String>){
     }
     updateSetting("Use Dynamic Color", AppSettings["Use Dynamic Color"]!!.state)
 }
+
+//encode setting names and states to savable map
 private fun encodeSettings():Map<String,String> {
     val mappedSettings: MutableMap<String, String> = mutableMapOf()
     val json = Json {
@@ -67,6 +72,8 @@ private fun encodeSettings():Map<String,String> {
     }
     return mappedSettings
 }
+
+//convert datatypes of saved settings from string
 private fun settingTypeToType(input:String, type:SettingsType, settingEntry:SettingEntry? = null):Any{
     when (type){
         SettingsType.BOOLEAN -> {
@@ -107,6 +114,8 @@ private fun settingTypeToType(input:String, type:SettingsType, settingEntry:Sett
 
     }
 }
+
+//convert serialized data class
 fun deserializeDataclass(input:String, type:String):Any{
     val json = Json { ignoreUnknownKeys = true }
     when(type){
@@ -119,6 +128,7 @@ fun deserializeDataclass(input:String, type:String):Any{
 @Serializable
 sealed interface StateData
 
+//Settings
 val AppSettings = mutableStateMapOf(
     "Choose Theme" to SettingEntry(
         category = Category.Appearance,
@@ -176,35 +186,33 @@ val AppSettings = mutableStateMapOf(
         navChoose = "language_choose"
         )
 )
+
+//Setting
 data class SettingEntry(
     val category: Category,
     val name: String,
     val description: String?,
-    val type: SettingsType,
-    var state: Any,
-    val customChooser: Chooser? = Chooser.NonSpecified,
-    val sliderData: Map<String,Float>? = null,
-    val grayedOutWhen: Boolean = false,
+    val type: SettingsType, // type of setting
+    var state: Any, // state
+    val customChooser: Chooser? = Chooser.NonSpecified, // should have a non default choosing method for type
+    val sliderData: Map<String,Float>? = null, // used for sliders
+    val grayedOutWhen: Boolean = false, // setting disabled when
     val dropDownMenuEntries: Map<String,Any>? = null,
-    val runtimeRun:Boolean = false,
-    val navChoose :String?  = null,
-    val stateDataclass: String = ""
-){
-    /*init {
-        when (type) {
-            SettingsType.BOOLEAN -> require(state is Boolean) {"state for type BOOLEAN must be a Boolean"}
-            SettingsType.SLIDER -> require(state is Int) {"state for type SLIDER must be an Int"}
-            SettingsType.COLOR_PICKER -> require(state is String) {"state for type COLOR_PICKER must be a String"}
-        }
-    }*/
-}
+    val runtimeRun:Boolean = false, // should be executed when app is tun
+    val navChoose :String?  = null, // to choose a setting navigate to another screen
+    val stateDataclass: String = "" //type of dataclass of saved state used for deserialization
+)
+
+//Used for app themes
 enum class Themes{
     DARK, LIGHT, AUTO
 }
 
+//used for bin auto empty time
 enum class Time{
     DAY, WEEK, TWO_WEEKS, MONTH, TWO_MONTHS, DEBUG
 }
+
 
 enum class SettingsType {
     BOOLEAN, SLIDER, COLOR_PICKER, CHOOSE, ACTION

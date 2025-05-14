@@ -66,23 +66,10 @@ import kotlin.math.sqrt
 import androidx.core.graphics.toColorInt
 import kotlin.random.Random.Default.nextBoolean
 
-
+//Learn screen
 @Composable
 fun LearnScreen(navController: NavController, context: Context, atFinnish:(() -> Unit)? = null) {
     var currentCardIndex by remember { mutableStateOf(0) }
-    //CardsToLearn = arrayOf( Flashcard(1,"something", "sideB"))
-    if (CardsToLearn.isEmpty()) {
-        //throw IllegalArgumentException("LearnScreen called not CardsToLearn is null")
-        navController.popBackStack()
-    }
-
-    // Reverse only once when the screen first loads
-    /*LaunchedEffect(Unit) {
-        if (!isReversed && CardsToLearn != null) {
-            CardsToLearn.reverse()
-            isReversed = true
-        }
-    }*/
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -98,10 +85,7 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
                     currentCardIndex += 1
                     reviewCard(context = context, CardsToLearn[cardIndex], rating)
                 },
-                modifierParsed = Modifier.background(
-                    MaterialTheme.colorScheme.inverseOnSurface,
-                    shape = RoundedCornerShape(20.dp)
-                ),
+
                 onTop = CardsToLearn.size - cardIndex - 1 == currentCardIndex,
                 context = context
             )
@@ -119,18 +103,18 @@ fun LearnScreen(navController: NavController, context: Context, atFinnish:(() ->
         navController.popBackStack()
     }
 }
+
+//SwipeableFlashcard
 @Composable
 fun SwipeableFlashcard(
     flashcard: Flashcard,
     onSwipe: (Rating) -> Unit,
-    modifierParsed: Modifier,
     onTop: Boolean,
     context: Context) {
     val displayMetrics = context.resources.displayMetrics
     val screenWidth = displayMetrics.widthPixels
     val screenHeight = displayMetrics.heightPixels
-    var offset = remember { Animatable(IntOffset(0, 0), IntOffset.VectorConverter) }
-
+    val offset = remember { Animatable(IntOffset(0, 0), IntOffset.VectorConverter) }//offset of flashcard
     val coroutineScope = rememberCoroutineScope()
     val appSettings = AppSettings
     require(appSettings["Flashcard Swipe Threshold"]?.state is Float)
@@ -276,6 +260,8 @@ inline fun Color.darken(darkenBy: Float = 0.3f): Color {
         alpha = alpha
     )
 }
+
+//get desired opacity
 fun alphaValueBasedOnDistance(positionX: Int, positionY:Int, context: Context, minimalSwipeThreshold:Float):Float{
     val displayMetrics = context.resources.displayMetrics
     val screenWidth = displayMetrics.widthPixels
@@ -290,8 +276,6 @@ fun alphaValueBasedOnDistance(positionX: Int, positionY:Int, context: Context, m
 //val configuration = LocalConfiguration.current
 fun getClosestCorner(positionX: Int, positionY:Int, context: Context, minimalSwipeThreshold:Float):Points{
     val displayMetrics = context.resources.displayMetrics
-    val screenWidth = displayMetrics.widthPixels
-    val screenHeight = displayMetrics.heightPixels
 
     if(distanceFrom(positionX,positionY, 0, 0   ) < minimalSwipeThreshold){
         return Points.CENTRE
@@ -321,6 +305,7 @@ enum class Points{
     BOTTOM_RIGHT
 }
 
+//Colors of each corner option swipe
 public val actionsAndColors : Map<Points,Pair<Color, Rating?>> =
     mapOf(
         Points.TOP_RIGHT to Pair(Color("#33cc33".toColorInt()), Rating.EASY),

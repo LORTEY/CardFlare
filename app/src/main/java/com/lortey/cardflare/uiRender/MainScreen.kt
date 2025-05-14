@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -62,17 +63,20 @@ import com.lortey.cardflare.loadData
 import com.lortey.cardflare.multipleDeckMoveToBin
 import com.lortey.cardflare.sortDecks
 
-
+//main screen
 @Composable
 fun MainMenuRender(navController: NavHostController, context: Context, permissionGranter:() -> Unit, arePermissionsMissing:()->Boolean) {
-    Log.d("cardflare2", arePermissionsMissing().toString())
-    //var decks by remember { mutableStateOf(loadData(filename = "", context = context)) }
+
     var searchQuery by remember { mutableStateOf("") }
     var isAscending by remember { mutableStateOf(true) }
     var selectMode by remember { mutableStateOf(false) }
-    decks = loadData(filename = "", context = context)
-    var decksImage by remember { mutableStateOf(decks) }
-    var appear by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        decks = loadData(filename = "", context = context)
+    }
+
+    var decksImage by remember { mutableStateOf( loadData(filename = "", context = context)) }//local copy of decks
+    var appear by remember { mutableStateOf(false) } //appear slide menu
+
     qualifiedDecks = sortDecks(searchQuery, decksImage, sortType = sortType, isAscending)
     decksSelected = remember(Unit) {  // Runs only once
         mutableStateListOf<Boolean>().apply {
@@ -87,7 +91,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
             navController.popBackStack()
         }
     }
-    if(renderMainMenu){
+    if(renderMainMenu){ // no use case
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
@@ -116,8 +120,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         )
                         {
-                            //files = listOf("ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu","ghf", "dfg","wedfhiuoidu","sdhe","sdiu")
-                            items(qualifiedDecks.size) { index ->
+                            items(qualifiedDecks.size) { index -> // render decks in grid
                                 Text(
                                     text = qualifiedDecks[index].name,
                                     color = if (decksSelected[index]) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground,
@@ -148,7 +151,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                                             selectMode = false
                                                         }
                                                     } else {
-                                                        currentOpenedDeck = IndexTracker(qualifiedDecks[index])
+                                                        currentOpenedDeck = qualifiedDecks[index]
                                                         navController.navigate("deck_menu")
                                                     }
                                                 }
@@ -157,19 +160,11 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                     maxLines = 3,
                                     overflow = TextOverflow.Ellipsis
                                 )
-
-
                             }
                         }
-                        //var selectMode by remember { mutableStateOf(false) }
-                        Log.d("cardflare2", qualifiedDecks.toString())
-                        //UniversalGrid(selectMode,{selectMode = true}, {selectMode = false}, navController, qualifiedDecks.map {it.name},
-                        //    TrackIndex = false, deckTracker = currentOpenedDeck,
-                        //    decks = qualifiedDecks, onClickAction = {navController.navigate("deck_menu")})
 
-                        // Add menu
+                        // Will make all menus hide if box and not them is clicked
                         if (appearAddMenu || appear) {
-                            // Will make all menus hide if box and not them is clicked
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -184,13 +179,19 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             )
                         }
 
+                        //Plus menu
                         Column(modifier = Modifier.align(Alignment.BottomEnd)) {
                             Column(horizontalAlignment = Alignment.End,
                                 modifier = Modifier
-                                    //.width(128.dp)
                                     .align(Alignment.End)) {
                                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
-                                    listOf(AddMenuEntry("Add Deck", R.drawable.create_empty, Action = { flashcardsAddedToDeck.clear(); navController.navigate("deck_add_screen") }),
+                                    listOf(
+                                        //add new deck
+                                        AddMenuEntry("Add Deck", R.drawable.create_empty, Action = {
+                                            deckToModify = null;
+                                            flashcardsAddedToDeck.clear();
+                                            navController.navigate("deck_add_screen") }),
+                                        //move selected decks to bin
                                         AddMenuEntry(Name = "Remove Decks", Icon = R.drawable.delete,
                                             Action = {
                                                 multipleDeckMoveToBin(context = context, decks = qualifiedDecks, selected = decksSelected)
@@ -202,15 +203,16 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                                                 )
                                                 selectMode = false
                                             }),
-                                        AddMenuEntry(Name = "Edit Deck", Icon = R.drawable.apps, Action = {
+                                        //edit selected deck
+                                        AddMenuEntry(Name = "Edit Deck", Icon = R.drawable.edit, Action = {
                                             flashcardsAddedToDeck.clear()
                                             if (decksSelected.count{it} == 1){
                                                 deckToModify = qualifiedDecks[decksSelected.indexOf(true)]
                                                 navController.navigate("deck_add_screen")
                                             }
-
                                         })
-                                    ))
+                                    )
+                                )
                             }
                         }
                     }
@@ -303,6 +305,7 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                             }
                         }
                     }
+                    //Fade Effect
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -338,28 +341,15 @@ fun MainMenuRender(navController: NavHostController, context: Context, permissio
                     }
                 }
             }
-
+            //Greeter pop up
             Greeter(context, permissionGranter, arePermissionsMissing)
-
-
         }
     }
 }
+
 // definition used for rendering components of left slide menu used by MainMenuRender function
 @Composable
 fun SlideMenuContent(navController: NavController){
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)
-        .clickable { navController.navigate("settings") }){
-        Icon(
-            painter = painterResource(id = R.drawable.settings),
-            contentDescription = "chart",
-            tint = MaterialTheme.colorScheme.primary,
-        )
-        Text(text = getTranslation("Settings"), color = MaterialTheme.colorScheme.primary)
-
-    }
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -376,6 +366,19 @@ fun SlideMenuContent(navController: NavController){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp)
+        .clickable { navController.navigate("settings") }){
+        Icon(
+            painter = painterResource(id = R.drawable.settings),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(text = getTranslation("Settings"), color = MaterialTheme.colorScheme.primary)
+
+    }
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
         .clickable { navController.navigate("launch_on_manager")}){
         Icon(
             painter = painterResource(id = R.drawable.apps),
@@ -383,17 +386,6 @@ fun SlideMenuContent(navController: NavController){
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(text = getTranslation("Launch On Options"), color = MaterialTheme.colorScheme.primary)
-    }
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)
-        .clickable { navController.navigate("bin_screen")}){
-        Icon(
-            painter = painterResource(id = R.drawable.delete),
-            contentDescription = "chart",
-            tint = MaterialTheme.colorScheme.primary,
-        )
-        Text(text = getTranslation("Bin"), color = MaterialTheme.colorScheme.primary)
     }
 
     Row(modifier = Modifier
@@ -406,6 +398,18 @@ fun SlideMenuContent(navController: NavController){
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(text = getTranslation("Cards Due Today"), color = MaterialTheme.colorScheme.primary)
+    }
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clickable { navController.navigate("bin_screen")}){
+        Icon(
+            painter = painterResource(id = R.drawable.delete),
+            contentDescription = "chart",
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Text(text = getTranslation("Bin"), color = MaterialTheme.colorScheme.primary)
     }
 }
 

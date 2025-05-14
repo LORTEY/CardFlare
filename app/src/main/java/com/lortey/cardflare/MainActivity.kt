@@ -55,32 +55,38 @@ class MainActivity : androidx.activity.ComponentActivity(){
 
         super.onCreate(savedInstanceState)
 
+        //register a kill this activity broadcaster used by overlay activity
         listenToKillYourselfBroadcast()
 
         val intent = Intent(this, AppMonitorService::class.java)
         ContextCompat.startForegroundService(this, intent)
         enableEdgeToEdge()
+
+        //load translation map
         loadMap(applicationContext)
-        //remap(context = applicationContext)
+
+        //load launch on rules
         launchOnRules = loadLaunchOnRules(applicationContext)
+
+        //create proper FilesDir directory structure if missing
         EnsureDirectoryStructure(context = applicationContext)
-        Log.d("cardflareLanguages", getAllSupportedLanguages().toString())
-        Log.d("cardflare5", getDueCards(applicationContext).toString())
+
+        //Ask for notification permissions android 13+
         if (Build.VERSION.SDK_INT >= 33){
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.POST_NOTIFICATIONS),101)
         }
+
+        //auto empty bin
         BinAutoEmpty(context = applicationContext)
+
+        //start ui
         startMainMenu()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
-        saveMap(applicationContext, "extendedMap")
         // Unregister the receiver to avoid memory leaks
         unregisterReceiver(receiver)
-        //saveMap(applicationContext)
-        Log.d("MainActivity", "Receiver unregistered")
     }
 
     // listens to broadcast that kills this activity when overlay activity starts
@@ -118,26 +124,42 @@ class MainActivity : androidx.activity.ComponentActivity(){
                         navController = navController,
                         startDestination = "main_menu"
                     ) {
+                        //all paths
+
+                        //menu of launch on rules
                         composable("launch_on_manager") { LaunchOnMenu(navController = navController, context = LocalContext.current) }
+                        //home screen
                         composable("main_menu") { MainMenuRender(navController, context = LocalContext.current, ::checkAndRequestPermissions1, arePermissionsMissing = ::areAnyPermissionsMissing1) }
+                        // screen that lets you scroll all cards in deck
                         composable("card_menu") { CardMenu(navController) }
+                        //learn screen
                         composable("learn_screen") { LearnScreen(navController,context = LocalContext.current) }
+                        //menu that displays flashcards in opened deck
                         composable("deck_menu") { deckScreen(context = LocalContext.current,navController) }
+                        //settings menu
                         composable("settings") { SettingsMenu(navController,context = LocalContext.current) }
+                        //deck adding screen
                         composable("deck_add_screen") { AddDeckScreen(context = LocalContext.current, navController) }
+                        //flashcard adding screen
                         composable("add_flashcard") { AddFlashcardScreen(context = LocalContext.current, navController = navController) }
+                        // bin view decks in bin screen
                         composable("bin_screen") { BinRender(context = LocalContext.current, navController = navController)}
+                        // bin view cards in opened deck in bin
                         composable("bin_cards_view") { BinCards(context = LocalContext.current, navController = navController) }
+                        //screen to modify opened launch on rule
                         composable("modify_rule") { ModifyRule(context = LocalContext.current, navController = navController) }
+                        //screen to get flashcards from image
                         composable("image_get") { ImagePickerScreen(navController = navController, LocalContext.current) }
+                        //language picker screen
                         composable("language_choose") { chooseLanguage(context = LocalContext.current, navController = navController, { translation -> updateSetting("Language", translation); loadMap(context = applicationContext) }) }
+                        //screen displaying flashcards due today
                         composable("fsrs_due_today") { DueToday(context = LocalContext.current, navController = navController) }
                     }
                 }
             }
         }
     }
-
+    //check and request missing permissions
     private fun checkAndRequestPermissions1() {
         // List of permissions to check
         val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -197,6 +219,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
             STORAGE_PERMISSION_CODE
         )
     }
+
+    //permissions to get insights on what app is now being used
     private fun hasUsageStatsPermission(): Boolean {
         val appOps = getSystemService(APP_OPS_SERVICE) as AppOpsManager
         val mode = appOps.checkOpNoThrow(
@@ -205,6 +229,8 @@ class MainActivity : androidx.activity.ComponentActivity(){
         )
         return mode == AppOpsManager.MODE_ALLOWED
     }
+
+    //just check missing permissions
     private fun areAnyPermissionsMissing1(): Boolean {
         // Check storage permission
         val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE

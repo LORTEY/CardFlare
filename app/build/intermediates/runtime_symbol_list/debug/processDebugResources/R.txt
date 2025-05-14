@@ -723,6 +723,7 @@ int drawable ic_launcher_background 0x7f070079
 int drawable ic_launcher_foreground 0x7f07007a
 int drawable ic_launcher_foreground_logo 0x7f07009d
 int drawable info 0x7f07007b
+int drawable intelligent 0x7f07009e
 int drawable learn 0x7f07007c
 int drawable link 0x7f07007d
 int drawable logo 0x7f07007e
@@ -750,6 +751,7 @@ int drawable redo 0x7f070093
 int drawable settings 0x7f070094
 int drawable sort 0x7f070095
 int drawable sort_ascending 0x7f070096
+int drawable swap 0x7f07009f
 int drawable test_level_drawable 0x7f070097
 int drawable tooltip_frame_dark 0x7f070098
 int drawable tooltip_frame_light 0x7f070099

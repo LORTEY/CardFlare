@@ -134,7 +134,7 @@ fun AddFlashcardScreen(navController: NavController, context: Context){
                 }
 
             }) {
-                Icon(painter = painterResource(id = R.drawable.nav_arrow_left),
+                Icon(painter = painterResource(id = R.drawable.swap),
                     contentDescription = "Add Tag",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier

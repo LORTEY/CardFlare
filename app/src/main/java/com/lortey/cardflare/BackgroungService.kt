@@ -35,6 +35,7 @@ public var currentService:AppMonitorService? = null
 class AppMonitorService : Service() {
     // This is the foreground service that checks if certain apps are open and starts OverlayActivity
     // I dont know why it does not show a notification but it seems not to be closing automatically so its good
+    //it now does show notification
     private val handler = Handler(Looper.getMainLooper())
     private val checkInterval = 2000L // Recheck every 2 seconds
     private var currentlyBlockedApps:HashSet<String> = hashSetOf()
@@ -42,39 +43,52 @@ class AppMonitorService : Service() {
     private var unlockReceiver: BroadcastReceiver? = null
     override fun onCreate() {
         super.onCreate()
+
+        //so functions can get called when user present
         EventBus.getDefault().register(this)
+
+        //reciever to get userpresent so phone unlocked
         unlockReceiver = UnlockReceiver()
         currentService = this
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_USER_PRESENT)
         registerReceiver(unlockReceiver, filter)
+
+        //Create Notification must be present for mandroid not to kiill service
         createNotificationChannel()
         startForeground(1, createNotification())
-        //Starts monitoring
+
+            //updates currently blocked apps every minute
         val updateApps = CoroutineScope(Dispatchers.Default).launch {
             while (isActive) {
                 updateBlockedApps()
-                delay(30_000L)
+                delay(60_000L)
             }
         }
+
+        //Starts monitoring on top apps
         startMonitoring()
     }
 
 
     fun startMonitoring() {
         var previousApp = ""
+
         handler.post(object : Runnable {
             override fun run() {
                 val currentApp = getForegroundApp(this@AppMonitorService)
-                previousApp?.let { Log.d("cardflareBackgroundprevious", it) }
-                if((currentApp != null && previousApp != currentApp && currentApp != "com.lortey.cardflare" )|| overwriteDecisionToLearn) {
+
+                if((currentApp != null && previousApp != currentApp //dont run if app was already checked
+                            && currentApp != "com.lortey.cardflare" ) // dont count overlay as ap
+                    || overwriteDecisionToLearn ) {// run anyway if blocked apps were updated and currently blocked app which was not yet blocked should now be blocked
+
                     Thread.sleep(100) // A bug fix it used to randomly pop up when using some apps so i make sure here that this app is really on top
-                    currentApp?.let { Log.d("cardflareBackgroundcurrent", it) }
-                    if(currentApp == getForegroundApp(this@AppMonitorService)) {
-                        previousApp = currentApp ?: ""
-                        overwriteDecisionToLearn = false
-                        if (currentApp in currentlyBlockedApps) {
-                            val randomCards = rankByDueDate(
+
+                    if(currentApp == getForegroundApp(this@AppMonitorService)) { //recheck if app is trurly being used
+                        previousApp = currentApp ?: "" // reset previous app to current app
+                        overwriteDecisionToLearn = false // reset this as it already checked this app
+                        if (currentApp in currentlyBlockedApps) { // if app is currently blocked
+                            val randomCards = rankByDueDate( // get 3 flashcards with smallest due date to study
                                 context = applicationContext,
                                 deckList = deckNamesToDeckList(
                                     getRuleFromApp(
@@ -82,8 +96,8 @@ class AppMonitorService : Service() {
                                     )!!.deckList.toList(), context = applicationContext
                                 )
                             ).take(3)
-                            Log.d("cardflare5", randomCards.toString())
-                            if (randomCards != null) {
+
+                            if (randomCards.isNotEmpty()) { // if there are cards to check run learn screen in overlay
                                 CardsToLearn = randomCards.toMutableList()
                                 startOverlay()
                             }
@@ -94,16 +108,20 @@ class AppMonitorService : Service() {
             }
         })
     }
+
+    //updates currently blocked apps
     private suspend fun updateBlockedApps(){
-        val previousBlockedApps = currentlyBlockedApps
-        Log.d("cardflare4prev",previousBlockedApps.toString())
-        currentlyBlockedApps = generateSetOfBlockedApps()
-        Log.d("cardflare4",currentlyBlockedApps.toString())
+        val previousBlockedApps = currentlyBlockedApps// to check if currently used app is not just now being blocked
+
+        currentlyBlockedApps = generateSetOfBlockedApps()//Get currently blocked set of package names
+
         val currentApp = getForegroundApp(this@AppMonitorService)
-        if(currentApp in currentlyBlockedApps && currentApp !in previousBlockedApps){
+        if(currentApp in currentlyBlockedApps && currentApp !in previousBlockedApps){ // if app was not previously blocked but now is force run learn screen
             overwriteDecisionToLearn = true
         }
     }
+
+    //Create notification channel
     private fun createNotificationChannel() {
         val channelId = "background_service_channel"
         val channel = NotificationChannel(
@@ -112,6 +130,8 @@ class AppMonitorService : Service() {
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
     }
+
+    //create notification necessary to not get killed
     private fun createNotification(): Notification {
         val channelId = "background_service_channel"
         val channel = NotificationChannel(
@@ -131,7 +151,8 @@ class AppMonitorService : Service() {
                 .setOnlyAlertOnce(true).build() // Only alert once even if updated
 
     }
-    //returns the name of currently used app
+
+    // returns the name of currently used app
    fun getForegroundApp(context: Context): String? {
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val endTime = System.currentTimeMillis()
@@ -156,17 +177,21 @@ class AppMonitorService : Service() {
         }
         return null
     }
+
+    //called  when phone unlocked
     public fun userPresent(){
         createNotification()
-        val ruleToRun = anyRuleSetToRunAtUnlock()
+        val ruleToRun = anyRuleSetToRunAtUnlock() // checks if there exists a rule that is active now and should run when phone is unlocked
         if(ruleToRun != null){
+
+            //run learn screen
                 val randomCards = rankByDueDate(
                     context = applicationContext,
                     deckList = deckNamesToDeckList(
                         ruleToRun.deckList.toList(), context = applicationContext
                     )
                 ).take(3)
-                Log.d("cardflare5", randomCards.toString())
+
                 if (randomCards != null) {
                     CardsToLearn = randomCards.toMutableList()
                     startOverlay()
@@ -175,10 +200,12 @@ class AppMonitorService : Service() {
         }
     }
 
+    //Is called when reciever recieves user present so phone unlocked
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUnlockEvent(event: UnlockEvent?) {
         userPresent()
     }
+
     // Starts OverlayService
     private fun startOverlay() {
         // checks if overlay permissions are granted

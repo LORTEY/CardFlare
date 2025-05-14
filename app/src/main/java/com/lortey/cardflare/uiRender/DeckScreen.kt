@@ -180,7 +180,7 @@ fun deckScreen(context: Context, navController: NavController){
                                     navController.navigate("learn_screen") }),
                             AddMenuEntry("Add Flashcard",
                                 R.drawable.create_empty,
-                                {navController.navigate("add_flashcard")}),
+                                {currentModifiedFlashcard = null; navController.navigate("add_flashcard")}),
                             AddMenuEntry("Remove Flashcards", R.drawable.delete) {
                                 val toRemove = cards.filterIndexed { index, _ -> cardsSelected[index] }
                                 if (toRemove.isNotEmpty()) {
@@ -194,14 +194,12 @@ fun deckScreen(context: Context, navController: NavController){
                                     CardsToLearn.clear()
                                 }
                             },
-                            AddMenuEntry("Edit Flashcard", R.drawable.apps,
+                            AddMenuEntry("Edit Flashcard", R.drawable.edit,
                                 {
                                     if (cardsSelected.count{it} == 1){
                                         currentModifiedFlashcard = cards[cardsSelected.indexOf(true)]
                                         navController.navigate("add_flashcard")
                                     }})
-
-
                     ))
                 }
             }

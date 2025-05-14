@@ -111,6 +111,8 @@ import com.lortey.cardflare.getTranslation
 import java.util.Calendar
 
 var appsInfo:List<AppInfo> = listOf()
+
+//preview
 @Composable
 @Preview
 fun preview(){
@@ -134,6 +136,8 @@ fun preview(){
             }
         }
 }
+
+//Launch on menu view screen
 @Composable
 fun LaunchOnMenu(context: Context, navController: NavController){
 
@@ -177,7 +181,7 @@ fun LaunchOnMenu(context: Context, navController: NavController){
                     //.width(128.dp)
                     .align(Alignment.End)) {
                 UniversalAddMenu(appearAddMenu, changeVisibility = {appearAddMenu = !appearAddMenu},
-                    listOf(AddMenuEntry(Name = "Add Rule", Icon = R.drawable.minus,
+                    listOf(AddMenuEntry(Name = "Add Rule", Icon = R.drawable.plus,
                             Action = {
                                 launchOnRuleToModify.value = LaunchOnRule(name = "NewLaunchOnRule", appList = mutableListOf(), flashcardList = mutableListOf(), deckList = mutableListOf())
                                 lastOpenedRule = null
@@ -197,7 +201,6 @@ fun ModifyRule(context: Context,navController: NavController){
     val state by remember(launchOnRuleToModify.value) { mutableStateOf(launchOnRuleToModify.value) }
     var name by remember(state) { mutableStateOf(state?.name ?: "NewLaunchOnRule") }
     var listOfApps by remember(state) { mutableStateOf(state?.appList ?: mutableListOf()) }
-    var flashcardList = mutableListOf<Flashcard>()
     val apps by remember{mutableStateOf(appsInfo.toMutableList())}
     var appMap by remember(apps) { mutableStateOf( apps.associateBy { it.packageName }) }
     var appearAppAddMenu by remember { mutableStateOf(false) }
@@ -299,8 +302,6 @@ fun ModifyRule(context: Context,navController: NavController){
                             contentDescription = "remove app from rule",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                //.size(128.dp)
-                                //.padding(2.dp)
                                 .size(36.dp)
                                 .background(
                                     MaterialTheme.colorScheme.background,
@@ -708,10 +709,10 @@ fun SelectDecks(context: Context, decksCurrentlySelected:List<Deck>, SelectedDec
 }
 @Composable
 fun SearchableAppListLoad(apps:List<AppInfo>, context: Context){
-    // I have no idea how to use the colors in TextField so to make a place holder I used this box
     var apps = remember { mutableStateListOf<AppInfo>() }
     var isLoading by remember { mutableStateOf(false) }
     var searchQuery by remember{ mutableStateOf("")}
+
     // Runs once when the composable enters composition
     LaunchedEffect(Unit) {
         isLoading = true

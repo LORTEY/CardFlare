@@ -51,6 +51,7 @@ val CenterToWidth:Float = 0f
 val CenterToHeight:Float = 0.5f
 var FinalColumnsGlobal: MutableList<Pair<MutableList<TextColumn>, MutableList<TextColumn>>> = mutableListOf(Pair(
     mutableListOf(), mutableListOf()))
+
 // Helper extension function for combined gesture detection
 suspend fun PointerInputScope.detectTapAndDragGestures(
     onTap: (Offset) -> Unit = { },
@@ -73,8 +74,8 @@ suspend fun PointerInputScope.detectTapAndDragGestures(
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
 
+//transform detected text lines into two columns based on user selection
 fun transformToColumns(lines:List<TextLine>):Pair<MutableList<TextColumn>,MutableList<TextColumn>>{
     val columns:Pair<MutableList<TextLine>,MutableList<TextLine>> =
         Pair(mutableListOf(),
@@ -102,12 +103,8 @@ fun transformToColumns(lines:List<TextLine>):Pair<MutableList<TextColumn>,Mutabl
     return finalColumns
 }
 
-fun getClosest(point:Offset,lines:List<TextLine>):Pair<TextLine, Float>{
-    val minimalDistanceLine = lines.minBy {
-        distanceFrom(it.offset.x.toInt(), it.offset.y.toInt(), point.x.toInt(),point.y.toInt())
-    }
-    return Pair(minimalDistanceLine, distanceFrom(minimalDistanceLine.offset.x.toInt(), minimalDistanceLine.offset.y.toInt(), point.x.toInt(),point.y.toInt()))
-}
+
+//Translates aspects selected by user so idgnored, linked or none to pair of usable data
 fun aspectsToPairTranslation(columns:Pair<MutableList<TextColumn>,MutableList<TextColumn>>):MutableList<Pair<MutableList<TextColumn>,MutableList<TextColumn>>>{
     val columnA:MutableList<MutableList<TextColumn>> = mutableListOf()
     columns.first.forEach{ line->
@@ -157,6 +154,8 @@ fun aspectsToPairTranslation(columns:Pair<MutableList<TextColumn>,MutableList<Te
 
     return finalColumns
 }
+
+//Runs text recognizer on selected image
 fun extractTextFromUri(
     context: Context,
     uri: Uri,
@@ -171,6 +170,8 @@ fun extractTextFromUri(
             val result = StringBuilder()
             for (block in visionText.textBlocks) {
                 for (line in block.lines) {
+
+                    //Converts detected lines to supported data type
                     lines.add(TextLine(
                         text = line.text,
                         width = line.boundingBox?.width() ?: 0,
@@ -179,19 +180,17 @@ fun extractTextFromUri(
                         confidence = line.confidence
                     ))
                 }
-                Log.d("cardflareText", "${block.text} ${block.cornerPoints.toString()}")
+
                 result.append(block.text).append("\n")
             }
-            Log.d("cardflareText", lines.toString())
-
-            onResult(lines)
+            onResult(lines) // "return"
         }
         .addOnFailureListener { e ->
             onResult(mutableListOf())
         }
 }
 
-
+//convert uri to  bitmap to use on canvas
 fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
     return try {
         val source = ImageDecoder.createSource(context.contentResolver, uri)
@@ -205,6 +204,8 @@ fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
     }
 }
 
+
+//Final translation from data table to Flashcard Sides
 fun finalTranslationToListOfFlashcards(finalColumns: MutableList<Pair<MutableList<TextColumn>, MutableList<TextColumn>>>, context: Context):MutableList<Flashcard>{
     val listOfCards: MutableList<Flashcard> = mutableListOf()
 
@@ -217,7 +218,7 @@ fun finalTranslationToListOfFlashcards(finalColumns: MutableList<Pair<MutableLis
     }
     return listOfCards
 }
-/* I might be stupid but actually this algorithm works just dont know why i need it
+/*I leave this algorithm here as it worked but i decided that letting user decide would be a better idea
 fun arrangeLinesIntoColumns(lines:List<TextLine>):MutableList<MutableList<TextLine>>{
     var linesLeft: MutableList<TextLine> = lines.toMutableList()
     var averageVector: Pair<Float,Float>? = null
@@ -304,6 +305,8 @@ fun getUpperMostLine(lines:List<TextLine>): TextLine?{
         it.locationPoint.second
     }
 }*/
+
+//Data regarding text and position of detected text on image
 data class TextLine(
     val text: String,
     val offset:    Offset,
@@ -312,14 +315,19 @@ data class TextLine(
     val confidence: Float?,
     var mappedTo :MappedTo  = MappedTo.None
 )
+
+// Says whether a canvas box was selected to be side a b or none
 enum class MappedTo {
     None, Side_A, Side_B
 }
+
+//data type used in data table
 data class TextColumn(
     var text :String,
     var aspects: Aspect
 )
 
+//The data table aspects
 enum class Aspect{
     LINKED, // Was linked to the upper one
     IGNORED, //Is Ignored

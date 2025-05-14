@@ -30,6 +30,8 @@ fun translateText(text: String, translator: Translator, onResult: (String) -> Un
         .addOnSuccessListener { translatedText -> onResult(translatedText) }
         .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }
 }
+
+//gets all supported languages
 fun getAllSupportedLanguages(): List<String> {
     return TranslateLanguage.getAllLanguages().map { languageCode ->
         // Convert language code to display name

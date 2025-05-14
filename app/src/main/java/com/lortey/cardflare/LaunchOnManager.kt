@@ -26,6 +26,7 @@ var launchOnRules:MutableList<LaunchOnRule> = mutableListOf()
 const val LaunchOnRuleFile = "LaunchOnRules.txt"
 private val jsonFormat = Json { prettyPrint = true }
 
+//get list of apps installed on device
 suspend fun getListOfApps(context: Context): List<AppInfo> = withContext(Dispatchers.IO) {
     val packageManager: PackageManager = context.packageManager
     var installedApps: List<PackageInfo> = packageManager.getInstalledPackages(0)
@@ -51,6 +52,7 @@ suspend fun getListOfApps(context: Context): List<AppInfo> = withContext(Dispatc
     }
 }
 
+// get an ap with closest display name or package name to the search query
 fun appsSearch(searchQuery:String, appList:List<AppInfo>): List<AppInfo>{
     if (searchQuery.isEmpty()){
         return appList
@@ -65,6 +67,7 @@ fun appsSearch(searchQuery:String, appList:List<AppInfo>): List<AppInfo>{
         }
 }
 
+// load all launch on rules from directory
 fun loadLaunchOnRules(context:Context):MutableList<LaunchOnRule>{
     val file = File(context.getExternalFilesDir(null), LaunchOnRuleFile)
     if(!file.exists()){
@@ -77,17 +80,18 @@ fun loadLaunchOnRules(context:Context):MutableList<LaunchOnRule>{
         }catch(e:Exception){
             Log.d("cardflare", "Error While deserializing launchOnRules")
         }
-
     }
     return mutableListOf<LaunchOnRule>()
 }
 
+//save currently opened launch on rule
 fun saveLaunchOnRules(context:Context, launchOnRules:MutableList<LaunchOnRule>){
     val jsonString = jsonFormat.encodeToString(launchOnRules)
     val file = File(context.getExternalFilesDir(null), LaunchOnRuleFile)
     file.writeText(jsonString)
 }
 
+//add app to rule
 fun addAppToRule(app:AppInfo){
     if(launchOnRuleToModify.value != null && !((app.packageName in (launchOnRuleToModify.value?.appList
             ?: mutableListOf())))){
@@ -100,8 +104,8 @@ fun addAppToRule(app:AppInfo){
     }
 }
 
+//add deck to rule
 fun addDeckToRule(deckList:List<Deck>){
-
         // The rebuild is necessary or else jetpack compose wont refresh
         launchOnRuleToModify.value = LaunchOnRule(name = launchOnRuleToModify.value?.name ?: "",
             appList = launchOnRuleToModify.value?.appList ?: mutableListOf(),
@@ -110,6 +114,8 @@ fun addDeckToRule(deckList:List<Deck>){
         Log.d("cardflare3",launchOnRuleToModify.toString())
 
 }
+
+//remove app from rule
 fun removeAppFromRule(packageName: String){
     if(launchOnRuleToModify.value != null){
         // The rebuild is necessary or else jetpack compose wont refresh
@@ -118,21 +124,22 @@ fun removeAppFromRule(packageName: String){
             appList = appList,
             flashcardList = launchOnRuleToModify.value?.flashcardList ?: mutableListOf(),
             deckList = launchOnRuleToModify.value?.deckList ?: mutableListOf())
-        Log.d("cardflare3",launchOnRuleToModify.toString())
     }
 }
 
+//Fetches currently active rules
 fun getCurrentActiveRules():List<LaunchOnRule>{
     var i = mutableListOf<LaunchOnRule>()
     val currentTime = getCurrentTime()
     launchOnRules.forEach{rule->
-        if(isCurrentTimeInBetweenTimes(rule.activeFrom, rule.activeTo, currentTime)){
+        if(isCurrentTimeInBetweenTimes(rule.activeFrom, rule.activeTo, currentTime)){ // current time is in the time when a rule is supposed to be active
             i.add(rule)
         }
     }
     return i
 }
 
+//get an easy to search collection of currently blocked apps
 fun generateSetOfBlockedApps(currentActiveRules : List<LaunchOnRule>? = null):HashSet<String>{
     var setOfApps = hashSetOf<String>()
     (currentActiveRules ?: getCurrentActiveRules()).forEach { rule ->
@@ -140,6 +147,8 @@ fun generateSetOfBlockedApps(currentActiveRules : List<LaunchOnRule>? = null):Ha
     }
     return setOfApps
 }
+
+//get current time
 fun getCurrentTime(): TimeValue {
     val currentTime = LocalTime.now()
     val hour = currentTime.hour
@@ -147,6 +156,8 @@ fun getCurrentTime(): TimeValue {
 
     return TimeValue(hour, minute)
 }
+
+//compare times
 fun compareTimes(timeA:TimeValue, timeB:TimeValue):Byte{ // -1 first is bigger 0 they are equal 1 second is bigger
     if(timeA.hour == timeB.hour && timeA.minute == timeB.minute){
         return 0
@@ -157,6 +168,7 @@ fun compareTimes(timeA:TimeValue, timeB:TimeValue):Byte{ // -1 first is bigger 0
     return 1
 }
 
+//checks whether a time is between two other times including times exceeding midnight. Used to determine if rule is currently active
 fun isCurrentTimeInBetweenTimes(timeStart:TimeValue?, timeEnd:TimeValue?, currentTime:TimeValue):Boolean{
     if(timeStart == null || timeEnd == null){
         return true
@@ -175,6 +187,7 @@ fun isCurrentTimeInBetweenTimes(timeStart:TimeValue?, timeEnd:TimeValue?, curren
     }
 }
 
+/*Will implement in the future
 fun getFlashcards(numberOfFlashcards:Int, decks: List<Deck>):List<Flashcard>?{
     val randomFlashcards = mutableListOf<Flashcard>()
     var iterator: Int = 0
@@ -189,8 +202,9 @@ fun getFlashcards(numberOfFlashcards:Int, decks: List<Deck>):List<Flashcard>?{
         return randomFlashcards
     }
     return null
-}
+}*/
 
+//Get Aa rule that is now active that should run on currently used app
 fun getRuleFromApp(appName:String):LaunchOnRule?{
     val activeRules = getCurrentActiveRules()
     activeRules.forEach { rule->
@@ -200,6 +214,8 @@ fun getRuleFromApp(appName:String):LaunchOnRule?{
     }
     return null
 }
+
+//Checks if any currently active rule should run at phone unlock
 fun anyRuleSetToRunAtUnlock():LaunchOnRule?{
     val activeRules = getCurrentActiveRules()
     activeRules.forEach { rule->
@@ -210,6 +226,7 @@ fun anyRuleSetToRunAtUnlock():LaunchOnRule?{
     return null
 }
 
+//Converts deck filenames to decks
 fun deckNamesToDeckList(deckNames:List<String>,context: Context):List<Deck>{
     val loadedDecks = mutableListOf<Deck>()
     deckNames.forEach { filename ->
@@ -220,6 +237,8 @@ fun deckNamesToDeckList(deckNames:List<String>,context: Context):List<Deck>{
     }
     return loadedDecks
 }
+
+//Launch on rule
 @Serializable
 data class LaunchOnRule(
     var name:String,
@@ -230,6 +249,8 @@ data class LaunchOnRule(
     var activeTo: TimeValue? = null,
     var unlockedCatch:Boolean = false
 )
+
+//I dcant serilize instant
 @Serializable
 data class TimeValue(
     val hour: Int,   // 0-23

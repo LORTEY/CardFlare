@@ -52,11 +52,8 @@ import com.lortey.cardflare.R
 import com.lortey.cardflare.getDeck
 import com.lortey.cardflare.getTranslation
 
-data class AddMenuEntry(
-    val Name:String,
-    val Icon: Int,
-    val Action :() -> Unit
-)
+
+//auto size text to be possibly biggest used in learn screen
 @Composable
 fun AutoSizeText(
     text: String,
@@ -78,6 +75,14 @@ fun AutoSizeText(
         textAlign = TextAlign.Center
     )
 }
+
+//plus menu enty
+data class AddMenuEntry(
+    val Name:String,
+    val Icon: Int,
+    val Action :() -> Unit
+)
+//unified plus menu
 @Composable
 fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries: List<AddMenuEntry>) {
     AnimatedVisibility(
@@ -153,7 +158,7 @@ fun UniversalAddMenu(visibility: Boolean, changeVisibility :() -> Unit, entries:
             .clickable { changeVisibility() })
 }
 
-
+//unified pop up used for example for settings
 @Composable
 fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:Boolean, secondButton:(@Composable () -> Unit)? = null){
 
@@ -221,6 +226,8 @@ fun PopUp(title:String = "", text:String = "", closeAction:()->Unit, visibility:
 
         }
 }
+
+/*not implemented
 class IndexTracker<T>(var value: T)
 var UniversalSelected: MutableList<Boolean> = mutableListOf()
 @Composable
@@ -299,4 +306,4 @@ fun UniversalGrid(selectMode:Boolean, changeSelectModeTrue:() -> Unit, changeSel
             }
         }
     }
-}
+}*/

@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,8 +54,6 @@ import com.lortey.cardflare.updateSetting
 @Composable
 fun SettingsMenu(navController: NavHostController, context: Context) {
     val appSettings = remember { AppSettings }
-
-    Log.d("cardflareSetts", appSettings.toString())
     DisposableEffect(Unit) {
         onDispose {
             saveSettings(context)
@@ -65,13 +64,11 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
             .background(MaterialTheme.colorScheme.background)
             .padding(WindowInsets.systemBars.asPaddingValues())
     ) {
-        // Correctly loop through categories
+        // display settings in categories
         Category.entries.forEach { category ->
             val filtered = appSettings.values.filter { it.category == category }
 
             if (filtered.isNotEmpty()) {
-                Log.d("FilteredCardFlare", filtered.toString())
-
                 item {
                     Text(
                         text = getTranslation(category.toString().replace("_", " ")),
@@ -89,6 +86,7 @@ fun SettingsMenu(navController: NavHostController, context: Context) {
     }
 }
 
+//unifies settings
 @Composable
 fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, SettingEntry>, context: Context, navController: NavController) {
     var openPopup by remember { mutableStateOf(false) }
@@ -96,32 +94,8 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
         if(!setting.description.isNullOrEmpty()) {
             PopUp(getTranslation(setting.name), getTranslation(setting.description), { openPopup = !openPopup }, openPopup)
         }
-        /*Popup(
-            alignment = Alignment.TopStart,
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.inverseOnSurface,
-                        shape = MaterialTheme.shapes.small
-                    )
-                    .padding(16.dp)
-                    .border(1.dp, Color.Gray, MaterialTheme.shapes.small)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(setting.description!!, style = MaterialTheme.typography.titleMedium,color = MaterialTheme.colorScheme.onBackground)
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Button(onClick = { openPopup = false }) {
-                        Text("Close")
-                    }
-                }
-            }
-        }*/
     }
+    //setting with switch
     if ((setting.type == SettingsType.BOOLEAN && setting.customChooser == Chooser.NonSpecified) || setting.customChooser == Chooser.Switch) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -139,7 +113,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     .padding(vertical = 10.dp)
             )
             Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp),color = MaterialTheme.colorScheme.onBackground)
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f).padding(horizontal = 20.dp))
             val state = remember { mutableStateOf(setting.state as Boolean) }
             Switch(
                 checked = state.value,
@@ -149,11 +123,12 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                 }
             )
         }
+        //setting with slider
     }else if ((setting.type == SettingsType.SLIDER && setting.customChooser == Chooser.NonSpecified) || setting.customChooser == Chooser.Slider) {
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 10.dp)){
-            val state = remember { mutableStateOf(setting.state as Float) }
+            val state = remember { mutableFloatStateOf(setting.state as Float) }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -167,9 +142,9 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .padding(vertical = 10.dp)
                 )
                 Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f).padding(horizontal = 20.dp))
                 Row(modifier = Modifier
-                    .fillMaxWidth()
+                    .width(100.dp)
                     .padding(horizontal = 10.dp, vertical = 10.dp)
                     .background(MaterialTheme.colorScheme.inverseOnSurface), horizontalArrangement = Arrangement.SpaceEvenly){
                     Text(
@@ -188,6 +163,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                     modifier = Modifier.fillMaxWidth()
                 )
         }
+        //setting with dropdown
     }else if ((setting.type == SettingsType.CHOOSE && setting.customChooser == Chooser.NonSpecified) /*|| setting.customChooser == Chooser.Slider*/ ) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -207,18 +183,20 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .padding(vertical = 10.dp)
                 )
                 Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f).padding(horizontal = 20.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .width(200.dp)
                         .padding(horizontal = 10.dp, vertical = 10.dp)
                         .background(MaterialTheme.colorScheme.inverseOnSurface),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     val keyValue = setting.dropDownMenuEntries!!.entries.firstOrNull { it.value == setting.state }?.key
                     Text(
                         text = getTranslation(keyValue ?: ""),
-                        modifier = Modifier.clickable { expanded = !expanded }
+                        modifier = Modifier.clickable { expanded = !expanded },
+                        maxLines = 2,
+
                     )
                     DropdownMenu(
                         expanded = expanded,
@@ -238,6 +216,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                 }
             }
         }
+        //setting nonspecified
     }else if ((setting.type == SettingsType.CHOOSE && setting.customChooser == Chooser.NonSpecified) /*|| setting.customChooser == Chooser.Slider*/ ) {
         Column(
             modifier = Modifier
@@ -259,7 +238,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .padding(vertical = 10.dp)
                 )
                 Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f).padding(horizontal = 20.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -292,6 +271,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                 }
             }
         }
+        //setting with custom choose screen
     }else if ((setting.type == SettingsType.ACTION) /*|| setting.customChooser == Chooser.Slider*/ ){
         Column(
             modifier = Modifier
@@ -312,7 +292,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
                         .padding(vertical = 10.dp)
                 )
                 Text(getTranslation(setting.name), modifier = Modifier.padding(vertical = 10.dp))
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f).padding(horizontal = 20.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -330,6 +310,7 @@ fun SettingsEntryComposable(setting: SettingEntry, appSettings: Map<String, Sett
     }
 }
 
+//used for language
 fun deserializeName(className: String, input: Any): String {
     return when (className) {
         "translations" -> (input as translations).name

@@ -19,24 +19,27 @@ var currentTranslationMap:MutableMap<String,String> = mutableMapOf()
 var currentlyChosenTranslationLocation:location = location.ASSETS
 var currentlyChosenTranslationFilePath:String = "Polski"
 
+//get string translated in current map
 fun getTranslation(text:String):String{
     if(text in currentTranslationMap){
         return currentTranslationMap[text]!!
     }else{
         Log.d("cardflareTranslations", "No Translation For: $text")
-        currentTranslationMap[text] = "MISSING=====> $text"
+        currentTranslationMap[text] = text
         return text
     }
 }
 
 private val jsonFormat = Json { prettyPrint = true }
 
+//has debuging usecases
 public fun saveMap(context: Context, filename:String){
     val jsonString = jsonFormat.encodeToString(currentTranslationMap)
     val file = File(context.getExternalFilesDir(null), "Translations/$filename")
     file.writeText(jsonString)
 }
 
+//load selected language from file
 fun loadMap(context: Context){
     val state = AppSettings["Language"]?.state as translations
     currentlyChosenTranslationLocation= if(state.typeOfTranslation == typeOfTranslation.Default) location.ASSETS else location.FILES_DIR
@@ -53,6 +56,7 @@ fun loadMap(context: Context){
     currentTranslationMap = jsonFormat.decodeFromString<MutableMap<String,String>>(jsonString)
 }
 
+//useful for app updates
 fun remap(context: Context){
     val fromTo:Map<String,String> = mapOf()
     fromTo.forEach{key, value ->
@@ -64,7 +68,7 @@ fun remap(context: Context){
     }
     //saveMap(filename = str)
 }
-
+//get all possible translations , creator provided, custom and ai generated not yet implemented
 fun getPossibleTranslations(context: Context):List<translations>{
     val possibleTranslations:MutableList<translations> = mutableListOf()
     possibleTranslations.add(translations("English",typeOfTranslation.Default,
@@ -89,6 +93,7 @@ fun getPossibleTranslations(context: Context):List<translations>{
 }
 
 
+/*will implement in the future
 suspend fun createCustomTranslation(context: Context, desiredLanguage:String){
     val translator = createTranslator(sourceLang = "English", targetLang = desiredLanguage)
     loadMap(context)
@@ -118,22 +123,25 @@ suspend fun createCustomTranslation(context: Context, desiredLanguage:String){
     }
 }
 
-
 fun translateTextUi(text: String, translator: Translator, onResult: (String) -> Unit){
         Log.d("CardflareTranslator","hii")
         translator.translate(text)
             .addOnSuccessListener { translatedText -> onResult(translatedText) }
             .addOnFailureListener { e -> onResult("Translation failed: ${e.message}") }
 
-}
+}*/
+
+//location of translations
 enum class location{
     ASSETS, FILES_DIR
 }
 
+//type of translation: provided by app creator, user custom or ai translated not yet implemented
 enum class typeOfTranslation{
     Default, Custom, AI
 }
 
+//translation entry in translation choose screen
 @Serializable
 data class translations(
     val name:String,
