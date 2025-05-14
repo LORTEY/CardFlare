@@ -22,7 +22,7 @@ Znajdziesz się teraz na stronie głównej. Zauważ, że przytrzymanie nowo doda
 
 ### Menu fiszek
 Jesteś teraz w menu fiszek tak samo jak decki fiszki możesz zaznaczać albo klikać, aby otworzyć ekran scrollowania.  W prawym dolnym rogu znajduje się menu tego ekranu po rozwinięciu go ukażą ci się te opcje:\
-![Flashcard Add Menu](Screenshot_20250514_205156_CardFlare.jpg)
+![Flashcard Add Menu](Screenshot_20250514_205156_CardFlare.jpg)\
 Opcja dodaj fiszkę otwiera ekran, w którym możesz dodawać fiszki korzystając ze wspomnianej funkcji auto uzupełniania (funkcja zacznie działać dopiero wtedy gdy odpowiednie modele się pobiorą).
 We wspomnianym menu ekranu masz opcję **Ucz się**. Kliknij ją. 
 
