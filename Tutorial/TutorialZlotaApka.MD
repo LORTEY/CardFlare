@@ -1,8 +1,8 @@
-#Cardflare
+# Cardflare
 
 Cardflare to aplikacja stworzona, by motywować użytkownika do nauki fiszek według ustalonego przez niego planu auto-nauki. Ułatwia zapamiętywanie dzięki zaawansowanemu algorytmowi spaced repetition (FSRS). Oferuje również wiele dodatkowych funkcji, takich jak dodawanie fiszek ze zdjęć.
 
-##Po co nam uprawnienia?
+## Po co nam uprawnienia?
 
 Cardflare potrzebuje dostępu do statystyk użytkowania oraz uprawnienia "wyświetlaj nad innymi aplikacjami", aby móc prezentować fiszki w odpowiednim czasie zgodnie z planem automatycznej nauki.
 
