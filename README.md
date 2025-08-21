@@ -4,4 +4,4 @@ CardFlare is an opensource flashcard learning app for android that will force yo
 
 i have made a basic logo will push it when i return home
 
-i really need to think about documentation
+I really need to think about documentation
