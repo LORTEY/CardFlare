@@ -6,4 +6,4 @@ i have made a basic logo will push it when i return home
 
 I really need to think about documentation
 
-Yeaah no one uses it not even me. As expected.
+Yeaah no one uses it not even me. As expected. Kinda sad
